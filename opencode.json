@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "barbara_orchestrator": {
+      "mode": "primary",
+      "model": "gpt-5.3-codex",
+      "description": "Routes incoming requests to the appropriate specialist sub-agent based on the task type."
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": "ask",
+    "webfetch": "allow"
+  }
+}

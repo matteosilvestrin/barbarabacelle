@@ -28,6 +28,6 @@ Obiettivo: uniformare il comportamento dei subagenti ed evitare errori legati a 
 
 ## Note operative
 
-- Le skills restano in `.agents/skills/` come location canonica.
+- Le skills sono in `.opencode/skills/` come location canonica.
 - Per nuove installazioni skills, usare la policy definita in `AGENTS.md`:
   - `npx skills add <repo-or-url> --skill <skill-name> --agent opencode --yes`

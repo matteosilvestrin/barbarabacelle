@@ -34,6 +34,9 @@ barbarabacelle3/
 │   └── imgs/              # Optimized images (WebP/PNG/SVG)
 ├── documentation/         # Implementation history logs (YYYYMMDD-HHMM-feature-name.md)
 ├── _MATERIALS/            # Reference files — DO NOT modify or commit
+├── .opencode/
+│   ├── agents/            # Sub-agents (orchestrator + specialists)
+│   └── skills/            # Reusable procedures and checklists
 ├── .gitignore
 └── AGENTS.md              # This file
 ```
@@ -137,17 +140,35 @@ Always use Tailwind utility classes. Only use `assets/css/custom.css` when Tailw
 | Section names     | Spanish        | `quien-soy`, `servicios`   |
 | Doc log files     | `YYYYMMDD-HHMM-kebab-case.md` | `20260404-1630-menu-mobile.md` |
 
-## Skills
+## Orchestrator & Sub-Agent System
 
-- Project skills are stored in `/.agents/skills/`
-- Prefer local project skills over global installs
-- Do not duplicate skills across repository folders
-- When adding a new skill, keep the canonical location in `/.agents/skills/`
-- Default install mode: install only for OpenCode to avoid creating other agent links/symlinks
-- Use this command pattern for every new skill:
-  - `npx skills add <repo-or-url> --skill <skill-name> --agent opencode --yes`
-- For all skills from a repository, use:
-  - `npx skills add <repo-or-url> --skill '*' --agent opencode --yes`
+This project uses a **sub-agent architecture** managed through `.opencode/agents/`.
+
+### Agent routing
+
+| Type | File | Responsibility |
+|------|------|----------------|
+| Orchestrator | `.opencode/agents/barbara_orchestrator.md` | Routes requests to the right sub-agent |
+| Specialist | `.opencode/agents/code-reviewer.md` | Code quality and security review |
+| Specialist | `.opencode/agents/ui-designer.md` | Visual design, UI, layout |
+| Specialist | `.opencode/agents/fullstack-developer.md` | End-to-end feature implementation |
+| Skill | `.opencode/skills/*.md` | Procedural checklists and repeatable audits |
+
+### How it works
+
+1. The **orchestrator** evaluates incoming requests against sub-agent descriptions
+2. It delegates to the best-matching **specialist agent**
+3. The specialist executes the task and reports back
+4. The orchestrator returns the final result to the user
+
+### Skill usage
+
+Skills are loaded via the standard skill system:
+```bash
+npx skills add <repo-or-url> --skill <skill-name> --agent opencode --yes
+```
+
+Project skills can be stored in `.opencode/skills/` for project-specific procedures.
 
 ## Important Rules
 
