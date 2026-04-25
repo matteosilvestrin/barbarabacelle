@@ -1,0 +1,53 @@
+/* ================================
+   Custom CSS - Barbara Bacelle
+   Estilos auxiliares para Tailwind
+   ================================ */
+
+/* Base */
+html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: rgba(14, 111, 131, 0.18);
+}
+
+section {
+    scroll-margin-top: 96px;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+    touch-action: manipulation;
+}
+
+.animate-on-scroll {
+    will-change: transform, opacity;
+}
+
+h1,
+h2,
+h3,
+.text-balance {
+    text-wrap: balance;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid rgba(14, 111, 131, 0.45);
+    outline-offset: 2px;
+}
+
+/* Decorative background detail */
+main {
+    background-image: radial-gradient(circle at 0% 100%, rgba(14, 111, 131, 0.06) 0, transparent 34%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll {
+        will-change: auto;
+    }
+}
