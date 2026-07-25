@@ -1,3 +1,5 @@
+/__MATERIALS/
+
 # Agent skills (local configuration, not site code)
 .agents/
 .serena/
@@ -22,3 +24,4 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
