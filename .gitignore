@@ -25,4 +25,7 @@ Thumbs.db
 *.tmp
 *.log
 
+# Local environment
+.env
+
 /__MATERIALS
