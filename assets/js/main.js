@@ -11,6 +11,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburgerTop = document.getElementById('hamburger-top');
     const hamburgerMid = document.getElementById('hamburger-mid');
     const hamburgerBot = document.getElementById('hamburger-bot');
+    const siteToolbar = document.getElementById('site-toolbar');
+    const toolbarWrapper = document.getElementById('toolbar-wrapper');
+    const mobileToolbarMediaQuery = window.matchMedia('(max-width: 639px)');
+
+    let lastScrollY = window.scrollY;
+    let isTicking = false;
+
+    const syncToolbarBodyClass = () => {
+        if (!siteToolbar) {
+            return;
+        }
+
+        document.body.classList.toggle('has-toolbar-mobile', mobileToolbarMediaQuery.matches);
+    };
+
+    const updateToolbarState = () => {
+        if (!siteToolbar || !toolbarWrapper || !mobileMenu) {
+            return;
+        }
+
+        const currentScrollY = window.scrollY;
+        const isTop = currentScrollY <= 8;
+        const isMenuOpen = mobileMenu.getAttribute('aria-hidden') === 'false';
+        const isMobileViewport = mobileToolbarMediaQuery.matches;
+        const isScrollingDown = currentScrollY > lastScrollY + 2;
+        const isScrollingUp = currentScrollY < lastScrollY - 2;
+
+        toolbarWrapper.classList.toggle('toolbar-surface', isMenuOpen || isMobileViewport || !isTop);
+
+        if (isMenuOpen) {
+            siteToolbar.classList.add('toolbar-open');
+            siteToolbar.classList.remove('toolbar-hidden');
+            lastScrollY = currentScrollY;
+            return;
+        }
+
+        siteToolbar.classList.remove('toolbar-open');
+
+        if (currentScrollY < 24) {
+            siteToolbar.classList.remove('toolbar-hidden');
+        } else if (isScrollingDown) {
+            siteToolbar.classList.add('toolbar-hidden');
+        } else if (isScrollingUp) {
+            siteToolbar.classList.remove('toolbar-hidden');
+        }
+
+        lastScrollY = currentScrollY;
+    };
+
+    const onToolbarScroll = () => {
+        if (!siteToolbar || isTicking) {
+            return;
+        }
+
+        isTicking = true;
+
+        window.requestAnimationFrame(() => {
+            updateToolbarState();
+            isTicking = false;
+        });
+    };
 
     const setMenuState = (isOpen) => {
         if (!menuToggle || !mobileMenu) {
@@ -42,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburgerBot.classList.toggle('-rotate-45', isOpen);
             hamburgerBot.classList.toggle('-translate-y-2', isOpen);
         }
+
+        updateToolbarState();
     };
 
     if (menuToggle && mobileMenu) {
@@ -75,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth >= 1024) {
                 setMenuState(false);
             }
+
+            syncToolbarBodyClass();
+            updateToolbarState();
+        });
+    }
+
+    syncToolbarBodyClass();
+    updateToolbarState();
+
+    if (siteToolbar) {
+        window.addEventListener('scroll', onToolbarScroll, { passive: true });
+        mobileToolbarMediaQuery.addEventListener('change', () => {
+            syncToolbarBodyClass();
+            updateToolbarState();
         });
     }
 

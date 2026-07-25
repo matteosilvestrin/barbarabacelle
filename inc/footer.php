@@ -12,6 +12,6 @@
 </footer>
 
 <!-- Main JS -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js?v=20260426"></script>
 </body>
 </html>

@@ -51,3 +51,74 @@ main {
         will-change: auto;
     }
 }
+
+/* WePresent-inspired toolbar */
+.toolbar-sticky-root {
+    z-index: 50;
+}
+
+.toolbar-sticky {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 116px;
+    transition: transform 0.4s ease;
+}
+
+.toolbar-hidden {
+    transform: translateY(116px);
+}
+
+.toolbar-open {
+    transform: none !important;
+}
+
+.toolbar-spacer {
+    box-sizing: content-box;
+    height: 76px;
+    padding: 20px;
+}
+
+.toolbar-wrapper {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    color: #212324;
+}
+
+.toolbar-inner {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    border-radius: inherit;
+    background: inherit;
+}
+
+.toolbar-surface {
+    background: #ffffff;
+    color: #212324;
+    filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.15));
+}
+
+.toolbar-menu-icon span {
+    border-radius: 9999px;
+}
+
+@media (max-width: 639px) {
+    body.has-toolbar-mobile {
+        padding-bottom: 116px;
+    }
+}
+
+@media (min-width: 640px) {
+    .toolbar-sticky {
+        position: sticky;
+        top: 0;
+        bottom: auto;
+    }
+
+    .toolbar-hidden {
+        transform: translateY(-116px);
+    }
+}
