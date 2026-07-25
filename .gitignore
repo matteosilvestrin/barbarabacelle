@@ -1,0 +1,24 @@
+# Agent skills (local configuration, not site code)
+.agents/
+.serena/
+.playwright-mcp/
+
+# Docs generated or local notes
+/docs/
+
+# Local opencode config dumps
+opencode*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.log
