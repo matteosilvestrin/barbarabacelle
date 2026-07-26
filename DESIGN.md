@@ -54,19 +54,19 @@ La paleta oficial procede del brandbook. Los tonos teal son el corazón de la ma
 
 | Token | Hex | Uso |
 |---|---|---|
-| `primary-dark` | `#163A40` | Texto principal, títulos, fondos oscuros, contraste máximo. |
-| `primary` | `#1F5C63` | CTA principales, enlaces, detalles de marca, superficies comprometidas. |
-| `primary-light` | `#3FA7A3` | Estados hover, acentos secundarios, detalles gráficos. |
-| `primary-lighter` | `#8BD3D1` | Fondos suaves, decoraciones, bloques de apoyo. |
-| `primary-lightest` | `#DCFAFA` | Fondos luminosos, áreas de descanso, tarjetas suaves. |
+| `primary-dark` | `#02636D` | Texto principal, títulos, fondos oscuros, contraste máximo. |
+| `primary` | `#0396A6` | CTA principales, enlaces, detalles de marca, superficies comprometidas. |
+| `primary-light` | `#39C9D3` | Estados hover, acentos secundarios, detalles gráficos. |
+| `primary-lighter` | `#8DE3EC` | Fondos suaves, decoraciones, bloques de apoyo. |
+| `primary-lightest` | `#D1F5F7` | Fondos luminosos, áreas de descanso, tarjetas suaves. |
 
 ### Secondary: Gris Azulado
 
 | Token | Hex | Uso |
 |---|---|---|
-| `secondary` | `#BFC7C9` | Líneas divisorias, texto auxiliar puntual, fondos apagados. |
-| `secondary-light` | `#E2E9EB` | Fondos de sección, bloques neutros, superficies editoriales. |
-| `secondary-lightest` | `#F1F8FA` | Fondo alternativo, zonas muy suaves, separación de contenido. |
+| `secondary` | `#BCCBD0` | Líneas divisorias, texto auxiliar puntual, fondos apagados. |
+| `secondary-light` | `#E1E8EA` | Fondos de sección, bloques neutros, superficies editoriales. |
+| `secondary-lightest` | `#F1F7F8` | Fondo alternativo, zonas muy suaves, separación de contenido. |
 
 ### Neutrals
 
@@ -77,7 +77,7 @@ La paleta oficial procede del brandbook. Los tonos teal son el corazón de la ma
 
 ### Reglas De Uso
 
-- El fondo base debe ser `white`, `secondary-lightest` o `primary-lightest`.
+- El fondo base debe ser `white`, `secondary-lightest` o `secondary-light`.
 - No usar `bg-surface`; no existe en este sistema.
 - No usar `text-slate-*`; la jerarquía se construye con `text-primary-dark` y opacidades.
 - No usar gradientes de texto ni fondos con gradiente. La marca funciona mejor con planos de color, fotografía y espacio.

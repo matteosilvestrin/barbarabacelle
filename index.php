@@ -33,7 +33,7 @@ include 'template/head.php';
         </div>
     </section>
 
-    <section id="unica" class="bg-primary-lighter py-20 md:py-24">
+    <section id="unica" class="bg-secondary-light py-20 md:py-24">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="grid gap-10 md:grid-cols-2 md:items-center">
                 <div class="animate-on-scroll" data-animate="animate__fadeInLeft">
@@ -61,7 +61,7 @@ include 'template/head.php';
                     <h3 class="mt-4 font-heading text-xl font-semibold text-primary-dark">Cercanía</h3>
                     <p class="mt-2 text-base text-primary-dark/70">Te acompaño desde la escucha, con empatía y sin juicios.</p>
                 </article>
-                <article class="animate-on-scroll rounded-2xl bg-primary-lighter p-6 text-center shadow-soft" data-animate="animate__fadeInUp">
+                    <article class="animate-on-scroll rounded-2xl bg-secondary-lightest p-6 text-center shadow-soft" data-animate="animate__fadeInUp">
                     <p class="mx-auto mb-4 h-px w-10 bg-primary" aria-hidden="true"></p>
                     <h3 class="mt-4 font-heading text-xl font-semibold text-primary-dark">Confianza</h3>
                     <p class="mt-2 text-base text-primary-dark/70">Creamos un espacio seguro para que puedas explorar tu imagen con tranquilidad.</p>
@@ -71,7 +71,7 @@ include 'template/head.php';
                     <h3 class="mt-4 font-heading text-xl font-semibold text-primary-dark">Personalización</h3>
                     <p class="mt-2 text-base text-primary-dark/70">No trabajo con fórmulas genéricas; diseño cada plan para ti.</p>
                 </article>
-                <article class="animate-on-scroll rounded-2xl bg-primary-lighter p-6 text-center shadow-soft" data-animate="animate__fadeInUp">
+                    <article class="animate-on-scroll rounded-2xl bg-secondary-lightest p-6 text-center shadow-soft" data-animate="animate__fadeInUp">
                     <p class="mx-auto mb-4 h-px w-10 bg-primary" aria-hidden="true"></p>
                     <h3 class="mt-4 font-heading text-xl font-semibold text-primary-dark">Exclusividad</h3>
                     <p class="mt-2 text-base text-primary-dark/70">Atención dedicada y cupos limitados para cuidar la calidad del proceso.</p>

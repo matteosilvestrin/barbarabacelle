@@ -23,7 +23,7 @@ $pageImageUrl = preg_match('/^https?:\/\//i', $pageImage) ? $pageImage : $scheme
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1F5C63">
+    <meta name="theme-color" content="#0396A6">
     <meta name="description" content="<?php echo htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8'); ?>">
     <meta name="keywords" content="<?php echo htmlspecialchars($pageKeywords, ENT_QUOTES, 'UTF-8'); ?>">
     <meta name="robots" content="index, follow">
@@ -54,15 +54,15 @@ $pageImageUrl = preg_match('/^https?:\/\//i', $pageImage) ? $pageImage : $scheme
                 extend: {
                     colors: {
                         primary: {
-                            lightest: '#DCFAFA',
-                            lighter: '#8BD3D1',
-                            light: '#3FA7A3',
-                            DEFAULT: '#1F5C63',
-                            dark: '#163A40',
+                            lightest: '#D1F5F7',
+                            lighter: '#8DE3EC',
+                            light: '#39C9D3',
+                            DEFAULT: '#0396A6',
+                            dark: '#02636D',
                         },
                         secondary: {
-                            lightest: '#F1F8FA',
-                            light: '#E2E9EB',
+                            lightest: '#F1F7F8',
+                            light: '#E1E8EA',
                             DEFAULT: '#BFC7C9',
                         },
                     },
@@ -72,7 +72,7 @@ $pageImageUrl = preg_match('/^https?:\/\//i', $pageImage) ? $pageImage : $scheme
                         script: ['Dancing Script', 'cursive'],
                     },
                     boxShadow: {
-                        soft: '0 8px 24px rgba(31, 92, 99, 0.08)',
+                        soft: '0 8px 24px rgba(3, 150, 166, 0.08)',
                     },
                 }
             }
@@ -91,7 +91,7 @@ $pageImageUrl = preg_match('/^https?:\/\//i', $pageImage) ? $pageImage : $scheme
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/custom.css?v=20260707-service-intro-swap">
+    <link rel="stylesheet" href="assets/css/custom.css?v=20260726-palette-refresh">
 </head>
 <body class="font-sans text-primary-dark bg-white">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-primary-dark focus:shadow-soft">

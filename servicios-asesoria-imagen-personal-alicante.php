@@ -126,7 +126,7 @@ include 'template/head.php';
             </div>
 
             <div class="mt-12 grid gap-8 md:grid-cols-2">
-                <article class="service-card service-card-roomy service-card-tint service-card-transform animate-on-scroll overflow-hidden rounded-2xl bg-primary-lighter shadow-soft" data-animate="animate__fadeInUp">
+                <article class="service-card service-card-roomy service-card-tint service-card-transform animate-on-scroll overflow-hidden rounded-2xl bg-secondary-lightest shadow-soft" data-animate="animate__fadeInUp">
                     <img src="assets/imgs/service-tu-mejor-version.jpg" alt="Placeholder del servicio tu mejor versión" class="service-image h-auto w-full object-cover" loading="lazy" width="600" height="400">
                     <div class="service-card-copy p-8">
                         <div class="service-card-static">
@@ -139,7 +139,7 @@ include 'template/head.php';
                     </div>
                 </article>
 
-                <article class="service-card service-card-tint service-card-transform animate-on-scroll overflow-hidden rounded-2xl bg-primary-lighter shadow-soft" data-animate="animate__fadeInUp">
+                <article class="service-card service-card-tint service-card-transform animate-on-scroll overflow-hidden rounded-2xl bg-secondary-lightest shadow-soft" data-animate="animate__fadeInUp">
                     <img src="assets/imgs/service-tu-armario-ideal.jpg" alt="Placeholder del servicio tu armario ideal" class="service-image h-auto w-full object-cover" loading="lazy" width="600" height="400">
                     <div class="service-card-copy p-8">
                         <div class="service-card-static">
