@@ -307,3 +307,109 @@ La animación debe acompañar la calma de la marca. El movimiento ideal es suave
 - Evitar copy grandilocuente o buzzwords; la voz debe ser clara, cercana y concreta.
 - Cada elemento visual debe cumplir una función: orientar, respirar, reforzar identidad o facilitar acción.
 - La experiencia final debe ser calmada, luminosa, profesional y memorable.
+
+## Responsive Breakpoints
+
+Usar los breakpoints por defecto de Tailwind CSS v3, sin crear puntos intermedios salvo que una necesidad real del contenido lo justifique:
+
+| Breakpoint | Ancho mínimo | Uso principal |
+|---|---:|---|
+| Base | 0 px | Mobile first, una columna, navegación compacta. |
+| `sm` | 640 px | Ajustes para móviles grandes y composiciones estrechas. |
+| `md` | 768 px | Tablet, dos columnas y navegación más espaciosa. |
+| `lg` | 1024 px | Desktop, hero editorial y navegación completa. |
+| `xl` | 1280 px | Contenedor `max-w-7xl` y composiciones amplias. |
+| `2xl` | 1536 px | Solo para controlar el aire lateral, sin ampliar demasiado el texto. |
+
+El diseño debe partir de mobile y escalar mediante `md:`, `lg:` y `xl:`. No crear layouts que dependan únicamente de un ancho concreto.
+
+## Spacing, Sizing & Rhythm
+
+- Contenedor global: `mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10`.
+- Secciones: `py-20 md:py-24 lg:py-32`.
+- Bloques editoriales: `gap-8 lg:gap-16`.
+- Texto largo: `max-w-2xl` o `max-w-3xl`.
+- Medida de lectura: aproximadamente 65–75 caracteres por línea.
+- Botones y controles: altura mínima `min-h-12`, padding horizontal `px-6`.
+- Radios: `rounded-lg` para inputs y `rounded-2xl` como máximo habitual para bloques.
+- Jerarquía vertical: usar múltiplos coherentes de `4`, `6`, `8`, `10`, `12` y `16`; evitar valores arbitrarios repetidos.
+
+## Navigation, Footer & Page Shell
+
+La navegación debe ser ligera y persistente. En mobile se usa un botón de menú con `min-h-12 min-w-12`, `aria-expanded` y foco visible; el panel debe abrirse sin ocultar el contenido principal y cerrarse con Escape. En desktop (`lg:`) se muestra la navegación horizontal y se mantiene una única acción principal.
+
+Clases base sugeridas: `sticky top-0 z-40 bg-white/95 backdrop-blur-sm`, `flex items-center justify-between`, `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary`.
+
+El footer debe cerrar la experiencia con logo, contacto, enlaces esenciales, Instagram y aviso legal. Usar una composición de una columna en mobile y dos o tres zonas en `md:`; evitar repetir todas las opciones de la navbar.
+
+## Component States
+
+Todos los elementos interactivos deben definir estados visibles:
+
+- Enlace o botón: `transition-colors duration-300 hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:scale-[.98]`.
+- Botón desactivado: `disabled:pointer-events-none disabled:opacity-50`.
+- Input: `border-secondary focus:border-primary focus:ring-2 focus:ring-primary/30`.
+- Error de formulario: `border-red-700 text-red-800`, mensaje asociado con `aria-describedby`.
+- Éxito: usar texto y un indicador visual, nunca depender solo del color.
+- Carga: preferir texto contextual (“Enviando…”) y mantener estable el layout.
+
+No combinar `border` y `shadow` en una misma card o botón.
+
+## Image & Asset Specifications
+
+- Hero desktop: imagen vertical o panorámica con al menos 1600 px de ancho cuando ocupe media pantalla.
+- Imagen editorial: proporción recomendada `4/5` o `3/4`; usar `aspect-[4/5] object-cover`.
+- Miniaturas o tarjetas: `aspect-[4/3] object-cover`.
+- Logo: conservar proporción original, usar `h-10 w-auto` en navbar y `h-14 w-auto` en footer cuando el espacio lo permita.
+- Favicon: usar el símbolo `E | E` en formato cuadrado.
+- Añadir `loading="lazy"` a imágenes fuera del primer viewport y `decoding="async"` cuando sea apropiado.
+- Usar `alt` descriptivo para imágenes informativas y `alt=""` para imágenes puramente decorativas.
+- Si falta un asset, mantener una superficie plana de `bg-secondary-lightest` con la proporción reservada; no inventar degradados ni iconos sustitutivos.
+
+## Page Architecture
+
+El sitio se compone de cuatro páginas independientes, enlazadas con URLs limpias:
+
+- **Home:** hero de bienvenida, propuesta de valor, introducción breve a servicios, prueba social si existe y CTA de contacto.
+- **Servicios:** presentación clara de cada servicio, para quién es, qué incluye y CTA para reservar consulta.
+- **Chi sono:** historia y enfoque de Barbara, fotografía personal, valores y forma de acompañamiento.
+- **Contatti:** datos de contacto, WhatsApp, formulario accesible, horarios y zona de atención.
+
+Cada página debe tener un único `h1`, su propia imagen hero y meta description específica. Los partials compartidos de navbar, footer, CTA y formularios viven en `template/`.
+
+## Voice & Copy Guidelines
+
+El tono es cercano, sereno, concreto y profesional. Hablar de acompañamiento, identidad y decisiones prácticas; evitar promesas absolutas, urgencia artificial, lenguaje grandilocuente y jerga de marketing.
+
+- Preferir verbos claros: `Descubre`, `Reserva`, `Escribe`, `Conoce`.
+- Usar segunda persona singular en español, con calidez y respeto.
+- Mantener frases cortas y párrafos respirados.
+- Cada CTA debe indicar acción y destino: `Reservar una consulta`, `Ver los servicios`, `Escribir por WhatsApp`.
+- Evitar mayúsculas extensas y repetir la misma ceja en todas las secciones.
+
+## SEO & Accessibility Checklist
+
+- `lang="es"`, título único y meta description de 140–160 caracteres por página.
+- Un solo `h1`; usar `h2` y `h3` siguiendo la jerarquía sin saltos arbitrarios.
+- URLs limpias y enlaces internos sin `.php` ni rutas hardcodeadas del entorno local.
+- Open Graph básico con título, descripción e imagen relevante.
+- Enlaces descriptivos, foco visible y navegación completa mediante teclado.
+- Labels visibles para cada campo; errores asociados al campo y anunciables por tecnologías de asistencia.
+- Contraste mínimo WCAG AA y respeto de `prefers-reduced-motion`.
+- Revisar que toda imagen informativa tenga un `alt` útil y que los elementos decorativos no entren en el árbol semántico.
+
+## Reusable Tailwind Class Patterns
+
+Usar estos patrones como punto de partida, ajustándolos al contexto:
+
+- Contenedor: `mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10`.
+- Sección editorial: `py-20 md:py-24 lg:py-32`.
+- Ceja: `font-sans text-sm font-medium uppercase tracking-[0.18em] text-primary-dark/70`.
+- Título: `font-serif text-4xl font-semibold leading-[1.05] text-primary-dark md:text-5xl lg:text-6xl`.
+- Texto: `max-w-2xl font-sans text-base leading-7 text-primary-dark/80 md:text-lg md:leading-8`.
+- Botón principal: `inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 py-3 font-sans font-medium text-white transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary`.
+- Botón secundario: `inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 py-3 font-sans font-medium text-primary-dark ring-1 ring-primary-dark/20 transition-colors hover:bg-primary-lightest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary`.
+- Card: `rounded-2xl bg-secondary-lightest p-6 md:p-8`.
+- Input: `min-h-12 w-full rounded-lg border border-secondary bg-white px-4 text-primary-dark placeholder:text-primary-dark/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30`.
+
+Estas clases son convenciones reutilizables, no componentes cerrados: la composición debe seguir siendo editorial y evitar repetir grids de tarjetas idénticas.
