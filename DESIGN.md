@@ -387,14 +387,16 @@ No combinar `border` y `shadow` en una misma card o botón.
 
 ## Page Architecture
 
-El sitio se compone de cuatro páginas independientes, enlazadas con URLs limpias:
+El sitio se compone de tres páginas, enlazadas con URLs limpias, más la página 404:
 
-- **Home:** hero de bienvenida, propuesta de valor, introducción breve a servicios, prueba social si existe y CTA de contacto.
-- **Servicios:** presentación clara de cada servicio, para quién es, qué incluye y CTA para reservar consulta.
-- **Chi sono:** historia y enfoque de Barbara, fotografía personal, valores y forma de acompañamiento.
-- **Contatti:** datos de contacto, WhatsApp, formulario accesible, horarios y zona de atención.
+- **Home** (`/`): hero de bienvenida, propuesta de valor, cards de servicios (cada una con foto y enlace "Descubre más" al bloque correspondiente de Servicios), testimonios y sección de contacto `#contacto` con datos, WhatsApp y formulario.
+- **Servicios** (`/servicios-asesoria-imagen-personal-alicante`): servicios a la carta y packs, cada bloque con texto, modalidad, duración y, si aplica, qué incluye (iconos), más "Regala una Experiencia" y "Armonía Party". Cada bloque tiene un ancla (`#armocromia`, `#tu-mejor-version`, …).
+- **Sobre mí** (`/barbara-bacelle-asesoria-imagen-alicante`): "Quién soy", historia y enfoque de Barbara, fotografía personal y cifras.
+- **404** (`/404` y cualquier otra URL): página `noindex`.
 
-Cada página debe tener un único `h1`, su propia imagen hero y meta description específica. Los partials compartidos de navbar, footer, CTA y formularios viven en `template/`.
+No existe una página de contacto separada: el contacto vive en la Home (`/#contacto`) y en el botón flotante de WhatsApp.
+
+Cada página debe tener un único `h1`, su propia imagen hero y meta description específica. Los componentes compartidos (Header, Footer, CTASection, botón de WhatsApp, popup de masterclass) viven en `client/src/components/site.tsx`.
 
 ## Voice & Copy Guidelines
 

@@ -10,6 +10,8 @@ type Servicio = {
   modalidad: string;
   duracion?: string;
   incluye?: string;
+  /** Clase Tailwind object-position para fotos que no se recortan bien al centro. */
+  imgPosition?: string;
 };
 
 const A_LA_CARTA: Servicio[] = [
@@ -80,8 +82,10 @@ const PACKS: Servicio[] = [
     text: "Un viaje para reconectar contigo, descubrir tu esencia y potenciar tu belleza natural. A través del coaching de estilo, el Face Shape, el Body Shape y la armocromía, descubriremos los cortes, peinados, accesorios, prendas y colores que mejor armonizan contigo. Una experiencia para ganar confianza, realzar lo que te hace única y expresar tu personalidad a través de tu imagen. Al finalizar, recibirás una guía personalizada con consejos prácticos para tu día a día.",
   },
   {
-    img: "/hero-portrait.jpg",
-    alt: "Experiencia Tu imagen, tu marca",
+    img: "/tu-imagen-tu-marca-coaching-imagen-profesional.jpg",
+    alt: "Coaching de imagen profesional: Tu imagen, tu marca",
+    // Foto vertical: el recorte 4:3 se desplaza hacia arriba para no cortar el rostro.
+    imgPosition: "object-[50%_20%]",
     title: "Tu imagen, tu marca",
     id: "tu-imagen-tu-marca",
     modalidad: "Online o presencial",
@@ -168,7 +172,7 @@ function ServiceRow({ s, i, cta }: { s: Servicio; i: number; cta?: string }) {
     <Reveal>
       <article id={s.id} className={`grid gap-8 lg:gap-16 lg:grid-cols-2 items-center ${ANCHOR_OFFSET}`}>
         <div className={flip ? "lg:order-2" : ""}>
-          <img src={s.img} alt={s.alt} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover rounded-2xl" />
+          <img src={s.img} alt={s.alt} loading="lazy" decoding="async" className={`aspect-[4/3] w-full object-cover rounded-2xl ${s.imgPosition ?? ""}`} />
         </div>
         <div className={flip ? "lg:order-1" : ""}>
           <h3 className="text-3xl font-semibold">{s.title}</h3>
