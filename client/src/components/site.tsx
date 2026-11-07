@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { Menu, X, MessageCircle, Instagram } from "lucide-react";
+import { X, MessageCircle, Instagram } from "lucide-react";
 
 /* ---------- Reveal ---------- */
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -31,46 +31,156 @@ const NAV = [
   { href: "/#contacto", label: "Contacto" },
 ];
 
+// Variante del logo para el header: "Bacelle" en color primary (#0396A6).
+// Generada a partir de logo-barbara-bacelle-asesoria-de-imgen-conciente.svg (paths 7–13).
+const LOGO_SRC = "/logo-barbara-bacelle-asesoria-de-imgen-conciente-header.svg";
+const LOGO_ALT = "Bárbara Bacelle — Asesoría de Imagen Personal";
+const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2";
+
+/**
+ * Toolbar flotante (copiada de la referencia http://localhost/barbarabacelle/):
+ * - mobile (< sm): fija al fondo de la pantalla;
+ * - sm+: sticky arriba, transparente en la parte superior de la página;
+ * - se oculta al hacer scroll hacia abajo y reaparece al subir;
+ * - el menú abierto es un overlay a pantalla completa.
+ */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // Ocultar al bajar / mostrar al subir.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    let last = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      if (y < 24) setHidden(false);
+      else if (y > last + 2) setHidden(true);
+      else if (y < last - 2) setHidden(false);
+      last = y;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Menú abierto: bloquear scroll, cerrar con Escape o al pasar a desktop.
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { setOpen(false); toggleRef.current?.focus(); }
+    };
+    const onResize = () => { if (window.innerWidth >= 1024) setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
+
+  const close = () => setOpen(false);
+  const surface = open || scrolled;
+
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm">
-      <div className="container-brand flex items-center justify-between py-4">
-        <Link href="/" aria-label="Espacio de Estilo — inicio">
-          <img src="/logo-barbara-bacelle.png" alt="Bárbara Bacelle — Asesoría de Imagen Personal" className="h-12 w-auto" />
-        </Link>
-        <nav className="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm font-medium text-teal-dark transition-colors duration-300 hover:text-teal">
-              {n.label}
-            </a>
-          ))}
-          <a href="/#contacto" className="btn-primary !min-h-11 text-sm">Reservar consulta</a>
-        </nav>
-        <button
-          className="lg:hidden inline-flex min-h-12 min-w-12 items-center justify-center text-teal-dark"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-label="Abrir menú"
+    <>
+      <header
+        className={`fixed inset-x-0 bottom-0 z-50 h-[116px] transition-transform duration-400 ease-[ease] sm:sticky sm:top-0 sm:bottom-auto ${
+          hidden && !open ? "translate-y-[116px] sm:-translate-y-[116px]" : ""
+        }`}
+      >
+        <div className="box-content h-[76px] p-5">
+          <div
+            className={`relative mx-auto flex h-[76px] w-full max-w-[428px] overflow-hidden rounded-2xl bg-white text-teal-dark drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] ${
+              surface ? "" : "sm:bg-transparent sm:drop-shadow-none"
+            }`}
+          >
+            <nav className="mx-auto flex h-[76px] w-full items-center justify-between" aria-label="Navegación principal">
+              <Link href="/" className={`inline-flex h-full items-center pl-5 pr-3 sm:pl-4 ${FOCUS_RING}`} aria-label="Ir a Inicio">
+                <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-auto sm:h-14" />
+              </Link>
+              <button
+                ref={toggleRef}
+                type="button"
+                onClick={() => setOpen(!open)}
+                className={`flex h-full w-[60px] touch-manipulation items-center justify-center rounded-md ${FOCUS_RING}`}
+                aria-label={open ? "Cerrar menú" : "Abrir menú"}
+                aria-controls="mobile-menu"
+                aria-expanded={open}
+              >
+                <span className="inline-flex flex-col gap-1.5" aria-hidden="true">
+                  <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
+                  <span className={`block h-0.5 w-5 rounded-full bg-current transition-opacity ${open ? "opacity-0" : ""}`} />
+                  <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+                </span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <div
+        id="mobile-menu"
+        className={`fixed inset-0 z-[70] h-screen min-h-[100dvh] w-screen overflow-y-auto duration-300 ${
+          // Al abrir, visibility cambia al instante (para poder enfocar el botón de cierre);
+          // al cerrar, espera al fade de opacidad.
+          open ? "visible opacity-100 transition-opacity" : "pointer-events-none invisible opacity-0 transition-[opacity,visibility]"
+        }`}
+        aria-hidden={!open}
+        inert={!open}
+      >
+        <div className="absolute inset-0 h-full w-full bg-white/90 backdrop-blur-[3px]" />
+        <div
+          className="relative flex min-h-[100dvh] w-full items-center justify-center px-6 py-24"
+          onClick={(e) => { if (e.target === e.currentTarget) close(); }}
         >
-          {open ? <X /> : <Menu />}
-        </button>
-      </div>
-      {open && (
-        <nav className="lg:hidden bg-white border-t border-stone-light px-6 pb-6 pt-2 flex flex-col gap-1" aria-label="Menú móvil">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} onClick={() => setOpen(false)} className="py-3 text-base text-teal-dark">
-              {n.label}
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={() => { close(); toggleRef.current?.focus(); }}
+            className={`absolute right-6 top-6 inline-flex h-12 w-12 items-center justify-center rounded-full text-teal-dark transition-colors hover:text-teal ${FOCUS_RING}`}
+            aria-label="Cerrar menú"
+          >
+            <X size={24} aria-hidden="true" />
+          </button>
+          <div className="flex w-full max-w-xl flex-col items-center justify-center text-center">
+            <Link href="/" onClick={close} className="mb-8 block bg-transparent" aria-label="Ir a Inicio">
+              <img src={LOGO_SRC} alt={LOGO_ALT} className="mx-auto h-auto w-full max-w-[250px]" />
+            </Link>
+            {NAV.map((n, i) => (
+              <a
+                key={n.href}
+                href={n.href}
+                onClick={close}
+                className={`${i > 0 ? "mt-2 " : ""}block rounded-xl px-6 py-3 text-2xl font-semibold text-teal-dark transition-colors hover:text-teal sm:text-3xl ${FOCUS_RING}`}
+              >
+                {n.label}
+              </a>
+            ))}
+            <a
+              href="/#contacto"
+              onClick={close}
+              className={`mt-10 inline-flex min-w-[260px] justify-center rounded-full bg-teal px-10 py-4 text-lg font-semibold text-white shadow-[0_8px_24px_rgba(3,150,166,0.08)] transition-colors hover:bg-teal-dark ${FOCUS_RING}`}
+            >
+              Reserva tu asesoría
             </a>
-          ))}
-        </nav>
-      )}
-    </header>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -80,7 +190,7 @@ export function Footer() {
     <footer className="bg-teal-dark text-white">
       <div className="container-brand py-16 grid gap-12 md:grid-cols-3">
         <div>
-          <img src="/logo-barbara-bacelle.png" alt="Bárbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto" />
+          <img src="/logo-barbara-bacelle-asesoria-de-imgen-conciente.svg" alt="Bárbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
           <p className="mt-4 text-white/80 text-sm leading-relaxed max-w-xs">
             Asesoría de imagen personal en Alicante. Online y presencial.
           </p>
@@ -115,7 +225,7 @@ export function WhatsAppButton() {
     <a
       href="https://wa.me/34640907062" target="_blank" rel="noreferrer"
       aria-label="Escribir por WhatsApp"
-      className="fixed bottom-5 right-5 z-50 inline-flex min-h-14 min-w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105"
+      className="fixed bottom-[136px] right-5 z-40 inline-flex sm:bottom-5 min-h-14 min-w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105"
     >
       <MessageCircle size={24} />
     </a>

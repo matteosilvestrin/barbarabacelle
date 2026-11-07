@@ -19,7 +19,7 @@ import { useEffect } from "react";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pb-[116px] sm:pb-0">
       <Header />
       <div className="flex-1">{children}</div>
       <Footer />
