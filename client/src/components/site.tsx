@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { X, MessageCircle, Instagram } from "lucide-react";
+import { X, MessageCircle, Instagram, Youtube } from "lucide-react";
 
 /* ---------- Reveal ---------- */
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -185,6 +185,21 @@ export function Header() {
 }
 
 /* ---------- Footer ---------- */
+// Lucide non ha l'icona di TikTok: glifo da Simple Icons (CC0), riempito con currentColor.
+function TikTokIcon({ size = 16, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" {...props}>
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+    </svg>
+  );
+}
+
+const SOCIAL = [
+  { name: "Instagram", href: "https://www.instagram.com/espaciodeestilo/", handle: "@espaciodeestilo", Icon: Instagram },
+  { name: "TikTok", href: "https://www.tiktok.com/@espaciodeestilo", handle: "@espaciodeestilo", Icon: TikTokIcon },
+  { name: "YouTube", href: "https://www.youtube.com/@espaciodeestilo4404", handle: "@espaciodeestilo4404", Icon: Youtube },
+];
+
 export function Footer() {
   return (
     <footer className="bg-teal-dark text-white">
@@ -201,12 +216,20 @@ export function Footer() {
           <p><a href="tel:+34640907062" className="hover:text-teal-lighter transition-colors">+34 640 90 70 62</a></p>
           <p className="text-white/80">Alicante · Online</p>
         </div>
-        <div className="text-sm space-y-3">
+        <div className="text-sm">
           <p className="eyebrow !text-white/60 mb-2">Sígueme</p>
-          <a href="https://www.instagram.com/espaciodeestilo/" target="_blank" rel="noreferrer"
-             className="inline-flex items-center gap-2 hover:text-teal-lighter transition-colors">
-            <Instagram size={16} /> @espaciodeestilo
-          </a>
+          <ul className="mt-3 space-y-3">
+            {SOCIAL.map(({ name, href, handle, Icon }) => (
+              <li key={name}>
+                <a href={href} target="_blank" rel="noreferrer"
+                   className="inline-flex items-center gap-2 hover:text-teal-lighter transition-colors">
+                  <Icon size={16} aria-hidden="true" />
+                  <span className="sr-only">{name}: </span>
+                  {handle}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <div className="border-t border-white/15">
