@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { X, MessageCircle, Instagram, Youtube } from "lucide-react";
+import { LEGAL, LEGAL_LINKS } from "@/lib/legal";
 
 /* ---------- Reveal ---------- */
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -235,7 +236,16 @@ export function Footer() {
       <div className="border-t border-white/15">
         <div className="container-brand py-6 text-xs text-white/60 flex flex-col md:flex-row justify-between gap-2">
           <p>© {new Date().getFullYear()} Barbara Bacelle · Espacio de Estilo</p>
-          <p>Aviso legal · Privacidad · Cookies</p>
+          <nav aria-label="Información legal">
+            <ul className="flex flex-wrap gap-x-2">
+              {LEGAL_LINKS.map((l, i) => (
+                <li key={l.href} className="flex gap-x-2">
+                  {i > 0 && <span aria-hidden="true">·</span>}
+                  <Link href={l.href} className="hover:text-white transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>
@@ -275,6 +285,41 @@ export function CTASection({
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/* ---------- Consenso privacy (form) ---------- */
+// Casella obbligatoria + informazione di base RGPD (primo livello) sotto ai form.
+// Il link apre la privacy in una nuova scheda per non perdere i dati già scritti.
+export function PrivacyConsent({ id, finalidad }: { id: string; finalidad: string }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-start gap-3">
+        <input
+          id={id}
+          name="privacidad"
+          type="checkbox"
+          required
+          className="mt-1 size-4 shrink-0 cursor-pointer accent-teal"
+        />
+        <label htmlFor={id} className="text-sm text-teal-dark leading-6">
+          He leído y acepto la{" "}
+          <a
+            href="/politica-de-privacidad"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium text-teal underline underline-offset-2 hover:text-teal-dark"
+          >
+            política de privacidad
+          </a>
+          .
+        </label>
+      </div>
+      <p className="text-xs text-teal-dark/70 leading-5">
+        Responsable: {LEGAL.titular}. Finalidad: {finalidad}. Legitimación: tu consentimiento.
+        Derechos: acceso, rectificación, supresión y otros, como se explica en la política de privacidad.
+      </p>
+    </div>
   );
 }
 
@@ -320,6 +365,7 @@ export function MasterclassPopup() {
                 <label htmlFor="popup-email" className="block text-sm font-medium text-teal-dark mb-1">Email</label>
                 <input id="popup-email" type="email" required placeholder="tu@email.com" className="input-brand" />
               </div>
+              <PrivacyConsent id="popup-privacidad" finalidad="enviarte la masterclass y comunicaciones sobre imagen y estilo" />
               <button type="submit" className="btn-primary w-full">Quiero suscribirme</button>
             </form>
           </>

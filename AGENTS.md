@@ -45,7 +45,7 @@ client/
     entry-server.tsx    # render() per il prerender in Node; prerenderRoutes per le pagine non linkate
     App.tsx             # Switch wouter con le route + Layout (Header, Footer, WhatsApp, popup masterclass)
     index.css           # token di design e stili globali (non rompere le regole @layer base)
-    pages/              # Home.tsx, Servicios.tsx, SobreMi.tsx, NotFound.tsx
+    pages/              # Home, Servicios, SobreMi, AvisoLegal, PoliticaPrivacidad, PoliticaCookies, NotFound
     components/
       site.tsx          # Header, Footer, WhatsAppButton, MasterclassPopup, Reveal, Eyebrow, CTASection
       Map.tsx           # MapView per Google Maps (non usato dalle pagine attuali)
@@ -69,6 +69,9 @@ patches/
 | `/` | `Home` |
 | `/servicios-asesoria-imagen-personal-alicante` | `Servicios` |
 | `/barbara-bacelle-asesoria-imagen-alicante` | `SobreMi` |
+| `/aviso-legal` | `AvisoLegal` |
+| `/politica-de-privacidad` | `PoliticaPrivacidad` (stesso URL del sito precedente) |
+| `/politica-de-cookies` | `PoliticaCookies` |
 | `/404` e qualsiasi altra URL | `NotFound` (noindex) |
 
 Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`.
@@ -102,9 +105,12 @@ Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`
 Todo concordati con il titolare del sito (non ancora implementati, salvo dove indicato):
 
 1. **Form:** il form di contatto in `pages/Home.tsx` e quello della masterclass in `components/site.tsx` sono finti (fanno solo `setSent(true)`). Il server non ha API. Decisione aperta: endpoint `POST /api/contact` in Express con invio email, oppure servizio esterno (Formspree, Google Forms).
-2. **Personal Shopper Presencial** (`pages/Servicios.tsx` e card in `pages/Home.tsx`): il testo termina ancora con "Asesoramiento previo necesario.". Da confermare con il titolare se mantenerlo (è stato tolto solo da Tu Armario Ideal).
+2. **Pagine legali da far verificare** al titolare (o a un consulente) prima della pubblicazione: dati in `client/src/lib/legal.ts`. Quando il form funzionerà, il fornitore scelto va citato nella privacy (sezione destinatari). Se si aggiungono analytics servono banner cookie e aggiornamento di `/politica-de-cookies`.
 
 Fatti già completati:
+- **Consenso privacy nei form**: componente `PrivacyConsent` in `components/site.tsx`, usato nel form contatti di `pages/Home.tsx` e nel popup masterclass. Casella obbligatoria (`required`, il browser blocca l'invio senza spunta) con link a `/politica-de-privacidad` in nuova scheda, più informazione di base RGPD (responsabile, finalità, legittimazione, diritti). **Decisioni del titolare:** email legale `hola@barbarabacelle.es`; data di aggiornamento delle pagine legali 7 novembre 2026.
+- **Pagine legali**: `/aviso-legal`, `/politica-de-privacidad`, `/politica-de-cookies`, con layout comune `components/LegalPage.tsx` (stili dei contenuti via selettori arbitrari Tailwind, testo in colonna `max-w-3xl`) e dati del titolare in `lib/legal.ts` (`LEGAL`, `LEGAL_LINKS`). Testi ispirati alla privacy del sito precedente e all'estratto iubenda, aggiornati al sito attuale: niente analytics né profilazione, Privacy Shield sostituito dal Data Privacy Framework, unico storage tecnico `mc_popup_shown` (sessionStorage), Google Fonts dichiarato. Il footer linka le tre pagine (`LEGAL_LINKS`); sono prerenderizzate e nella sitemap.
+- **Personal Shopper Presencial**: decisione del titolare, la frase "Asesoramiento previo necesario." **resta** nel testo (in `pages/Servicios.tsx` e nella card di `pages/Home.tsx`).
 - **Ottimizzazione immagini**: le 12 foto usate dal sito erano PNG con estensione `.jpg` (~2 MB l'una). Convertite in JPEG progressivi q80 alle stesse dimensioni (totale da 22 MB a 1,7 MB) e rinominate con nomi SEO in spagnolo; riferimenti aggiornati in pagine e `Seo`. Eliminati i file non usati da nessuna pagina (`barbara-hero.jpg`, `color-analysis.jpg`, `event-look.jpg`, `gift-card.jpg`, `hero-barbara-v2.jpg`, `hero-portrait.jpg`, `img-hero.jpg`, `wardrobe.jpg`, `logo-barbara-bacelle.png`, circa 14 MB): restano recuperabili dalla storia git.
 - **SEO per pagina**: Home, Servicios e Sobre mí usano `<Seo>` con title e description presi da `KNOWLEDGE_BASE.md` ("Barbara" senza accento), canonical e `og:url` su `https://barbarabacelle.es<path>`, `og:image`/`twitter:image` con la foto hero della pagina. Il prerender sostituisce i meta di default di `client/index.html`. La 404 ha il titolo "Página no encontrada | Barbara Bacelle" e resta `noindex`. Le keywords del KNOWLEDGE_BASE non sono state messe nel meta `keywords` (Google lo ignora).
 - **Footer social (ex punto 1)**: `components/site.tsx`, colonna "Sígueme" generata dall'array `SOCIAL` (Instagram `https://www.instagram.com/espaciodeestilo/`, TikTok `https://www.tiktok.com/@espaciodeestilo`, YouTube `https://www.youtube.com/@espaciodeestilo4404`), una riga per social con icona 16px e handle; nome del social in `sr-only`; apertura in nuova scheda. L'icona TikTok è il componente `TikTokIcon` (SVG da Simple Icons, CC0), perché lucide non la ha; Instagram e YouTube sono di lucide.

@@ -44,7 +44,7 @@ export default function SobreMi() {
           <Reveal>
             <img
               src="/armocromia-analisis-de-color-alicante.jpg"
-              alt="Barbara Bacelle - Consultora de imagen personal en Alicante"
+              alt="Sesión de armocromía con análisis de color personalizado"
               loading="lazy" decoding="async"
               className="aspect-[4/5] w-full object-cover rounded-2xl"
             />

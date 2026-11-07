@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Reveal, Eyebrow, CTASection } from "@/components/site";
+import { Reveal, Eyebrow, CTASection, PrivacyConsent } from "@/components/site";
 import { Seo } from "@/components/Seo";
 import { Check, ChevronRight } from "lucide-react";
 
@@ -278,6 +278,7 @@ function Contacto() {
                 <label htmlFor="c-mensaje" className="block text-sm font-medium text-teal-dark mb-1">Mensaje</label>
                 <textarea id="c-mensaje" required rows={5} placeholder="Cuéntame qué te gustaría mejorar o conseguir con tu imagen…" className="input-brand !min-h-0 py-3 resize-none" />
               </div>
+              <PrivacyConsent id="c-privacidad" finalidad="responder a tu solicitud de información" />
               <button type="submit" className="btn-primary w-full">Envía mi petición</button>
             </form>
           )}

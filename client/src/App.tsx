@@ -6,6 +6,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import Servicios from "./pages/Servicios";
 import SobreMi from "./pages/SobreMi";
+import AvisoLegal from "./pages/AvisoLegal";
+import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
+import PoliticaCookies from "./pages/PoliticaCookies";
 import { Header, Footer, WhatsAppButton, MasterclassPopup } from "./components/site";
 
 import { useEffect } from "react";
@@ -47,6 +50,15 @@ function Router() {
       </Route>
       <Route path={"/barbara-bacelle-asesoria-imagen-alicante"}>
         <Layout><SobreMi /></Layout>
+      </Route>
+      <Route path={"/aviso-legal"}>
+        <Layout><AvisoLegal /></Layout>
+      </Route>
+      <Route path={"/politica-de-privacidad"}>
+        <Layout><PoliticaPrivacidad /></Layout>
+      </Route>
+      <Route path={"/politica-de-cookies"}>
+        <Layout><PoliticaCookies /></Layout>
       </Route>
       <Route path={"/404"}>
         <Layout><NotFound /></Layout>
