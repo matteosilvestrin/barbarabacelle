@@ -1,42 +1,48 @@
 import { useState } from "react";
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 
 const SERVICIOS = [
   {
     img: "/img-session.jpg",
     alt: "Sesión de armocromía con análisis de color personalizado",
     title: "Armocromía",
+    id: "armocromia",
     text: "Descubriremos tu paleta de colores única a través de un análisis de subtono, intensidad y contraste, identificando los colores que mejor armonizan con tu piel, ojos y cabello. Al final de la sesión recibirás tu paleta personalizada.",
   },
   {
     img: "/img-estilo.jpg",
     alt: "Sesión de estilo personal con coaching de imagen",
     title: "Estilo Personal",
+    id: "estilo-personal",
     text: "Identificamos tus valores y la imagen que quieres proyectar, con la ayuda del coaching, para definir un estilo auténtico que refleje quién eres y cómo quieres mostrarte al mundo.",
   },
   {
     img: "/img-rostro.jpg",
     alt: "Análisis del rostro para maquillaje y peinados",
     title: "Análisis del Rostro",
+    id: "analisis-del-rostro",
     text: "Analizamos características, forma y proporciones de tu rostro para identificar maquillaje, cortes, peinados y accesorios que más te favorecen.",
   },
   {
     img: "/img-silueta.jpg",
     alt: "Análisis de la silueta frente al espejo",
     title: "Análisis de la Silueta",
+    id: "analisis-de-la-silueta",
     text: "Analizamos la forma de tu cuerpo e identificamos cómo equilibrar tus proporciones visualmente. Aprenderás a elegir prendas y cortes que realcen tu figura.",
   },
   {
     img: "/img-armario.jpg",
     alt: "Terapia de armario personalizada",
     title: "Terapia de Armario",
-    text: "Redescubre tu armario y saca el máximo partido a tus prendas: qué conservar, qué renovar y qué incorporar según tu estilo, tus colores y tu silueta. Organización, nuevas combinaciones y compras conscientes: un armario que hable de ti.",
+    id: "terapia-de-armario",
+    text: "Redescubre tu armario y aprende a sacarle el máximo partido: qué conservar, qué renovar y qué incorporar según tu estilo, tus colores y tu silueta. Porque no necesitas más ropa, sino un armario que hable de ti.",
   },
   {
     img: "/img-shopper.jpg",
     alt: "Personal shopper presencial en boutique",
     title: "Personal Shopper Presencial",
+    id: "personal-shopper",
     text: "Te acompaño a elegir las prendas que mejor se adaptan a tu estilo, morfología y presupuesto. Una experiencia de compra guiada y eficiente. Asesoramiento previo necesario.",
   },
 ];
@@ -80,7 +86,7 @@ function Hero() {
         <div className="relative order-1 lg:order-2">
           <img
             src="/hero-barbara-v3.jpg"
-            alt="Bárbara Bacelle en la asesoría de imagen personal"
+            alt="Barbara Bacelle en la asesoría de imagen personal"
             className="h-72 w-full object-cover object-top sm:h-96 lg:h-full"
           />
         </div>
@@ -162,11 +168,33 @@ function ServiciosIntro() {
         <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICIOS.map((s, i) => (
             <Reveal key={s.title} delay={(i % 3) * 80}>
-              <article className="rounded-2xl bg-white overflow-hidden h-full flex flex-col">
-                <img src={s.img} alt={s.alt} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
+              {/* Hover sulla card: zoom lento dell'immagine dentro la cornice (DESIGN.md › Motion). */}
+              <article className="group/card rounded-2xl bg-white overflow-hidden h-full flex flex-col">
+                {/* Foto cliccabile verso la stessa ancora di "Descubre más". È un duplicato del link
+                    testuale, quindi resta fuori dal tab e dagli screen reader (tabIndex -1, aria-hidden). */}
+                <a
+                  href={`/servicios-asesoria-imagen-personal-alicante#${s.id}`}
+                  className="block overflow-hidden"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
+                  <img
+                    src={s.img} alt={s.alt} loading="lazy" decoding="async"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.165,0.84,0.44,1)] group-hover/card:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card:scale-100"
+                  />
+                </a>
                 <div className="p-6 md:p-8 flex flex-col flex-1">
                   <h3 className="text-2xl font-semibold">{s.title}</h3>
                   <p className="mt-3 text-sm text-teal-dark/80 leading-7 flex-1">{s.text}</p>
+                  {/* <a> normale (non Link di wouter): il caricamento completo fa scorrere il browser all'ancora. */}
+                  <a
+                    href={`/servicios-asesoria-imagen-personal-alicante#${s.id}`}
+                    className="group mt-6 inline-flex items-center gap-2 self-start rounded-sm font-semibold text-teal transition-colors hover:text-teal-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2"
+                    aria-label={`Descubre más sobre ${s.title}`}
+                  >
+                    Descubre más
+                    <ChevronRight size={18} aria-hidden="true" className="transition-transform group-hover:translate-x-1" />
+                  </a>
                 </div>
               </article>
             </Reveal>

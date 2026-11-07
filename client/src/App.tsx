@@ -8,14 +8,21 @@ import Servicios from "./pages/Servicios";
 import SobreMi from "./pages/SobreMi";
 import { Header, Footer, WhatsAppButton, MasterclassPopup } from "./components/site";
 
+import { useEffect } from "react";
+
+// useLocation() di wouter non include l'hash: va letto da window.location.
+// Con un'ancora (es. /servicios-...#armocromia) porta il blocco in vista
+// rispettando il suo scroll-margin; altrimenti torna in cima.
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
-    if (!location.includes("#")) window.scrollTo(0, 0);
+    const hash = window.location.hash.slice(1);
+    const target = hash ? document.getElementById(decodeURIComponent(hash)) : null;
+    if (target) target.scrollIntoView();
+    else window.scrollTo(0, 0);
   }, [location]);
   return null;
 }
-import { useEffect } from "react";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (

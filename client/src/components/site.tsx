@@ -34,7 +34,7 @@ const NAV = [
 // Variante del logo para el header: "Bacelle" en color primary (#0396A6).
 // Generada a partir de logo-barbara-bacelle-asesoria-de-imgen-conciente.svg (paths 7–13).
 const LOGO_SRC = "/logo-barbara-bacelle-asesoria-de-imgen-conciente-header.svg";
-const LOGO_ALT = "Bárbara Bacelle — Asesoría de Imagen Personal";
+const LOGO_ALT = "Barbara Bacelle — Asesoría de Imagen Personal";
 const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2";
 
 /**
@@ -190,7 +190,7 @@ export function Footer() {
     <footer className="bg-teal-dark text-white">
       <div className="container-brand py-16 grid gap-12 md:grid-cols-3">
         <div>
-          <img src="/logo-barbara-bacelle-asesoria-de-imgen-conciente.svg" alt="Bárbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
+          <img src="/logo-barbara-bacelle-asesoria-de-imgen-conciente.svg" alt="Barbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
           <p className="mt-4 text-white/80 text-sm leading-relaxed max-w-xs">
             Asesoría de imagen personal en Alicante. Online y presencial.
           </p>
@@ -211,7 +211,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/15">
         <div className="container-brand py-6 text-xs text-white/60 flex flex-col md:flex-row justify-between gap-2">
-          <p>© {new Date().getFullYear()} Bárbara Bacelle · Espacio de Estilo</p>
+          <p>© {new Date().getFullYear()} Barbara Bacelle · Espacio de Estilo</p>
           <p>Aviso legal · Privacidad · Cookies</p>
         </div>
       </div>
@@ -233,7 +233,9 @@ export function WhatsAppButton() {
 }
 
 /* ---------- CTA sección ---------- */
-export function CTASection() {
+export function CTASection({
+  text = "Reserva una primera consulta y definimos juntas el mejor punto de partida para ti.",
+}: { text?: string }) {
   return (
     <section className="bg-teal-lightest">
       <div className="container-brand py-20 md:py-24 text-center max-w-3xl mx-auto">
@@ -242,7 +244,7 @@ export function CTASection() {
             ¿Empezamos a construir una imagen que te represente?
           </h2>
           <p className="mt-6 text-teal-dark/80 md:text-lg leading-8">
-            Reserva una primera consulta y definimos juntas el mejor punto de partida para ti.
+            {text}
           </p>
           <div className="mt-10">
             <a href="/#contacto" className="btn-primary">Quiero reservar mi consulta</a>

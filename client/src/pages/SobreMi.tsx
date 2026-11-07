@@ -9,13 +9,13 @@ export default function SobreMi() {
           <div className="container-brand flex items-center py-16 md:py-24 lg:py-32 order-2 lg:order-1">
             <div className="max-w-xl">
               <Reveal>
-                <Eyebrow>Conóceme</Eyebrow>
+                <Eyebrow>Quién soy</Eyebrow>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.02]">
-                  Soy Bárbara Bacelle,{" "}
+                  Soy Barbara Bacelle,{" "}
                   <span className="font-script text-teal font-medium">consultora de imagen consciente</span>
                 </h1>
                 <p className="mt-8 text-teal-dark/80 md:text-lg leading-8">
-                  Italiana de origen, afincada en Alicante. Acompaño a mujeres a descubrir su
+                  Italiana de origen, establecida en Alicante. Acompaño a mujeres a descubrir su
                   mejor versión a través de la imagen personal.
                 </p>
               </Reveal>
@@ -24,7 +24,7 @@ export default function SobreMi() {
           <div className="relative order-1 lg:order-2">
             <img
               src="/hero-barbara-v3.jpg"
-              alt="Bárbara Bacelle, consultora de imagen consciente"
+              alt="Barbara Bacelle, consultora de imagen consciente"
               className="h-72 w-full object-cover object-top sm:h-96 lg:h-full"
             />
           </div>
@@ -37,7 +37,7 @@ export default function SobreMi() {
           <Reveal>
             <img
               src="/img-session.jpg"
-              alt="Bárbara Bacelle - Consultora de imagen personal en Alicante"
+              alt="Barbara Bacelle - Consultora de imagen personal en Alicante"
               loading="lazy" decoding="async"
               className="aspect-[4/5] w-full object-cover rounded-2xl"
             />
@@ -45,14 +45,14 @@ export default function SobreMi() {
           <Reveal delay={100}>
             <Eyebrow>Mi historia</Eyebrow>
             <h2 className="text-4xl md:text-5xl font-semibold leading-[1.08]">
-              Más de 20 años dedicada a la belleza y la imagen personal
+              Más de 20 años de pasión por la belleza
             </h2>
             <div className="mt-8 space-y-5 max-w-2xl text-teal-dark/80 md:text-lg leading-8">
               <p>
-                Soy Bárbara, consultora de imagen consciente, italiana de nacimiento, con 20
-                años de experiencia en el sector de la belleza y la estética y 5 años dedicada
-                específicamente a la consultoría de imagen consciente. Mi formación en Milán y
-                mi especialización en armocromía me permiten combinar análisis de color, estilo
+                Soy Barbara, consultora de imagen consciente, italiana de nacimiento, con 20
+                años de experiencia en el sector de la belleza y la peluquería y 6 años dedicada
+                específicamente a la consultoría de imagen consciente. Mi formación en Italian
+                Image Institute de Milán y mi especialización me permiten combinar análisis de color, estilo
                 y silueta para ofrecer un asesoramiento personalizado que ayuda a cada persona a
                 descubrir y potenciar su imagen única.
               </p>
@@ -84,7 +84,7 @@ export default function SobreMi() {
         </div>
       </section>
 
-      <CTASection />
+      <CTASection text="Reserva una primera consulta y descubramos juntas cómo empezar este camino." />
     </main>
   );
 }
