@@ -1,45 +1,46 @@
 import { useState } from "react";
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
+import { Seo } from "@/components/Seo";
 import { Check, ChevronRight } from "lucide-react";
 
 const SERVICIOS = [
   {
-    img: "/img-session.jpg",
+    img: "/armocromia-analisis-de-color-alicante.jpg",
     alt: "Sesión de armocromía con análisis de color personalizado",
     title: "Armocromía",
     id: "armocromia",
     text: "Descubriremos tu paleta de colores única a través de un análisis de subtono, intensidad y contraste, identificando los colores que mejor armonizan con tu piel, ojos y cabello. Al final de la sesión recibirás tu paleta personalizada.",
   },
   {
-    img: "/img-estilo.jpg",
+    img: "/estilo-personal-coaching-de-imagen.jpg",
     alt: "Sesión de estilo personal con coaching de imagen",
     title: "Estilo Personal",
     id: "estilo-personal",
     text: "Identificamos tus valores y la imagen que quieres proyectar, con la ayuda del coaching, para definir un estilo auténtico que refleje quién eres y cómo quieres mostrarte al mundo.",
   },
   {
-    img: "/img-rostro.jpg",
+    img: "/analisis-del-rostro-visagismo-maquillaje.jpg",
     alt: "Análisis del rostro para maquillaje y peinados",
     title: "Análisis del Rostro",
     id: "analisis-del-rostro",
     text: "Analizamos características, forma y proporciones de tu rostro para identificar maquillaje, cortes, peinados y accesorios que más te favorecen.",
   },
   {
-    img: "/img-silueta.jpg",
+    img: "/analisis-de-la-silueta-body-shape.jpg",
     alt: "Análisis de la silueta frente al espejo",
     title: "Análisis de la Silueta",
     id: "analisis-de-la-silueta",
     text: "Analizamos la forma de tu cuerpo e identificamos cómo equilibrar tus proporciones visualmente. Aprenderás a elegir prendas y cortes que realcen tu figura.",
   },
   {
-    img: "/img-armario.jpg",
+    img: "/terapia-de-armario-organizacion.jpg",
     alt: "Terapia de armario personalizada",
     title: "Terapia de Armario",
     id: "terapia-de-armario",
     text: "Redescubre tu armario y aprende a sacarle el máximo partido: qué conservar, qué renovar y qué incorporar según tu estilo, tus colores y tu silueta. Porque no necesitas más ropa, sino un armario que hable de ti.",
   },
   {
-    img: "/img-shopper.jpg",
+    img: "/personal-shopper-alicante.jpg",
     alt: "Personal shopper presencial en boutique",
     title: "Personal Shopper Presencial",
     id: "personal-shopper",
@@ -85,7 +86,7 @@ function Hero() {
         </div>
         <div className="relative order-1 lg:order-2">
           <img
-            src="/hero-barbara-v3.jpg"
+            src="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
             alt="Barbara Bacelle en la asesoría de imagen personal"
             className="h-72 w-full object-cover object-top sm:h-96 lg:h-full"
           />
@@ -101,7 +102,7 @@ function Unica() {
       <div className="container-brand grid gap-10 lg:gap-16 lg:grid-cols-2 items-center">
         <Reveal>
           <img
-            src="/img-teal.jpg"
+            src="/espacio-de-estilo-textura-teal.jpg"
             alt="Sesión de asesoría de imagen personal"
             loading="lazy"
             decoding="async"
@@ -289,6 +290,12 @@ function Contacto() {
 export default function Home() {
   return (
     <main>
+      <Seo
+        title="Barbara Bacelle | Asesoría de Imagen Personal en Alicante"
+        description="Asesoría de imagen personal en Alicante. Barbara Bacelle te ayuda a descubrir tu estilo auténtico con armocromía, análisis de silueta y acompañamiento personalizado."
+        path="/"
+        image="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
+      />
       <Hero />
       <Unica />
       <Valores />

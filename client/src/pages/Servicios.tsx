@@ -1,4 +1,5 @@
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
+import { Seo } from "@/components/Seo";
 import { BookOpen, Clock, MapPin, type LucideIcon } from "lucide-react";
 
 type Servicio = {
@@ -16,7 +17,7 @@ type Servicio = {
 
 const A_LA_CARTA: Servicio[] = [
   {
-    img: "/img-session.jpg",
+    img: "/armocromia-analisis-de-color-alicante.jpg",
     alt: "Sesión de armocromía con análisis de color personalizado",
     title: "Armocromía",
     id: "armocromia",
@@ -25,7 +26,7 @@ const A_LA_CARTA: Servicio[] = [
     text: "Juntos descubriremos tu paleta de colores única a través de un análisis de subtono, intensidad y contraste, identificando los colores que mejor armonizan con tu piel, ojos y cabello. Conocer tus colores amigos te permite potenciar tu estilo, proyectar confianza y tomar decisiones de vestuario más acertadas. Al final de la sesión recibirás tu paleta personalizada, una guía práctica para resaltar tu belleza natural, ahorrar tiempo y dinero, y sentirte auténtico/a en cada ocasión.",
   },
   {
-    img: "/img-estilo.jpg",
+    img: "/estilo-personal-coaching-de-imagen.jpg",
     alt: "Sesión de estilo personal con coaching de imagen",
     title: "Estilo Personal",
     id: "estilo-personal",
@@ -34,7 +35,7 @@ const A_LA_CARTA: Servicio[] = [
     text: "Identificamos tus valores y la imagen que quieres proyectar, con la ayuda del coaching. Trabajamos juntos para definir un estilo auténtico que refleje quién eres y cómo quieres mostrarte al mundo.",
   },
   {
-    img: "/img-rostro.jpg",
+    img: "/analisis-del-rostro-visagismo-maquillaje.jpg",
     alt: "Análisis del rostro para maquillaje y peinados",
     title: "Análisis del Rostro",
     id: "analisis-del-rostro",
@@ -43,7 +44,7 @@ const A_LA_CARTA: Servicio[] = [
     text: "Analizamos características, forma y proporciones de tu rostro para identificar maquillaje, cortes, peinados y accesorios que más te favorecen. Descubre cómo potenciar tus rasgos naturales.",
   },
   {
-    img: "/img-silueta.jpg",
+    img: "/analisis-de-la-silueta-body-shape.jpg",
     alt: "Análisis de la silueta frente al espejo",
     title: "Análisis de la Silueta",
     id: "analisis-de-la-silueta",
@@ -52,7 +53,7 @@ const A_LA_CARTA: Servicio[] = [
     text: "Analizamos la forma de tu cuerpo e identificamos cómo equilibrar tus proporciones visualmente. Aprenderás a elegir prendas y cortes que realcen tu figura y te hagan sentir segura.",
   },
   {
-    img: "/img-armario.jpg",
+    img: "/terapia-de-armario-organizacion.jpg",
     alt: "Terapia de armario personalizada",
     title: "Terapia de Armario",
     id: "terapia-de-armario",
@@ -61,7 +62,7 @@ const A_LA_CARTA: Servicio[] = [
     text: "Redescubre tu armario y aprende a sacarle el máximo partido. Analizaremos juntas tus prendas para descubrir qué conservar, qué renovar y qué necesitas incorporar según tu estilo, tus colores y tu silueta. Aprenderás a organizar tu armario, crear nuevas combinaciones y comprar de forma más consciente, con guías prácticas y recomendaciones personalizadas. Porque no necesitas más ropa, sino un armario que hable de ti.",
   },
   {
-    img: "/img-shopper.jpg",
+    img: "/personal-shopper-alicante.jpg",
     alt: "Personal shopper presencial en boutique",
     title: "Personal Shopper Presencial",
     id: "personal-shopper",
@@ -72,7 +73,7 @@ const A_LA_CARTA: Servicio[] = [
 
 const PACKS: Servicio[] = [
   {
-    img: "/img-estilo.jpg",
+    img: "/estilo-personal-coaching-de-imagen.jpg",
     alt: "Experiencia Tu Mejor Versión",
     title: "Tu Mejor Versión",
     id: "tu-mejor-version",
@@ -94,7 +95,7 @@ const PACKS: Servicio[] = [
     text: "Tu imagen habla de ti antes de que digas una palabra. Descubre cómo potenciarla para transmitir seguridad, autenticidad y profesionalidad. A través del coaching de estilo, el Face Shape, el Body Shape y la armocromía, encontraremos los cortes, peinados, accesorios, prendas y colores que mejor reflejan tu personalidad y tus objetivos profesionales. Una experiencia para proyectar confianza, destacar tu esencia y convertir tu imagen en tu mejor carta de presentación. Al finalizar, recibirás una guía personalizada con consejos prácticos para tu día a día profesional.",
   },
   {
-    img: "/img-armario.jpg",
+    img: "/terapia-de-armario-organizacion.jpg",
     alt: "Experiencia Tu Armario Ideal",
     title: "Tu Armario Ideal",
     id: "tu-armario-ideal",
@@ -104,7 +105,7 @@ const PACKS: Servicio[] = [
     text: "Descubrimos tu estilo y morfología, identificamos tu subtono cálido o frío y realizamos una terapia de armario de 4 horas presencial. También trabajamos la organización personalizada de tu armario, la creación de looks combinados con tus prendas, un lookbook exclusivo y un informe con tips para tu día a día.",
   },
   {
-    img: "/img-evento.jpg",
+    img: "/asesoria-de-imagen-para-eventos.jpg",
     alt: "Asesoramiento de imagen para eventos",
     title: "Asesoramiento de Imagen para Eventos",
     id: "eventos",
@@ -113,7 +114,7 @@ const PACKS: Servicio[] = [
     text: "Trabajamos el estilo personal para el evento, body shape para definir el tipo de vestuario, face shape para peinados y accesorios, armocromía para encontrar los tonos de tu look ideal y protocolo según el nivel de formalidad. Como servicios opcionales, puedes añadir peluquería y maquillaje el día del evento, así como personal shopper para encontrar tu look ideal.",
   },
   {
-    img: "/img-bridal.jpg",
+    img: "/bridal-experience-asesoria-de-imagen-novias.jpg",
     alt: "Bridal Experience para novias",
     title: "Bridal Experience",
     id: "bridal-experience",
@@ -147,7 +148,7 @@ function Hero() {
         </div>
         <div className="relative order-1 lg:order-2">
           <img
-            src="/img-session.jpg"
+            src="/armocromia-analisis-de-color-alicante.jpg"
             alt="Sesión de asesoría de imagen personal"
             className="h-72 w-full object-cover sm:h-96 lg:h-full"
           />
@@ -198,6 +199,12 @@ function ServiceRow({ s, i, cta }: { s: Servicio; i: number; cta?: string }) {
 export default function Servicios() {
   return (
     <main>
+      <Seo
+        title="Servicios de Asesoría de Imagen Personal | Barbara Bacelle en Alicante"
+        description="Descubre todos los servicios de asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper."
+        path="/servicios-asesoria-imagen-personal-alicante"
+        image="/armocromia-analisis-de-color-alicante.jpg"
+      />
       <Hero />
 
       <section className="py-20 md:py-24 lg:py-32">
@@ -232,7 +239,7 @@ export default function Servicios() {
       <section id="regala-una-experiencia" className={`py-20 md:py-24 lg:py-32 ${ANCHOR_OFFSET}`}>
         <div className="container-brand grid gap-8 lg:gap-16 lg:grid-cols-2 items-center">
           <Reveal>
-            <img src="/img-regalo.jpg" alt="Tarjeta Regalo de Asesoría de Imagen" loading="lazy" decoding="async" className="aspect-square w-full object-cover rounded-2xl" />
+            <img src="/tarjeta-regalo-asesoria-de-imagen.jpg" alt="Tarjeta Regalo de Asesoría de Imagen" loading="lazy" decoding="async" className="aspect-square w-full object-cover rounded-2xl" />
           </Reveal>
           <Reveal delay={100}>
             <p className="eyebrow mb-4">Experiencia</p>
@@ -269,7 +276,7 @@ export default function Servicios() {
             <div className="mt-8"><a href="/#contacto" className="btn-secondary">Reserva tu experiencia</a></div>
           </Reveal>
           <Reveal delay={100}>
-            <img src="/img-party.jpg" alt="Armonía Party: experiencia grupal de análisis de color" loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover rounded-2xl" />
+            <img src="/armonia-party-analisis-de-color-en-grupo.jpg" alt="Armonía Party: experiencia grupal de análisis de color" loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover rounded-2xl" />
           </Reveal>
         </div>
       </section>

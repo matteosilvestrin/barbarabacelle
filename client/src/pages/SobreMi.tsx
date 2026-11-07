@@ -1,8 +1,15 @@
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
+import { Seo } from "@/components/Seo";
 
 export default function SobreMi() {
   return (
     <main>
+      <Seo
+        title="Barbara Bacelle | Consultora de Imagen Personal en Alicante"
+        description="Conoce a Barbara Bacelle, consultora de imagen consciente con 20 años de experiencia en Alicante. Te acompaño a descubrir tu estilo único y potenciar tu autenticidad."
+        path="/barbara-bacelle-asesoria-imagen-alicante"
+        image="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
+      />
       {/* Hero */}
       <section className="relative">
         <div className="grid lg:grid-cols-2 items-stretch">
@@ -23,7 +30,7 @@ export default function SobreMi() {
           </div>
           <div className="relative order-1 lg:order-2">
             <img
-              src="/hero-barbara-v3.jpg"
+              src="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
               alt="Barbara Bacelle, consultora de imagen consciente"
               className="h-72 w-full object-cover object-top sm:h-96 lg:h-full"
             />
@@ -36,7 +43,7 @@ export default function SobreMi() {
         <div className="container-brand grid gap-10 lg:gap-16 lg:grid-cols-2 items-center">
           <Reveal>
             <img
-              src="/img-session.jpg"
+              src="/armocromia-analisis-de-color-alicante.jpg"
               alt="Barbara Bacelle - Consultora de imagen personal en Alicante"
               loading="lazy" decoding="async"
               className="aspect-[4/5] w-full object-cover rounded-2xl"

@@ -12,7 +12,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <title>Page not found</title>
+      <title>Página no encontrada | Barbara Bacelle</title>
       {/* Unknown URLs answer 200 with this page, so keep it out of search results */}
       <meta name="robots" content="noindex" />
       <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
