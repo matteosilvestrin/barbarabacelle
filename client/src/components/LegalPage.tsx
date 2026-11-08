@@ -30,19 +30,21 @@ export function LegalPage({
       />
       <section className="bg-stone-lightest">
         <div className="container-brand py-16 md:py-20">
-          <Eyebrow>Información legal</Eyebrow>
-          <h1 className="text-4xl md:text-5xl font-semibold leading-[1.08]">
-            {title}
-          </h1>
-          <p className="mt-4 text-sm text-teal-dark/70">
-            Última actualización: {LEGAL.actualizado}
-          </p>
+          <div className="max-w-3xl mx-auto">
+            <Eyebrow>Información legal</Eyebrow>
+            <h1 className="text-4xl md:text-5xl font-semibold leading-[1.08]">
+              {title}
+            </h1>
+            <p className="mt-4 text-sm text-teal-dark/70">
+              Última actualización: {LEGAL.actualizado}
+            </p>
+          </div>
         </div>
       </section>
       <section className="py-14 md:py-20">
         <div className="container-brand">
           <div
-            className="max-w-3xl text-teal-dark/80 leading-8
+            className="max-w-3xl mx-auto text-teal-dark/80 leading-8
             [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:text-teal-dark
             [&_h2:first-child]:mt-0
             [&_h3]:mt-8 [&_h3]:mb-2 [&_h3]:font-sans [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-teal-dark
