@@ -133,9 +133,10 @@ Fatti già completati:
 
 ## Git
 
-- Branch principale: `master`. Il commit `64e6ae7` contiene l'import del progetto ed è allineato con `origin/master`.
-- Remote: `origin` = `git@gitlab.com:cloudgroup2/barbarabacelle.git`.
-- Il push via SSH richiede una chiave autorizzata su GitLab, che non è configurata in `~/.ssh/config`.
+- Branch principale: `master`. Il commit `64e6ae7` contiene l'import del progetto.
+- Remote (dal 9 novembre 2026 il progetto è su GitHub):
+  - `origin` = `git@github.com:matteosilvestrin/barbarabacelle.git` (principale). La chiave `~/.ssh/github_matteosilvestrin_2026` è impostata per `Host github.com` in `~/.ssh/config`, quindi `git push`/`git fetch` funzionano senza opzioni.
+  - `gitlab` = `git@gitlab.com:cloudgroup2/barbarabacelle.git` (vecchio remote, migrato con `git push --mirror`). Richiede la chiave PuTTY via TortoiseGitPlink: `git -c ssh.variant=plink -c core.sshCommand="'C:/Program Files/TortoiseGit/bin/TortoiseGitPlink.exe' -batch -i C:/Users/matte/.ssh/gitlab_key_silver6.ppk" push gitlab master`.
 - Non committare `__MATERIALS/`: contiene uno zip di backup da ~34 MB.
 - Non committare `node_modules/`, `dist/` o `.env*` (già in `.gitignore`).
 - Messaggi di commit: il log esistente mescola italiano e inglese, quindi non c'è una lingua fissa. Il trailer da aggiungere è `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` (il modello usato finora nei commit).
