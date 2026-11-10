@@ -104,3 +104,6 @@ temp/
 *.db
 *.sqlite
 *.sqlite3
+
+# Materiali di lavoro (backup, sorgenti grafiche)
+/__MATERIALS/*

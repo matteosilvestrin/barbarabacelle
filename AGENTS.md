@@ -106,6 +106,9 @@ Todo concordati con il titolare del sito (non ancora implementati, salvo dove in
 
 1. **Form:** il form di contatto in `pages/Home.tsx` e quello della masterclass in `components/site.tsx` sono finti (fanno solo `setSent(true)`). Il server non ha API. Decisione aperta: endpoint `POST /api/contact` in Express con invio email, oppure servizio esterno (Formspree, Google Forms).
 2. **Pagine legali da far verificare** al titolare (o a un consulente) prima della pubblicazione: dati in `client/src/lib/legal.ts`. Quando il form funzionerà, il fornitore scelto va citato nella privacy (sezione destinatari). Se si aggiungono analytics servono banner cookie e aggiornamento di `/politica-de-cookies`.
+3. **Pagine di approfondimento per servizio:** una pagina dedicata per ogni servizio (`/servicios/:slug`, da elencare in `prerenderRoutes`), linkata dalla card in home e dalla sezione in Servicios. Il testo e le keywords per ogni pagina vanno presi da `KNOWLEDGE_BASE.md`; ogni pagina ha il proprio `<Seo>`.
+4. **Shop per clienti e consulenti di imagen:** nuova sezione per l'acquisto di collane e materiale per consulenti di immagine. Decisioni aperte: catalogo (prodotti, prezzi, stock) gestito in codice o in un database, spedizioni, IVA. Per le vendite online in Spagna servono anche le condizioni generali di vendita e l'informazione sul diritto di recesso, da far verificare alla titolare insieme alle pagine legali.
+5. **Pagamenti con Stripe:** integrazione di Stripe Checkout per lo shop e, se la titolare lo vuole, per le prenotazioni dei servizi. Il webhook di conferma va gestito lato server (Express), e le chiavi restano in `.env*` (mai committate). Stripe diventa un nuovo destinatario dei dati: va citato nella privacy, come per il fornitore del form (punto 1).
 
 Fatti già completati:
 - **Consenso privacy nei form**: componente `PrivacyConsent` in `components/site.tsx`, usato nel form contatti di `pages/Home.tsx` e nel popup masterclass. Casella obbligatoria (`required`, il browser blocca l'invio senza spunta) con link a `/politica-de-privacidad` in nuova scheda, più informazione di base RGPD (responsabile, finalità, legittimazione, diritti). **Decisioni del titolare:** email legale `hola@barbarabacelle.es`; data di aggiornamento delle pagine legali 7 novembre 2026.
@@ -137,7 +140,7 @@ Fatti già completati:
 - Remote (dal 9 novembre 2026 il progetto è su GitHub):
   - `origin` = `git@github.com:matteosilvestrin/barbarabacelle.git` (principale). La chiave `~/.ssh/github_matteosilvestrin_2026` è impostata per `Host github.com` in `~/.ssh/config`, quindi `git push`/`git fetch` funzionano senza opzioni.
   - `gitlab` = `git@gitlab.com:cloudgroup2/barbarabacelle.git` (vecchio remote, migrato con `git push --mirror`). Richiede la chiave PuTTY via TortoiseGitPlink: `git -c ssh.variant=plink -c core.sshCommand="'C:/Program Files/TortoiseGit/bin/TortoiseGitPlink.exe' -batch -i C:/Users/matte/.ssh/gitlab_key_silver6.ppk" push gitlab master`.
-- Non committare `__MATERIALS/`: contiene uno zip di backup da ~34 MB.
+- Non committare `__MATERIALS/` (ignorato da `.gitignore` con `/__MATERIALS/*`): materiali di lavoro non usati dal sito, tra cui uno zip di backup da ~34 MB.
 - Non committare `node_modules/`, `dist/` o `.env*` (già in `.gitignore`).
 - Messaggi di commit: il log esistente mescola italiano e inglese, quindi non c'è una lingua fissa. Il trailer da aggiungere è `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` (il modello usato finora nei commit).
 - Committa e pusha solo quando richiesto esplicitamente. Se sei su `master`, valuta un branch dedicato prima di modificare la storia.
