@@ -3,6 +3,7 @@ import fs from "fs";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { contactRouter } from "./contact";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,6 +11,12 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // Dietro un proxy (x-forwarded-*): req.ip è l'IP del client, usato dal limite del form.
+  app.set("trust proxy", 1);
+
+  // Form di contatto (POST /api/contact).
+  app.use(contactRouter);
 
   // Serve static files from dist/public in production
   const staticPath =

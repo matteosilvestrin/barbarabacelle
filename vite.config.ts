@@ -28,6 +28,8 @@ export default defineConfig({
     port: 3000,
     strictPort: false, // Will find next available port if 3000 is busy
     host: true,
+    // In dev i form inviano a /api: lo inoltriamo al server Express (pnpm start o un server su PORT 3001).
+    proxy: { "/api": `http://localhost:${process.env.API_PORT || 3001}` },
     allowedHosts: true, // Allow all hosts for sandbox preview
     fs: {
       strict: true,

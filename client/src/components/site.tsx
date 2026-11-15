@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { X, MessageCircle, Instagram, Youtube } from "lucide-react";
 import { LEGAL, LEGAL_LINKS } from "@/lib/legal";
+import { enviarFormulario } from "@/lib/contact";
 
 /* ---------- Reveal ---------- */
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -31,6 +32,12 @@ const NAV = [
   { href: "/barbara-bacelle-asesoria-imagen-alicante", label: "Sobre mí" },
   { href: "/#contacto", label: "Contacto" },
 ];
+
+// Apre il popup della masterclass da qualsiasi punto del sito (es. voce del menu).
+const OPEN_MASTERCLASS_EVENT = "masterclass:open";
+function openMasterclass() {
+  window.dispatchEvent(new Event(OPEN_MASTERCLASS_EVENT));
+}
 
 // Variante del logo para el header: "Bacelle" en color primary (#0396A6).
 // Generada a partir de logo-barbara-bacelle-asesoria-de-imgen-conciente.svg (paths 7–13).
@@ -171,6 +178,13 @@ export function Header() {
                 {n.label}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={() => { close(); openMasterclass(); }}
+              className={`mt-2 block rounded-xl px-6 py-3 text-2xl font-semibold text-teal-dark transition-colors hover:text-teal sm:text-3xl ${FOCUS_RING}`}
+            >
+              Masterclass
+            </button>
             <a
               href="/#contacto"
               onClick={close}
@@ -213,7 +227,7 @@ export function Footer() {
         </div>
         <div className="text-sm space-y-3">
           <p className="eyebrow !text-white/60 mb-2">Contacto</p>
-          <p><a href="mailto:espaciodeestilo@gmail.com" className="hover:text-teal-lighter transition-colors">espaciodeestilo@gmail.com</a></p>
+          <p><a href="mailto:hola@barbarabacelle.es" className="hover:text-teal-lighter transition-colors">hola@barbarabacelle.es</a></p>
           <p><a href="tel:+34640907062" className="hover:text-teal-lighter transition-colors">+34 640 90 70 62</a></p>
           <p className="text-white/80">Alicante · Online</p>
         </div>
@@ -288,6 +302,19 @@ export function CTASection({
   );
 }
 
+/* ---------- Honeypot anti-spam (form) ---------- */
+// Campo invisibile per le persone: i bot lo riempiono e il server scarta la richiesta. Non rimuoverlo.
+export function HoneypotField() {
+  return (
+    <div aria-hidden="true" className="absolute -left-[9999px] h-0 overflow-hidden">
+      <label>
+        No rellenar
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </label>
+    </div>
+  );
+}
+
 /* ---------- Consenso privacy (form) ---------- */
 // Casella obbligatoria + informazione di base RGPD (primo livello) sotto ai form.
 // Il link apre la privacy in una nuova scheda per non perdere i dati già scritti.
@@ -327,11 +354,31 @@ export function PrivacyConsent({ id, finalidad }: { id: string; finalidad: strin
 export function MasterclassPopup() {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSending(true);
+    setError(false);
+    const ok = await enviarFormulario(e.currentTarget, "masterclass");
+    setSending(false);
+    if (ok) setDone(true);
+    else setError(true);
+  }
 
   useEffect(() => {
-    if (sessionStorage.getItem("mc_popup_shown")) return;
-    const t = setTimeout(() => { setOpen(true); sessionStorage.setItem("mc_popup_shown", "1"); }, 6000);
-    return () => clearTimeout(t);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    // Apertura manuale (menu): annulla l'apertura automatica programmata.
+    const onOpen = () => { clearTimeout(timer); setOpen(true); };
+    window.addEventListener(OPEN_MASTERCLASS_EVENT, onOpen);
+    if (!sessionStorage.getItem("mc_popup_shown")) {
+      timer = setTimeout(() => { setOpen(true); sessionStorage.setItem("mc_popup_shown", "1"); }, 6000);
+    }
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener(OPEN_MASTERCLASS_EVENT, onOpen);
+    };
   }, []);
 
   if (!open) return null;
@@ -356,17 +403,29 @@ export function MasterclassPopup() {
             <p className="mt-4 text-sm text-teal-dark/80 leading-relaxed">
               Suscríbete y descubre cada semana claves de armocromía, estilo y silueta para sentirte segura con tu imagen.
             </p>
-            <form className="mt-6 space-y-4" onSubmit={(e) => { e.preventDefault(); setDone(true); }}>
+            <form className="relative mt-6 space-y-4" onSubmit={onSubmit}>
+              <HoneypotField />
               <div>
                 <label htmlFor="popup-nombre" className="block text-sm font-medium text-teal-dark mb-1">Nombre</label>
-                <input id="popup-nombre" required placeholder="Tu nombre" className="input-brand" />
+                <input id="popup-nombre" name="nombre" required placeholder="Tu nombre" className="input-brand" />
               </div>
               <div>
                 <label htmlFor="popup-email" className="block text-sm font-medium text-teal-dark mb-1">Email</label>
-                <input id="popup-email" type="email" required placeholder="tu@email.com" className="input-brand" />
+                <input id="popup-email" name="email" type="email" required placeholder="tu@email.com" className="input-brand" />
+              </div>
+              <div>
+                <label htmlFor="popup-ciudad" className="block text-sm font-medium text-teal-dark mb-1">Ciudad <span className="font-normal text-teal-dark/60">(opcional)</span></label>
+                <input id="popup-ciudad" name="ciudad" placeholder="Tu ciudad" className="input-brand" />
               </div>
               <PrivacyConsent id="popup-privacidad" finalidad="enviarte la masterclass y comunicaciones sobre imagen y estilo" />
-              <button type="submit" className="btn-primary w-full">Quiero suscribirme</button>
+              {error && (
+                <p role="alert" className="text-sm text-red-700">
+                  No se ha podido enviar. Inténtalo de nuevo en unos minutos.
+                </p>
+              )}
+              <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-60">
+                {sending ? "Enviando…" : "Quiero suscribirme"}
+              </button>
             </form>
           </>
         )}

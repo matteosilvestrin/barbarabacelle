@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Reveal, Eyebrow, CTASection, PrivacyConsent } from "@/components/site";
+import { Reveal, Eyebrow, CTASection, PrivacyConsent, HoneypotField } from "@/components/site";
+import { enviarFormulario } from "@/lib/contact";
 import { Seo } from "@/components/Seo";
 import { Check, ChevronRight } from "lucide-react";
 
@@ -241,6 +242,19 @@ function Testimonios() {
 
 function Contacto() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSending(true);
+    setError(false);
+    const ok = await enviarFormulario(e.currentTarget, "contacto");
+    setSending(false);
+    if (ok) setSent(true);
+    else setError(true);
+  }
+
   return (
     <section id="contacto" className="py-20 md:py-24 lg:py-32 bg-teal-dark text-white scroll-mt-20">
       <div className="container-brand grid gap-12 lg:gap-16 lg:grid-cols-2">
@@ -253,7 +267,7 @@ function Contacto() {
             Te responderé personalmente para orientarte según tus objetivos y momento.
           </p>
           <div className="mt-10 space-y-3 text-white/90">
-            <p><a href="mailto:espaciodeestilo@gmail.com" className="hover:text-teal-lighter transition-colors">espaciodeestilo@gmail.com</a></p>
+            <p><a href="mailto:hola@barbarabacelle.es" className="hover:text-teal-lighter transition-colors">hola@barbarabacelle.es</a></p>
             <p><a href="tel:+34640907062" className="hover:text-teal-lighter transition-colors">+34 640 90 70 62</a></p>
             <p className="text-white/70">Online y presencial en Alicante</p>
           </div>
@@ -265,21 +279,39 @@ function Contacto() {
               <p className="mt-3 text-white/80">He recibido tu petición y te responderé personalmente muy pronto.</p>
             </div>
           ) : (
-            <form className="rounded-2xl bg-white p-6 md:p-10 space-y-5" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+            <form className="relative rounded-2xl bg-white p-6 md:p-10 space-y-5" onSubmit={onSubmit}>
+              <HoneypotField />
               <div>
                 <label htmlFor="c-nombre" className="block text-sm font-medium text-teal-dark mb-1">Nombre</label>
-                <input id="c-nombre" required placeholder="Tu nombre" className="input-brand" />
+                <input id="c-nombre" name="nombre" required placeholder="Tu nombre" className="input-brand" />
               </div>
               <div>
                 <label htmlFor="c-email" className="block text-sm font-medium text-teal-dark mb-1">Email</label>
-                <input id="c-email" type="email" required placeholder="tu@email.com" className="input-brand" />
+                <input id="c-email" name="email" type="email" required placeholder="tu@email.com" className="input-brand" />
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="c-ciudad" className="block text-sm font-medium text-teal-dark mb-1">Ciudad <span className="font-normal text-teal-dark/60">(opcional)</span></label>
+                  <input id="c-ciudad" name="ciudad" placeholder="Tu ciudad" className="input-brand" />
+                </div>
+                <div>
+                  <label htmlFor="c-telefono" className="block text-sm font-medium text-teal-dark mb-1">Teléfono <span className="font-normal text-teal-dark/60">(opcional)</span></label>
+                  <input id="c-telefono" name="telefono" type="tel" placeholder="+34 600 000 000" className="input-brand" />
+                </div>
               </div>
               <div>
                 <label htmlFor="c-mensaje" className="block text-sm font-medium text-teal-dark mb-1">Mensaje</label>
-                <textarea id="c-mensaje" required rows={5} placeholder="Cuéntame qué te gustaría mejorar o conseguir con tu imagen…" className="input-brand !min-h-0 py-3 resize-none" />
+                <textarea id="c-mensaje" name="mensaje" required rows={5} placeholder="Cuéntame qué te gustaría mejorar o conseguir con tu imagen…" className="input-brand !min-h-0 py-3 resize-none" />
               </div>
               <PrivacyConsent id="c-privacidad" finalidad="responder a tu solicitud de información" />
-              <button type="submit" className="btn-primary w-full">Envía mi petición</button>
+              {error && (
+                <p role="alert" className="text-sm text-red-700">
+                  No se ha podido enviar tu petición. Inténtalo de nuevo en unos minutos o escríbeme a hola@barbarabacelle.es.
+                </p>
+              )}
+              <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-60">
+                {sending ? "Enviando…" : "Envía mi petición"}
+              </button>
             </form>
           )}
         </Reveal>

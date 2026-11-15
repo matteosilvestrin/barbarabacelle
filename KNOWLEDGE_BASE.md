@@ -225,7 +225,7 @@ Base de contenidos para reconstruir el sitio de Espacio de Estilo. Las reglas vi
 
 - Titolo: Cuéntame qué necesitas y te ayudo a elegir el mejor punto de partida
 - Testo: Te responderé personalmente para orientarte según tus objetivos y momento.
-- Email: espaciodeestilo@gmail.com
+- Email: hola@barbarabacelle.es
 - Telefono: +34 640 90 70 62
 - Instagram: @espaciodeestilo
 - Località: Online y presencial en Alicante

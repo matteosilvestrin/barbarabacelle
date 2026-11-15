@@ -8,7 +8,7 @@ export default function SobreMi() {
         title="Barbara Bacelle | Consultora de Imagen Personal en Alicante"
         description="Conoce a Barbara Bacelle, consultora de imagen consciente con 20 años de experiencia en Alicante. Te acompaño a descubrir tu estilo único y potenciar tu autenticidad."
         path="/barbara-bacelle-asesoria-imagen-alicante"
-        image="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
+        image="/barbara-bacelle-retrato-profesional-blazer-blanco-turquesa.jpg"
       />
       {/* Hero */}
       <section className="relative">
@@ -30,9 +30,9 @@ export default function SobreMi() {
           </div>
           <div className="relative order-1 lg:order-2">
             <img
-              src="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
+              src="/barbara-bacelle-retrato-profesional-blazer-blanco-turquesa.jpg"
               alt="Barbara Bacelle, consultora de imagen consciente"
-              className="h-72 w-full object-cover object-top sm:h-96 lg:h-full"
+              className="h-[440px] min-h-[440px] w-full object-cover object-[50%_15%] sm:h-[560px] sm:min-h-[560px] lg:h-full lg:min-h-[640px]"
             />
           </div>
         </div>
