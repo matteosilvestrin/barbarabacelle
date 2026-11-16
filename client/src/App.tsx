@@ -63,7 +63,11 @@ function Router() {
       <Route path={"/404"}>
         <Layout><NotFound /></Layout>
       </Route>
-      <Route component={NotFound} />
+      {/* Stesso albero di /404: il server serve l'HTML prerenderizzato di /404
+          per ogni URL sconosciuto, e l'idratazione deve trovare lo stesso layout. */}
+      <Route>
+        <Layout><NotFound /></Layout>
+      </Route>
     </Switch>
   );
 }

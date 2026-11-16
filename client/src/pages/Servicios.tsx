@@ -1,6 +1,9 @@
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
-import { Seo } from "@/components/Seo";
+import { Seo, JsonLd } from "@/components/Seo";
+import { serviciosSchema } from "@/lib/schema";
 import { BookOpen, Clock, MapPin, type LucideIcon } from "lucide-react";
+
+const PATH = "/servicios-asesoria-imagen-personal-alicante";
 
 type Servicio = {
   id: string;
@@ -200,11 +203,12 @@ export default function Servicios() {
   return (
     <main>
       <Seo
-        title="Servicios de Asesoría de Imagen Personal | Barbara Bacelle en Alicante"
-        description="Descubre todos los servicios de asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper."
-        path="/servicios-asesoria-imagen-personal-alicante"
+        title="Servicios de Asesoría de Imagen en Alicante | Barbara Bacelle"
+        description="Servicios de asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper."
+        path={PATH}
         image="/armocromia-analisis-de-color-alicante.jpg"
       />
+      <JsonLd data={serviciosSchema(PATH, [...A_LA_CARTA, ...PACKS])} />
       <Hero />
 
       <section className="py-20 md:py-24 lg:py-32">

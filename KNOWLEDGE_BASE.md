@@ -55,7 +55,7 @@ Base de contenidos para reconstruir el sitio de Espacio de Estilo. Las reglas vi
 ### SEO
 
 - Title: Bárbara Bacelle | Asesoría de Imagen Personal en Alicante
-- Description: Asesoría de imagen personal en Alicante. Bárbara Bacelle te ayuda a descubrir tu estilo auténtico con armocromía, análisis de silueta y acompañamiento personalizado.
+- Description: Asesoría de imagen personal en Alicante. Te ayudo a descubrir tu estilo auténtico con armocromía, análisis de silueta y acompañamiento personalizado.
 - Keywords: asesoría de imagen personal Alicante, consultora de imagen Alicante, estilo consciente, armocromía Alicante, análisis de color.
 - Imagen social: assets/imgs/barbara-bacelle-consulente-immagine-hero.jpg
 
@@ -103,8 +103,8 @@ Base de contenidos para reconstruir el sitio de Espacio de Estilo. Las reglas vi
 
 ### SEO
 
-- Title: Servicios de Asesoría de Imagen Personal | Bárbara Bacelle en Alicante
-- Description: Descubre todos los servicios de asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper.
+- Title: Servicios de Asesoría de Imagen en Alicante | Bárbara Bacelle
+- Description: Servicios de asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper.
 - Keywords: servicios asesoría de imagen Alicante, armocromía Alicante, personal shopper Alicante, terapia de armario Alicante, análisis de color personalizado.
 - Imagen social: assets/imgs/barbara-bacelle-consulente-immagine-hero.jpg
 
@@ -197,7 +197,7 @@ Base de contenidos para reconstruir el sitio de Espacio de Estilo. Las reglas vi
 ### SEO
 
 - Title: Bárbara Bacelle | Consultora de Imagen Personal en Alicante
-- Description: Conoce a Bárbara Bacelle, consultora de imagen consciente con 20 años de experiencia en Alicante. Te acompaño a descubrir tu estilo único y potenciar tu autenticidad.
+- Description: Conoce a Bárbara Bacelle, consultora de imagen consciente en Alicante con 20 años de experiencia. Te acompaño a descubrir tu estilo único y auténtico.
 - Keywords: consultora de imagen Alicante, Bárbara Bacelle, asesora de imagen personal Alicante, armocromía Alicante.
 - Immagine social: assets/imgs/barbara-bacelle-consulente-immagine-profilo.jpg
 

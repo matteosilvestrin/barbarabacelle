@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Reveal, Eyebrow, CTASection, PrivacyConsent, HoneypotField } from "@/components/site";
 import { enviarFormulario } from "@/lib/contact";
-import { Seo } from "@/components/Seo";
+import { Seo, JsonLd } from "@/components/Seo";
+import { homeSchema } from "@/lib/schema";
 import { Check, ChevronRight } from "lucide-react";
 
 const SERVICIOS = [
@@ -325,10 +326,11 @@ export default function Home() {
     <main>
       <Seo
         title="Barbara Bacelle | Asesoría de Imagen Personal en Alicante"
-        description="Asesoría de imagen personal en Alicante. Barbara Bacelle te ayuda a descubrir tu estilo auténtico con armocromía, análisis de silueta y acompañamiento personalizado."
+        description="Asesoría de imagen personal en Alicante. Te ayudo a descubrir tu estilo auténtico con armocromía, análisis de silueta y acompañamiento personalizado."
         path="/"
         image="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
       />
+      <JsonLd data={homeSchema} />
       <Hero />
       <Unica />
       <Valores />

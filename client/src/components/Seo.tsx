@@ -10,6 +10,13 @@ type SeoProps = {
   image: string;
 };
 
+/** Dati strutturati schema.org: <script type="application/ld+json"> nel body (Google lo legge anche lì). */
+export function JsonLd({ data }: { data: object }) {
+  // "<" escapato: un testo con "</script>" non può chiudere il tag.
+  const json = JSON.stringify(data).replace(/</g, "\\u003c");
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
+}
+
 // Meta tag per pagina. React 19 li porta nel <head> e il prerender sostituisce
 // quelli di default di client/index.html (stesso name/property/rel).
 // Canonical, og:url e og:image usano URL assoluti.

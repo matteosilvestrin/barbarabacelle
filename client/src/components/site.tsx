@@ -209,7 +209,7 @@ function TikTokIcon({ size = 16, ...props }: React.SVGProps<SVGSVGElement> & { s
   );
 }
 
-const SOCIAL = [
+export const SOCIAL = [
   { name: "Instagram", href: "https://www.instagram.com/espaciodeestilo/", handle: "@espaciodeestilo", Icon: Instagram },
   { name: "TikTok", href: "https://www.tiktok.com/@espaciodeestilo", handle: "@espaciodeestilo", Icon: TikTokIcon },
   { name: "YouTube", href: "https://www.youtube.com/@espaciodeestilo4404", handle: "@espaciodeestilo4404", Icon: Youtube },

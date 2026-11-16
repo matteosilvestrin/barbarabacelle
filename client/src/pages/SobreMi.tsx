@@ -1,15 +1,17 @@
 import { Reveal, Eyebrow, CTASection } from "@/components/site";
-import { Seo } from "@/components/Seo";
+import { Seo, JsonLd } from "@/components/Seo";
+import { sobreMiSchema } from "@/lib/schema";
 
 export default function SobreMi() {
   return (
     <main>
       <Seo
         title="Barbara Bacelle | Consultora de Imagen Personal en Alicante"
-        description="Conoce a Barbara Bacelle, consultora de imagen consciente con 20 años de experiencia en Alicante. Te acompaño a descubrir tu estilo único y potenciar tu autenticidad."
+        description="Conoce a Barbara Bacelle, consultora de imagen consciente en Alicante con 20 años de experiencia. Te acompaño a descubrir tu estilo único y auténtico."
         path="/barbara-bacelle-asesoria-imagen-alicante"
         image="/barbara-bacelle-retrato-profesional-blazer-blanco-turquesa.jpg"
       />
+      <JsonLd data={sobreMiSchema} />
       {/* Hero */}
       <section className="relative">
         <div className="grid lg:grid-cols-2 items-stretch">
