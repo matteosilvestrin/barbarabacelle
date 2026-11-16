@@ -24,8 +24,9 @@ Sito web di **Bárbara Bacelle**, consulente di imagen personal ad Alicante (con
 ```bash
 pnpm install          # dipendenze (lockfile: pnpm-lock.yaml)
 pnpm dev              # vite --host, dev server su http://localhost:3000
+pnpm dev:api          # tsx watch server/index.ts, API Express per i form (porta PORT, default 3000 -> usare PORT=3001)
 pnpm build            # vite build + prerender + esbuild del server -> dist/
-pnpm start            # cross-env NODE_ENV=production node dist/index.js (funziona anche su Windows)
+pnpm start            # cross-env NODE_ENV=production node --env-file-if-exists=.env dist/index.js (funziona anche su Windows)
 pnpm check            # tsc --noEmit
 pnpm format           # prettier --write .
 ```
@@ -104,7 +105,7 @@ Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`
 
 Todo concordati con il titolare del sito (non ancora implementati, salvo dove indicato):
 
-1. **Form:** il form di contatto in `pages/Home.tsx` e quello della masterclass in `components/site.tsx` sono finti (fanno solo `setSent(true)`). Il server non ha API. Decisione aperta: endpoint `POST /api/contact` in Express con invio email, oppure servizio esterno (Formspree, Google Forms).
+1. **Form:** implementati (commit `614b2ce`). Il form di contatto in `pages/Home.tsx` e quello della masterclass in `components/site.tsx` inviano `POST /api/contact` (`server/contact.ts`) con validazione zod, honeypot `website`, rate limit per IP e invio SMTP via nodemailer; i template sono in `server/email/`. Configurazione in `.env` (vedi `.env.example`): `pnpm start` e `pnpm dev:api` la caricano con `--env-file-if-exists=.env`, e le variabili già presenti nell'ambiente hanno precedenza sul file. Senza configurazione l'API risponde `503 not_configured`. In locale i form funzionano solo con `pnpm dev` + `pnpm dev:api` (la porta di default del server Express va messa a 3001, perché Vite fa proxy `/api` lì).
 2. **Pagine legali da far verificare** al titolare (o a un consulente) prima della pubblicazione: dati in `client/src/lib/legal.ts`. Quando il form funzionerà, il fornitore scelto va citato nella privacy (sezione destinatari). Se si aggiungono analytics servono banner cookie e aggiornamento di `/politica-de-cookies`.
 3. **Pagine di approfondimento per servizio:** una pagina dedicata per ogni servizio (`/servicios/:slug`, da elencare in `prerenderRoutes`), linkata dalla card in home e dalla sezione in Servicios. Il testo e le keywords per ogni pagina vanno presi da `KNOWLEDGE_BASE.md`; ogni pagina ha il proprio `<Seo>`.
 4. **Shop per clienti e consulenti di imagen:** nuova sezione per l'acquisto di collane e materiale per consulenti di immagine. Decisioni aperte: catalogo (prodotti, prezzi, stock) gestito in codice o in un database, spedizioni, IVA. Per le vendite online in Spagna servono anche le condizioni generali di vendita e l'informazione sul diritto di recesso, da far verificare alla titolare insieme alle pagine legali.

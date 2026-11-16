@@ -107,3 +107,6 @@ temp/
 
 # Materiali di lavoro (backup, sorgenti grafiche)
 /__MATERIALS/*
+
+# Output temporaneo dell'MCP Playwright (snapshot, screenshot, log console)
+.playwright-mcp/
