@@ -1,0 +1,2 @@
+# Script shell eseguiti sul server Linux (Plesk): sempre LF
+*.sh text eol=lf
