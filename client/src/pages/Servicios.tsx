@@ -82,7 +82,7 @@ const PACKS: Servicio[] = [
     id: "tu-mejor-version",
     modalidad: "Online o presencial",
     duracion: "3 sesiones",
-    incluye: "Dossier",
+    incluye: "Dossier personalizado",
     text: "Un viaje para reconectar contigo, descubrir tu esencia y potenciar tu belleza natural. A través del coaching de estilo, el Face Shape, el Body Shape y la armocromía, descubriremos los cortes, peinados, accesorios, prendas y colores que mejor armonizan contigo. Una experiencia para ganar confianza, realzar lo que te hace única y expresar tu personalidad a través de tu imagen. Al finalizar, recibirás una guía personalizada con consejos prácticos para tu día a día.",
   },
   {
@@ -94,7 +94,7 @@ const PACKS: Servicio[] = [
     id: "tu-imagen-tu-marca",
     modalidad: "Online o presencial",
     duracion: "3 sesiones",
-    incluye: "Dossier",
+    incluye: "Dossier personalizado",
     text: "Tu imagen habla de ti antes de que digas una palabra. Descubre cómo potenciarla para transmitir seguridad, autenticidad y profesionalidad. A través del coaching de estilo, el Face Shape, el Body Shape y la armocromía, encontraremos los cortes, peinados, accesorios, prendas y colores que mejor reflejan tu personalidad y tus objetivos profesionales. Una experiencia para proyectar confianza, destacar tu esencia y convertir tu imagen en tu mejor carta de presentación. Al finalizar, recibirás una guía personalizada con consejos prácticos para tu día a día profesional.",
   },
   {
@@ -104,7 +104,7 @@ const PACKS: Servicio[] = [
     id: "tu-armario-ideal",
     modalidad: "Presencial",
     duracion: "1 sesión de 4 horas presencial",
-    incluye: "Lookbook",
+    incluye: "Lookbook personalizado",
     text: "Descubrimos tu estilo y morfología, identificamos tu subtono cálido o frío y realizamos una terapia de armario de 4 horas presencial. También trabajamos la organización personalizada de tu armario, la creación de looks combinados con tus prendas, un lookbook exclusivo y un informe con tips para tu día a día.",
   },
   {
