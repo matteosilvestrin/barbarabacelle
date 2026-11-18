@@ -10,6 +10,7 @@ import AvisoLegal from "./pages/AvisoLegal";
 import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
 import PoliticaCookies from "./pages/PoliticaCookies";
 import { Header, Footer, WhatsAppButton, MasterclassPopup } from "./components/site";
+import { CookieBanner } from "./components/CookieBanner";
 
 import { useEffect } from "react";
 
@@ -35,6 +36,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <Footer />
       <WhatsAppButton />
       <MasterclassPopup />
+      <CookieBanner />
     </div>
   );
 }

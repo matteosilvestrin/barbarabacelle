@@ -12,7 +12,7 @@ export const LEGAL = {
   actividad: "Asesoría de imagen personal",
   dominio: "barbarabacelle.es",
   // Data fissa (niente new Date() nel render: il sito è prerenderizzato).
-  actualizado: "7 de noviembre de 2026",
+  actualizado: "18 de noviembre de 2026",
 };
 
 export const LEGAL_LINKS = [

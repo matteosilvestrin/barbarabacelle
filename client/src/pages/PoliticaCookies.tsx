@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { LegalPage } from "@/components/LegalPage";
 import { LEGAL } from "@/lib/legal";
+import { GA4_ID, openCookieSettings } from "@/lib/analytics";
 
 export default function PoliticaCookies() {
   return (
@@ -20,16 +21,34 @@ export default function PoliticaCookies() {
 
       <h2>2. Qué cookies utiliza este sitio web</h2>
       <p>
-        {LEGAL.dominio} <strong>no utiliza cookies de análisis, de publicidad ni de seguimiento</strong>,
-        ni propias ni de terceros. Solo utiliza el siguiente elemento técnico, necesario para el
-        funcionamiento del sitio web y exento de consentimiento según el artículo 22.2 de la LSSI-CE:
+        {LEGAL.dominio} utiliza los siguientes elementos. Los técnicos son necesarios para el
+        funcionamiento del sitio web y están exentos de consentimiento según el artículo 22.2 de la
+        LSSI-CE.
       </p>
       <ul>
         <li><strong>Nombre:</strong> mc_popup_shown</li>
         <li><strong>Tipo:</strong> técnica y propia (almacenamiento de sesión del navegador).</li>
         <li><strong>Finalidad:</strong> recordar que ya has visto la ventana de la masterclass para no volver a mostrarla.</li>
         <li><strong>Duración:</strong> hasta que cierras la pestaña o el navegador.</li>
+        <li><strong>Nombre:</strong> cookie_consent</li>
+        <li><strong>Tipo:</strong> técnica y propia (almacenamiento local del navegador).</li>
+        <li><strong>Finalidad:</strong> guardar si has aceptado o rechazado las cookies de análisis, para no volver a preguntártelo en cada visita.</li>
+        <li><strong>Duración:</strong> hasta que borres los datos del sitio en tu navegador.</li>
       </ul>
+      {GA4_ID && (
+        <>
+          <p>
+            <strong>Cookies de análisis (Google Analytics).</strong> Solo se instalan si aceptas
+            en el aviso de cookies. Sirven para saber, de forma agregada, qué páginas se visitan y
+            cómo se navega por el sitio, y así mejorarlo. Si las rechazas, no se instalan.
+          </p>
+          <ul>
+            <li><strong>Nombres:</strong> _ga y _ga_{GA4_ID.replace(/^G-/, "")}</li>
+            <li><strong>Tipo:</strong> de análisis, de terceros (Google).</li>
+            <li><strong>Duración:</strong> hasta 2 años.</li>
+          </ul>
+        </>
+      )}
 
       <h2>3. Servicios y enlaces de terceros</h2>
       <ul>
@@ -60,12 +79,26 @@ export default function PoliticaCookies() {
         Si bloqueas el almacenamiento técnico, la ventana de la masterclass podría volver a aparecer
         en cada página, pero el resto del sitio web seguirá funcionando.
       </p>
+      {GA4_ID && (
+        <>
+          <p>
+            También puedes cambiar en cualquier momento tu elección sobre las cookies de análisis:
+          </p>
+          <button
+            type="button"
+            onClick={openCookieSettings}
+            className="inline-flex items-center rounded-md border border-teal-dark px-4 py-2 text-sm font-medium text-teal-dark hover:bg-teal-lightest"
+          >
+            Cambiar mi elección
+          </button>
+        </>
+      )}
 
       <h2>5. Cambios en esta política</h2>
       <p>
-        Si en el futuro incorporamos herramientas de análisis o publicidad, actualizaremos esta
-        política y te pediremos tu consentimiento antes de instalar cookies no necesarias. Para más
-        información sobre el tratamiento de tus datos, consulta la{" "}
+        Si incorporamos nuevas herramientas o cambiamos las existentes, actualizaremos esta política
+        y, cuando sea necesario, te pediremos tu consentimiento antes de instalar cookies no
+        necesarias. Para más información sobre el tratamiento de tus datos, consulta la{" "}
         <Link href="/politica-de-privacidad">Política de privacidad</Link>.
       </p>
     </LegalPage>

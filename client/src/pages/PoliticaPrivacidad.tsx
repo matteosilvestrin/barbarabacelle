@@ -32,6 +32,7 @@ export default function PoliticaPrivacidad() {
         <li><strong>Datos de contacto:</strong> email, teléfono y, si contratas un servicio presencial, dirección postal.</li>
         <li><strong>Contenido de tus mensajes:</strong> lo que nos cuentas en el formulario, por email o por WhatsApp sobre tus objetivos y el servicio que te interesa.</li>
         <li><strong>Datos de navegación:</strong> dirección IP, tipo de navegador y dispositivo, y páginas visitadas, que el servidor registra por motivos técnicos y de seguridad.</li>
+        <li><strong>Datos de uso (solo si aceptas las cookies de análisis):</strong> páginas visitadas, tiempo de visita, origen de la visita, país y tipo de dispositivo, recogidos por Google Analytics de forma agregada.</li>
       </ul>
       <p>
         No necesitamos datos especialmente protegidos. Te pedimos que no los incluyas en tus mensajes.
@@ -60,6 +61,10 @@ export default function PoliticaPrivacidad() {
             <td>Tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento.</td>
           </tr>
           <tr>
+            <td>Medir de forma agregada las visitas al sitio web para mejorarlo (Google Analytics).</td>
+            <td>Tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento desde la Política de cookies.</td>
+          </tr>
+          <tr>
             <td>Garantizar la seguridad del sitio web y prevenir abusos o fraudes.</td>
             <td>Interés legítimo (art. 6.1.f RGPD).</td>
           </tr>
@@ -73,6 +78,7 @@ export default function PoliticaPrivacidad() {
         <li><strong>Clientas y clientes:</strong> mientras dure la relación y, después, durante los plazos legales: 4 años (Ley General Tributaria), 5 años (art. 1964 del Código Civil) y 6 años para facturas y documentación contable (art. 30 del Código de Comercio).</li>
         <li><strong>Comunicaciones y masterclass:</strong> hasta que retires tu consentimiento o te des de baja.</li>
         <li><strong>Registros técnicos del servidor:</strong> el tiempo mínimo necesario por motivos de seguridad.</li>
+        <li><strong>Datos de Google Analytics:</strong> 14 meses, según la configuración de conservación de la propiedad de Google Analytics.</li>
       </ul>
 
       <h2>5. A quién comunicamos tus datos</h2>
@@ -90,6 +96,11 @@ export default function PoliticaPrivacidad() {
         Además, si nos escribes por WhatsApp, tus datos se tratan también conforme a la política de
         privacidad de WhatsApp (Meta). El sitio web carga sus tipografías desde Google Fonts, lo que
         implica que tu dirección IP se comunica a Google.
+      </p>
+      <p>
+        Si aceptas las cookies de análisis, Google (Google Analytics) trata los datos de uso indicados en
+        el apartado 2 como proveedor de medición. Google no los utiliza para perfilar a las personas
+        que visitan este sitio web.
       </p>
 
       <h2>6. Transferencias internacionales</h2>

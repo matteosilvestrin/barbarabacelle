@@ -35,6 +35,8 @@ pnpm format           # prettier --write .
 
 Il server di produzione ascolta sulla porta `PORT` (default 3000).
 
+**Variabili di build:** `GA4_ID` (ID di misurazione Google Analytics, es. `G-XXXXXXXXXX`) è letto da `vite.config.ts` durante `pnpm build` e iniettato nel client con `define`: non è un valore a runtime. Va messo nel `.env` locale e nel `.env` (o nell'ambiente) del server Plesk **prima** del deploy, perché il build avviene lì (`git-auto-deploy.sh`). Se cambia, va rifatto il build. Vuoto = nessun analytics e nessun banner.
+
 ## Struttura
 
 ```
@@ -51,8 +53,10 @@ client/
       site.tsx          # Header, Footer, WhatsAppButton, MasterclassPopup, Reveal, Eyebrow, CTASection
       Map.tsx           # MapView per Google Maps (non usato dalle pagine attuali)
       ErrorBoundary.tsx
+      CookieBanner.tsx  # banner ACEPTAR / RECHAZAR per Google Analytics (montato in Layout, App.tsx)
       ui/               # componenti shadcn/ui generati
     contexts/, hooks/, lib/
+      analytics.ts      # GA4_ID (da define), consenso in localStorage, caricamento di gtag.js
 server/
   index.ts              # Express: file statici da dist/public, sitemap.xml, robots.txt, 404 per URL sconosciuti
 scripts/
@@ -91,6 +95,8 @@ Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`
 
 **Route e 404:** ogni route deve essere prerenderizzata. Il server risponde HTTP 404 con l'HTML di `/404` a ogni URL senza pagina in `dist/public`, quindi una route solo client (non prerenderizzata) risulterebbe 404. La route catch-all di `App.tsx` usa lo stesso `Layout` di `/404`, così l'idratazione combacia.
 
+**Analytics e consenso:** Google Analytics si carica **solo dopo** "ACEPTAR" nel banner (`lib/analytics.ts`, `components/CookieBanner.tsx`). Non inserire script di tracciamento nell'HTML statico, in `client/index.html` o in `<head>` di React: passa sempre da `loadAnalytics()`/`setConsent()`. La scelta è salvata in localStorage con chiave `cookie_consent` (`accepted` | `rejected`), con try/catch. Se aggiungi un altro strumento di terze parti, va sotto lo stesso consenso e va dichiarato in `/politica-de-cookies` e `/politica-de-privacidad`.
+
 **Link:** non annidare `<a>` dentro un `Link` di wouter, passa i children direttamente.
 
 **Select:** ogni `<Select.Item>` deve avere un `value` non vuoto.
@@ -108,7 +114,7 @@ Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`
 Todo concordati con il titolare del sito (non ancora implementati, salvo dove indicato):
 
 1. **Form:** implementati (commit `614b2ce`). Il form di contatto in `pages/Home.tsx` e quello della masterclass in `components/site.tsx` inviano `POST /api/contact` (`server/contact.ts`) con validazione zod, honeypot `website`, rate limit per IP e invio SMTP via nodemailer; i template sono in `server/email/`. Configurazione in `.env` (vedi `.env.example`): `pnpm start` e `pnpm dev:api` la caricano con `--env-file-if-exists=.env`, e le variabili già presenti nell'ambiente hanno precedenza sul file. Senza configurazione l'API risponde `503 not_configured`. In locale i form funzionano solo con `pnpm dev` + `pnpm dev:api` (la porta di default del server Express va messa a 3001, perché Vite fa proxy `/api` lì).
-2. **Pagine legali da far verificare** al titolare (o a un consulente) prima della pubblicazione: dati in `client/src/lib/legal.ts`. Quando il form funzionerà, il fornitore scelto va citato nella privacy (sezione destinatari). Se si aggiungono analytics servono banner cookie e aggiornamento di `/politica-de-cookies`.
+2. **Pagine legali da far verificare** al titolare (o a un consulente) prima della pubblicazione: dati in `client/src/lib/legal.ts`. Quando il form funzionerà, il fornitore scelto va citato nella privacy (sezione destinatari). Analytics e banner cookie sono implementati (vedi "Fatti già completati"). Da confermare dal titolare: testi del banner e delle pagine legali, conservazione dei dati GA (14 mesi, da impostare anche nella proprietà GA4).
 3. **Pagine di approfondimento per servizio:** una pagina dedicata per ogni servizio (`/servicios/:slug`, da elencare in `prerenderRoutes`), linkata dalla card in home e dalla sezione in Servicios. Il testo e le keywords per ogni pagina vanno presi da `KNOWLEDGE_BASE.md`; ogni pagina ha il proprio `<Seo>`.
 4. **Shop per clienti e consulenti di imagen:** nuova sezione per l'acquisto di collane e materiale per consulenti di immagine. Decisioni aperte: catalogo (prodotti, prezzi, stock) gestito in codice o in un database, spedizioni, IVA. Per le vendite online in Spagna servono anche le condizioni generali di vendita e l'informazione sul diritto di recesso, da far verificare alla titolare insieme alle pagine legali.
 5. **Pagamenti con Stripe:** integrazione di Stripe Checkout per lo shop e, se la titolare lo vuole, per le prenotazioni dei servizi. Il webhook di conferma va gestito lato server (Express), e le chiavi restano in `.env*` (mai committate). Stripe diventa un nuovo destinatario dei dati: va citato nella privacy, come per il fornitore del form (punto 1).
@@ -116,7 +122,8 @@ Todo concordati con il titolare del sito (non ancora implementati, salvo dove in
 
 Fatti già completati:
 - **Consenso privacy nei form**: componente `PrivacyConsent` in `components/site.tsx`, usato nel form contatti di `pages/Home.tsx` e nel popup masterclass. Casella obbligatoria (`required`, il browser blocca l'invio senza spunta) con link a `/politica-de-privacidad` in nuova scheda, più informazione di base RGPD (responsabile, finalità, legittimazione, diritti). **Decisioni del titolare:** email legale `hola@barbarabacelle.es`; data di aggiornamento delle pagine legali 7 novembre 2026.
-- **Pagine legali**: `/aviso-legal`, `/politica-de-privacidad`, `/politica-de-cookies`, con layout comune `components/LegalPage.tsx` (stili dei contenuti via selettori arbitrari Tailwind, testo in colonna `max-w-3xl`) e dati del titolare in `lib/legal.ts` (`LEGAL`, `LEGAL_LINKS`). Testi ispirati alla privacy del sito precedente e all'estratto iubenda, aggiornati al sito attuale: niente analytics né profilazione, Privacy Shield sostituito dal Data Privacy Framework, unico storage tecnico `mc_popup_shown` (sessionStorage), Google Fonts dichiarato. Il footer linka le tre pagine (`LEGAL_LINKS`); sono prerenderizzate e nella sitemap.
+- **Pagine legali**: `/aviso-legal`, `/politica-de-privacidad`, `/politica-de-cookies`, con layout comune `components/LegalPage.tsx` (stili dei contenuti via selettori arbitrari Tailwind, testo in colonna `max-w-3xl`) e dati del titolare in `lib/legal.ts` (`LEGAL`, `LEGAL_LINKS`). Testi ispirati alla privacy del sito precedente e all'estratto iubenda, aggiornati al sito attuale: niente profilazione, Privacy Shield sostituito dal Data Privacy Framework, storage tecnico `mc_popup_shown` (sessionStorage) e `cookie_consent` (localStorage), Google Fonts dichiarato, Google Analytics dichiarato come cookie di analisi con consenso (vedi punto seguente). Sono in questa sezione anche la data di aggiornamento in `lib/legal.ts` (`LEGAL.actualizado`, ora 18 novembre 2026) e il pulsante "Cambiar mi elección" in `/politica-de-cookies` (visibile solo con `GA4_ID`).
+- **Google Analytics + banner di consenso** (richiesto dal titolare, con `GA4_ID` in `.env`): banner ACEPTAR / RECHAZAR in spagnolo (il titolare ha chiesto ACCETTA/RIFIUTA, ma il sito è in spagnolo: etichette da confermare). Appare solo se `GA4_ID` è configurato e l'utente non ha ancora scelto. RECHAZAR imposta `ga-disable-<ID>`. Il testo del banner e delle pagine legali va confermato dal titolare, come gli altri testi legali. Il footer linka le tre pagine (`LEGAL_LINKS`); sono prerenderizzate e nella sitemap.
 - **Personal Shopper Presencial**: decisione del titolare, la frase "Asesoramiento previo necesario." **resta** nel testo (in `pages/Servicios.tsx` e nella card di `pages/Home.tsx`).
 - **Ottimizzazione immagini**: le 12 foto usate dal sito erano PNG con estensione `.jpg` (~2 MB l'una). Convertite in JPEG progressivi q80 alle stesse dimensioni (totale da 22 MB a 1,7 MB) e rinominate con nomi SEO in spagnolo; riferimenti aggiornati in pagine e `Seo`. Eliminati i file non usati da nessuna pagina (`barbara-hero.jpg`, `color-analysis.jpg`, `event-look.jpg`, `gift-card.jpg`, `hero-barbara-v2.jpg`, `hero-portrait.jpg`, `img-hero.jpg`, `wardrobe.jpg`, `logo-barbara-bacelle.png`, circa 14 MB): restano recuperabili dalla storia git.
 - **SEO per pagina**: Home, Servicios e Sobre mí usano `<Seo>` con title e description presi da `KNOWLEDGE_BASE.md` ("Barbara" senza accento), canonical e `og:url` su `https://www.barbarabacelle.es<path>`, `og:image`/`twitter:image` con la foto hero della pagina. Il prerender sostituisce i meta di default di `client/index.html`. La 404 ha il titolo "Página no encontrada | Barbara Bacelle" e resta `noindex`. Le keywords del KNOWLEDGE_BASE non sono state messe nel meta `keywords` (Google lo ignora).
