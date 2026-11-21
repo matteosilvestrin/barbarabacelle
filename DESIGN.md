@@ -235,7 +235,9 @@ El layout debe parecer editorial y respirado. La web no debe convertirse en una 
 
 - Toolbar flotante y compacta en forma de píldora: `max-w-[428px]`, `h-[76px]`, `rounded-2xl`, centrada con `mx-auto` dentro de un margen de `p-5`.
 - Contenido mínimo en todos los breakpoints: logo a la izquierda y botón hamburguesa a la derecha. No hay navegación horizontal en desktop; todas las opciones viven en el menú abierto.
-- Superficie: `bg-white` con `drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]`. En desktop es transparente en la parte superior de la página y toma la superficie blanca al hacer scroll o con el menú abierto.
+- Superficie: vidrio esmerilado funcional, para que la toolbar se lea sobre el contenido que pasa por debajo: blanco al 75 %, `blur(12px) saturate(1.5)` (clase `.glass` de `index.css`). Sin soporte de `backdrop-filter` o con `prefers-reduced-transparency: reduce`, `bg-white` opaco. Sin bordes, brillos ni gradientes: no es glassmorphism decorativo.
+- Sombra con `box-shadow` (no `drop-shadow`): en mobile hacia arriba, `shadow-[0_-6px_20px_rgba(0,0,0,0.10)]`, porque la toolbar está abajo; en `sm`+ hacia abajo, `shadow-[0_8px_16px_rgba(0,0,0,0.08)]`.
+- En desktop es transparente y sin blur en la parte superior de la página, y toma la superficie esmerilada al hacer scroll o con el menú abierto.
 - Texto e iconos en `primary-dark`.
 - En mobile, mantener hit targets de 48px mínimo (hamburguesa `w-[60px]` a toda la altura de la toolbar).
 
@@ -352,7 +354,7 @@ La navegación es una toolbar flotante, ligera y persistente (ver **Toolbar / Na
 
 **Menú abierto**
 
-- Overlay a pantalla completa por encima de todo (`fixed inset-0 z-[70] min-h-[100dvh]`) con fondo `bg-white/90 backdrop-blur-[3px]` y fade de opacidad de 300 ms.
+- Overlay a pantalla completa por encima de todo (`fixed inset-0 z-[70] min-h-[100dvh]`) con fondo esmerilado `.glass [--glass-blur:16px] [--glass-saturate:1.3]` (blanco al 75 %; sin soporte o con transparencia reducida, `bg-white`) y fade de opacidad de 300 ms.
 - Contenido centrado en una columna `max-w-xl`: logo (`max-w-[250px]`), enlaces grandes (`text-2xl sm:text-3xl font-semibold text-primary-dark hover:text-primary`) y una única acción principal: botón píldora `bg-primary` "Reserva tu asesoría" (`min-w-[260px] px-10 py-4 text-lg`).
 - Botón de cierre circular de 48px arriba a la derecha.
 - Se cierra con la X, con Escape, al pulsar un enlace o el fondo, y al pasar a ≥ `lg`. Mientras está abierto, bloquea el scroll de la página y lleva el foco al botón de cierre; al cerrar con Escape o la X, el foco vuelve a la hamburguesa.
@@ -397,6 +399,8 @@ El sitio se compone de tres páginas, enlazadas con URLs limpias, más la págin
 No existe una página de contacto separada: el contacto vive en la Home (`/#contacto`) y en el botón flotante de WhatsApp.
 
 Cada página debe tener un único `h1`, su propia imagen hero y meta description específica. Los componentes compartidos (Header, Footer, CTASection, botón de WhatsApp, popup de masterclass) viven en `client/src/components/site.tsx`.
+
+El popup de masterclass usa como fondo un scrim tintado con el mismo blur del menú: `bg-teal-dark/50 backdrop-blur-lg backdrop-saturate-[1.3]`; con `prefers-reduced-transparency: reduce`, `bg-teal-dark/85` sin blur.
 
 ## Voice & Copy Guidelines
 

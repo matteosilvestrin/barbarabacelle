@@ -140,9 +140,10 @@ Fatti già completati:
 - **Header e menu** copiati dal sito di riferimento `http://localhost/barbarabacelle/`, solo con classi Tailwind (`components/site.tsx`, componente `Header`):
   - toolbar flottante a pillola (`max-w-[428px]`, `h-[76px]`, `rounded-2xl`) con logo SVG (`h-10`) e hamburger animato, su tutti i breakpoint (niente nav orizzontale su desktop);
   - mobile (< `sm`): fissa in fondo allo schermo; `Layout` in `App.tsx` ha `pb-[116px] sm:pb-0` per non coprire il contenuto; il pulsante WhatsApp sta a `bottom-[136px]` su mobile per non sovrapporsi;
-  - `sm`+: sticky in alto, trasparente in cima alla pagina e bianca con ombra dopo lo scroll;
-  - si nasconde scorrendo verso il basso e riappare risalendo;
-  - menu aperto: overlay a schermo intero `bg-white/90 backdrop-blur-[3px]` con logo, voci grandi, CTA "Reserva tu asesoría" e pulsante di chiusura; si chiude con Escape, click sui link, click sullo sfondo o passando a ≥1024px; blocca lo scroll della pagina e porta il focus sul pulsante di chiusura.
+  - `sm`+: sticky in alto, trasparente e senza blur in cima alla pagina, vetro smerigliato con ombra dopo lo scroll;
+  - vetro smerigliato (21 novembre 2026): classe `.glass` in `index.css` (layer components), bianco al 75% con `blur(12px) saturate(1.5)`; bianco opaco se `backdrop-filter` non è supportato o con `prefers-reduced-transparency: reduce`. Non usare `@media not (prefers-reduced-transparency…)`: nei browser che non conoscono la feature (Safari, Firefox) è falsa e toglierebbe il blur. Ombra `box-shadow` verso l'alto su mobile (pillola in basso) e verso il basso da `sm`;
+  - si nasconde scorrendo verso il basso e riappare risalendo (Tailwind 4 usa la proprietà CSS `translate`, non `transform`);
+  - menu aperto: overlay a schermo intero `.glass [--glass-blur:16px] [--glass-saturate:1.3]` con logo, voci grandi, CTA "Reserva tu asesoría" e pulsante di chiusura; si chiude con Escape, click sui link, click sullo sfondo o passando a ≥1024px; blocca lo scroll della pagina e porta il focus sul pulsante di chiusura.
   - Sostituisce la vecchia richiesta del menu mobile "agganciato al fondo pagina" (bottom sheet).
 - Logo SVG `logo-barbara-bacelle-asesoria-de-imgen-conciente.svg` in `client/public/`, usato nell'header (colori originali) e nel footer (filtro `brightness-0 invert`, cioè bianco).
 

@@ -112,8 +112,11 @@ export function Header() {
       >
         <div className="box-content h-[76px] p-5">
           <div
-            className={`relative mx-auto flex h-[76px] w-full max-w-[428px] overflow-hidden rounded-2xl bg-white text-teal-dark drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] ${
-              surface ? "" : "sm:bg-transparent sm:drop-shadow-none"
+            // Vidrio esmerilado (.glass en index.css). Sombra hacia arriba en mobile (toolbar
+            // abajo) y hacia abajo en sm+ (toolbar arriba). En desktop, en la parte superior
+            // de la página, la toolbar es transparente y sin blur.
+            className={`glass relative mx-auto flex h-[76px] w-full max-w-[428px] overflow-hidden rounded-2xl text-teal-dark shadow-[0_-6px_20px_rgba(0,0,0,0.10)] transition-[background-color,box-shadow,-webkit-backdrop-filter,backdrop-filter] duration-500 ease-[cubic-bezier(0.165,0.84,0.44,1)] sm:shadow-[0_8px_16px_rgba(0,0,0,0.08)] ${
+              surface ? "" : "sm:bg-transparent sm:shadow-none sm:backdrop-filter-none"
             }`}
           >
             <nav className="mx-auto flex h-[76px] w-full items-center justify-between" aria-label="Navegación principal">
@@ -150,7 +153,7 @@ export function Header() {
         aria-hidden={!open}
         inert={!open}
       >
-        <div className="absolute inset-0 h-full w-full bg-white/90 backdrop-blur-[3px]" />
+        <div className="absolute inset-0 h-full w-full glass [--glass-blur:16px] [--glass-saturate:1.3]" />
         <div
           className="relative flex min-h-[100dvh] w-full items-center justify-center px-6 py-24"
           onClick={(e) => { if (e.target === e.currentTarget) close(); }}
@@ -384,7 +387,11 @@ export function MasterclassPopup() {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Masterclass gratuita">
-      <div className="absolute inset-0 bg-teal-dark/50" onClick={() => setOpen(false)} />
+      {/* Scrim tintado con el mismo blur del menú; sin soporte de backdrop-filter queda solo el tinte. */}
+      <div
+        className="absolute inset-0 bg-teal-dark/50 backdrop-blur-lg backdrop-saturate-[1.3] [@media(prefers-reduced-transparency:reduce)]:bg-teal-dark/85 [@media(prefers-reduced-transparency:reduce)]:backdrop-filter-none"
+        onClick={() => setOpen(false)}
+      />
       <div className="relative bg-white rounded-2xl overflow-hidden max-w-lg w-full p-8 md:p-10 shadow-xl">
         <button onClick={() => setOpen(false)} aria-label="Cerrar" className="absolute top-4 right-4 min-h-10 min-w-10 inline-flex items-center justify-center text-teal-dark hover:text-teal">
           <X />
