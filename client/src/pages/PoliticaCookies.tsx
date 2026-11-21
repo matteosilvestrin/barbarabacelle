@@ -30,22 +30,49 @@ export default function PoliticaCookies() {
         <li><strong>Tipo:</strong> técnica y propia (almacenamiento de sesión del navegador).</li>
         <li><strong>Finalidad:</strong> recordar que ya has visto la ventana de la masterclass para no volver a mostrarla.</li>
         <li><strong>Duración:</strong> hasta que cierras la pestaña o el navegador.</li>
-        <li><strong>Nombre:</strong> cookie_consent</li>
-        <li><strong>Tipo:</strong> técnica y propia (almacenamiento local del navegador).</li>
-        <li><strong>Finalidad:</strong> guardar si has aceptado o rechazado las cookies de análisis, para no volver a preguntártelo en cada visita.</li>
-        <li><strong>Duración:</strong> hasta que borres los datos del sitio en tu navegador.</li>
+        {GA4_ID && (
+          <>
+            <li><strong>Nombre:</strong> cookie_consent</li>
+            <li><strong>Tipo:</strong> técnica y propia (almacenamiento local del navegador).</li>
+            <li><strong>Finalidad:</strong> guardar si has aceptado o rechazado las cookies de análisis, y en qué fecha, para no volver a preguntártelo en cada visita.</li>
+            <li><strong>Duración:</strong> 12 meses. Pasado ese plazo te volvemos a preguntar.</li>
+          </>
+        )}
       </ul>
       {GA4_ID && (
         <>
           <p>
             <strong>Cookies de análisis (Google Analytics).</strong> Solo se instalan si aceptas
-            en el aviso de cookies. Sirven para saber, de forma agregada, qué páginas se visitan y
-            cómo se navega por el sitio, y así mejorarlo. Si las rechazas, no se instalan.
+            en el aviso de cookies. Guardan un identificador seudónimo que permite obtener
+            estadísticas de cuántas personas visitan el sitio, qué páginas ven y cómo navegan, y así
+            mejorarlo. Si las rechazas, no se instalan, y si retiras tu consentimiento después de
+            haberlas aceptado, las borramos de tu navegador.
           </p>
           <ul>
             <li><strong>Nombres:</strong> _ga y _ga_{GA4_ID.replace(/^G-/, "")}</li>
-            <li><strong>Tipo:</strong> de análisis, de terceros (Google).</li>
+            <li><strong>Tipo:</strong> de análisis, de terceros. Se guardan con el dominio de este sitio, pero la información la trata Google.</li>
+            <li><strong>Proveedor:</strong> Google Ireland Limited (Gordon House, Barrow Street, Dublín 4, Irlanda).</li>
             <li><strong>Duración:</strong> hasta 2 años.</li>
+            <li>
+              <strong>Transferencias internacionales:</strong> Google puede tratar los datos en
+              Estados Unidos (Google LLC), con base en el Marco de Privacidad de Datos UE-EE. UU.
+              (Data Privacy Framework) y en las cláusulas contractuales tipo de la Comisión Europea.
+            </li>
+            <li>
+              <strong>Más información:</strong>{" "}
+              <a href="https://policies.google.com/technologies/partner-sites?hl=es" target="_blank" rel="noreferrer">
+                cómo usa Google los datos
+              </a>
+              ,{" "}
+              <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noreferrer">
+                política de privacidad de Google
+              </a>{" "}
+              y{" "}
+              <a href="https://tools.google.com/dlpage/gaoptout?hl=es" target="_blank" rel="noreferrer">
+                complemento de inhabilitación de Google Analytics
+              </a>
+              .
+            </li>
           </ul>
         </>
       )}

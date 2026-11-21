@@ -4,8 +4,8 @@
 //
 // Regole:
 // - gtag.js si carica solo dopo "Aceptar" (mai al primo caricamento della pagina);
-// - la scelta è salvata in localStorage (cookie_consent) per non richiederla ad ogni visita;
-// - "Rechazar" disattiva la misurazione tramite ga-disable-<ID>.
+// - la scelta è salvata in localStorage (cookie_consent) con la data, vale 12 mesi;
+// - "Rechazar" disattiva la misurazione tramite ga-disable-<ID> e cancella _ga/_ga_*.
 // Tutto va chiamato solo da useEffect o da event handler (il sito è prerenderizzato).
 
 declare const __GA4_ID__: string;
@@ -23,12 +23,48 @@ type GtagWindow = Window & {
   [key: string]: unknown;
 };
 
+// Validità della scelta: dopo 12 mesi il banner viene riproposto
+// (l'AEPD raccomanda di non superare i 24 mesi). Va tenuto allineato al testo
+// della Política de cookies.
+export const CONSENT_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
+
+// Formato salvato: {"value":"accepted"|"rejected","date":<ms>}.
+// Il vecchio formato (solo "accepted"/"rejected", senza data) vale come
+// "nessuna scelta", così il banner viene riproposto una volta.
 export function getConsent(): Consent | null {
   try {
-    const value = window.localStorage.getItem(COOKIE_CONSENT_KEY);
-    return value === "accepted" || value === "rejected" ? value : null;
+    const raw = window.localStorage.getItem(COOKIE_CONSENT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { value?: unknown; date?: unknown };
+    const { value, date } = parsed ?? {};
+    if (value !== "accepted" && value !== "rejected") return null;
+    if (typeof date !== "number" || Date.now() - date > CONSENT_MAX_AGE_MS) {
+      return null;
+    }
+    return value;
   } catch {
     return null;
+  }
+}
+
+// Cancella i cookie di Google Analytics (_ga, _ga_<ID>) quando si revoca il
+// consenso. gtag.js li scrive sul dominio di livello più alto possibile
+// (es. .barbarabacelle.es), quindi si prova su host e domini padre.
+function deleteAnalyticsCookies() {
+  const names = document.cookie
+    .split(";")
+    .map((c) => c.split("=")[0].trim())
+    .filter((name) => name === "_ga" || name.startsWith("_ga_"));
+  if (names.length === 0) return;
+  const parts = window.location.hostname.split(".");
+  const domains = [""];
+  for (let i = 0; i < parts.length - 1; i++) {
+    domains.push(`; domain=.${parts.slice(i).join(".")}`);
+  }
+  for (const name of names) {
+    for (const domain of domains) {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain}`;
+    }
   }
 }
 
@@ -61,12 +97,16 @@ export function loadAnalytics() {
 
 export function setConsent(value: Consent) {
   try {
-    window.localStorage.setItem(COOKIE_CONSENT_KEY, value);
+    window.localStorage.setItem(
+      COOKIE_CONSENT_KEY,
+      JSON.stringify({ value, date: Date.now() }),
+    );
   } catch {}
   if (GA4_ID) {
     (window as unknown as GtagWindow)[`ga-disable-${GA4_ID}`] = value === "rejected";
   }
   if (value === "accepted") loadAnalytics();
+  else deleteAnalyticsCookies();
 }
 
 // Riapre il banner dalla Política de cookies.

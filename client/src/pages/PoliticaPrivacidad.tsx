@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { LegalPage } from "@/components/LegalPage";
 import { LEGAL } from "@/lib/legal";
+import { GA4_ID } from "@/lib/analytics";
 
 export default function PoliticaPrivacidad() {
   return (
@@ -32,7 +33,9 @@ export default function PoliticaPrivacidad() {
         <li><strong>Datos de contacto:</strong> email, teléfono y, si contratas un servicio presencial, dirección postal.</li>
         <li><strong>Contenido de tus mensajes:</strong> lo que nos cuentas en el formulario, por email o por WhatsApp sobre tus objetivos y el servicio que te interesa.</li>
         <li><strong>Datos de navegación:</strong> dirección IP, tipo de navegador y dispositivo, y páginas visitadas, que el servidor registra por motivos técnicos y de seguridad.</li>
-        <li><strong>Datos de uso (solo si aceptas las cookies de análisis):</strong> páginas visitadas, tiempo de visita, origen de la visita, país y tipo de dispositivo, recogidos por Google Analytics de forma agregada.</li>
+        {GA4_ID && (
+          <li><strong>Datos de uso (solo si aceptas las cookies de análisis):</strong> un identificador online seudónimo guardado en una cookie, páginas visitadas, tiempo de visita, origen de la visita, ubicación aproximada (país y ciudad) y tipo de navegador y dispositivo, recogidos por Google Analytics. Google Analytics usa tu dirección IP para calcular la ubicación aproximada, pero no la almacena. Nosotros consultamos solo informes estadísticos, sin identificar a nadie.</li>
+        )}
       </ul>
       <p>
         No necesitamos datos especialmente protegidos. Te pedimos que no los incluyas en tus mensajes.
@@ -60,10 +63,12 @@ export default function PoliticaPrivacidad() {
             <td>Enviarte comunicaciones sobre servicios y novedades, solo si lo has solicitado.</td>
             <td>Tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento.</td>
           </tr>
-          <tr>
-            <td>Medir de forma agregada las visitas al sitio web para mejorarlo (Google Analytics).</td>
-            <td>Tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento desde la Política de cookies.</td>
-          </tr>
+          {GA4_ID && (
+            <tr>
+              <td>Obtener estadísticas de visitas al sitio web para mejorarlo (Google Analytics).</td>
+              <td>Tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento desde la Política de cookies.</td>
+            </tr>
+          )}
           <tr>
             <td>Garantizar la seguridad del sitio web y prevenir abusos o fraudes.</td>
             <td>Interés legítimo (art. 6.1.f RGPD).</td>
@@ -78,7 +83,9 @@ export default function PoliticaPrivacidad() {
         <li><strong>Clientas y clientes:</strong> mientras dure la relación y, después, durante los plazos legales: 4 años (Ley General Tributaria), 5 años (art. 1964 del Código Civil) y 6 años para facturas y documentación contable (art. 30 del Código de Comercio).</li>
         <li><strong>Comunicaciones y masterclass:</strong> hasta que retires tu consentimiento o te des de baja.</li>
         <li><strong>Registros técnicos del servidor:</strong> el tiempo mínimo necesario por motivos de seguridad.</li>
-        <li><strong>Datos de Google Analytics:</strong> 14 meses, según la configuración de conservación de la propiedad de Google Analytics.</li>
+        {GA4_ID && (
+          <li><strong>Datos de Google Analytics:</strong> 14 meses, según la configuración de conservación de la propiedad de Google Analytics. Si retiras tu consentimiento, borramos de tu navegador las cookies de análisis.</li>
+        )}
       </ul>
 
       <h2>5. A quién comunicamos tus datos</h2>
@@ -97,16 +104,29 @@ export default function PoliticaPrivacidad() {
         privacidad de WhatsApp (Meta). El sitio web carga sus tipografías desde Google Fonts, lo que
         implica que tu dirección IP se comunica a Google.
       </p>
-      <p>
-        Si aceptas las cookies de análisis, Google (Google Analytics) trata los datos de uso indicados en
-        el apartado 2 como proveedor de medición. Google no los utiliza para perfilar a las personas
-        que visitan este sitio web.
-      </p>
+      {GA4_ID && (
+        <p>
+          Si aceptas las cookies de análisis, Google Ireland Limited (Gordon House, Barrow Street,
+          Dublín 4, Irlanda), proveedor de Google Analytics, trata los datos de uso indicados en el
+          apartado 2 como encargado del tratamiento, conforme a sus condiciones de tratamiento de
+          datos. Puedes consultar cómo usa Google los datos de los sitios web que utilizan sus
+          servicios en{" "}
+          <a href="https://policies.google.com/technologies/partner-sites?hl=es" target="_blank" rel="noreferrer">
+            policies.google.com/technologies/partner-sites
+          </a>{" "}
+          y su política de privacidad en{" "}
+          <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noreferrer">
+            policies.google.com/privacy
+          </a>
+          .
+        </p>
+      )}
 
       <h2>6. Transferencias internacionales</h2>
       <p>
         Algunos de estos proveedores (por ejemplo, Google o Meta) pueden tratar datos fuera del
-        Espacio Económico Europeo. En ese caso, las transferencias se basan en el Marco de Privacidad
+        Espacio Económico Europeo, en particular en Estados Unidos a través de sus sociedades matrices
+        (Google LLC y Meta Platforms, Inc.). En ese caso, las transferencias se basan en el Marco de Privacidad
         de Datos UE-EE. UU. (Data Privacy Framework) o en las cláusulas contractuales tipo aprobadas
         por la Comisión Europea.
       </p>
