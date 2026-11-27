@@ -145,7 +145,7 @@ Fatti già completati:
   - si nasconde scorrendo verso il basso e riappare risalendo (Tailwind 4 usa la proprietà CSS `translate`, non `transform`);
   - menu aperto: overlay a schermo intero `.glass [--glass-blur:16px] [--glass-saturate:1.3]` con logo, voci grandi, CTA "Reserva tu asesoría" e pulsante di chiusura; si chiude con Escape, click sui link, click sullo sfondo o passando a ≥1024px; blocca lo scroll della pagina e porta il focus sul pulsante di chiusura.
   - Sostituisce la vecchia richiesta del menu mobile "agganciato al fondo pagina" (bottom sheet).
-- Logo SVG `logo-barbara-bacelle-asesoria-de-imgen-conciente.svg` in `client/public/`, usato nell'header (colori originali) e nel footer (filtro `brightness-0 invert`, cioè bianco).
+- Logo SVG in `client/public/`: `logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg` (originale bicolore, "Bacelle" in teal) nell'header, a 0.5em (8px) dal bordo della pillola, alto 60px; `logo-barbara-bacelle-asesoria-de-imgen-consciente.svg` (tutto nero) nel footer con filtro `brightness-0 invert`, cioè bianco, e nel JSON-LD. I file si chiamavano `...-conciente...` (refuso, rinominati il 27 novembre 2026).
 
 ## Git
 

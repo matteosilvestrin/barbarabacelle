@@ -40,8 +40,8 @@ function openMasterclass() {
 }
 
 // Variante del logo para el header: "Bacelle" en color primary (#0396A6).
-// Generada a partir de logo-barbara-bacelle-asesoria-de-imgen-conciente.svg (paths 7–13).
-const LOGO_SRC = "/logo-barbara-bacelle-asesoria-de-imgen-conciente-header.svg";
+// Logo original bicolor; logo-barbara-bacelle-asesoria-de-imgen-consciente.svg es la misma versión toda en negro.
+const LOGO_SRC = "/logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg";
 const LOGO_ALT = "Barbara Bacelle — Asesoría de Imagen Personal";
 const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2";
 
@@ -120,8 +120,9 @@ export function Header() {
             }`}
           >
             <nav className="mx-auto flex h-[76px] w-full items-center justify-between" aria-label="Navegación principal">
-              <Link href="/" className={`inline-flex h-full items-center pl-5 pr-3 sm:pl-4 ${FOCUS_RING}`} aria-label="Ir a Inicio">
-                <img src={LOGO_SRC} alt={LOGO_ALT} className="h-10 w-auto sm:h-14" />
+              {/* Logo a 0.5em (8px) del borde de la píldora (arriba, abajo e izquierda): ocupa la altura restante. */}
+              <Link href="/" className={`inline-flex h-full min-w-0 items-center py-[0.5em] pl-[0.5em] pr-3 ${FOCUS_RING}`} aria-label="Ir a Inicio">
+                <img src={LOGO_SRC} alt={LOGO_ALT} className="h-full w-auto max-w-full object-contain object-left" />
               </Link>
               <button
                 ref={toggleRef}
@@ -223,7 +224,7 @@ export function Footer() {
     <footer className="bg-teal-dark text-white">
       <div className="container-brand py-16 grid gap-12 md:grid-cols-3">
         <div>
-          <img src="/logo-barbara-bacelle-asesoria-de-imgen-conciente.svg" alt="Barbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
+          <img src="/logo-barbara-bacelle-asesoria-de-imgen-consciente.svg" alt="Barbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
           <p className="mt-4 text-white/80 text-sm leading-relaxed max-w-xs">
             Asesoría de imagen personal en Alicante. Online y presencial.
           </p>

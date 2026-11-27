@@ -30,7 +30,7 @@ const business = {
   description:
     "Asesoría de imagen personal en Alicante: armocromía, estilo personal, análisis de rostro y silueta, terapia de armario y personal shopper.",
   url: `${SITE_URL}/`,
-  logo: `${SITE_URL}/logo-barbara-bacelle-asesoria-de-imgen-conciente.svg`,
+  logo: `${SITE_URL}/logo-barbara-bacelle-asesoria-de-imgen-consciente.svg`,
   image: `${SITE_URL}/barbara-bacelle-asesora-de-imagen-alicante.jpg`,
   telephone: LEGAL.telefono,
   email: LEGAL.email,

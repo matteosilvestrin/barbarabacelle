@@ -381,7 +381,7 @@ No combinar `border` y `shadow` en una misma card o botón.
 - Hero desktop: imagen vertical o panorámica con al menos 1600 px de ancho cuando ocupe media pantalla.
 - Imagen editorial: proporción recomendada `4/5` o `3/4`; usar `aspect-[4/5] object-cover`.
 - Miniaturas o tarjetas: `aspect-[4/3] object-cover`.
-- Logo: archivo `logo-barbara-bacelle-asesoria-de-imgen-conciente.svg` (todo en negro). En el header (toolbar y menú abierto) se usa la variante `logo-barbara-bacelle-asesoria-de-imgen-conciente-header.svg`, con "Bacelle" en `primary` (#0396A6) y el resto en negro. Conservar proporción original: `h-10 w-auto` en la toolbar en mobile y `sm:h-14` (con `sm:pl-4`) desde `sm`, `max-w-[250px] w-full h-auto` en el menú abierto y `h-16 w-auto` en el footer. En el footer (fondo `primary-dark`) se usa en blanco con `brightness-0 invert`.
+- Logo: archivo `logo-barbara-bacelle-asesoria-de-imgen-consciente.svg` (todo en negro). En el header (toolbar y menú abierto) se usa la variante `logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg`, con "Bacelle" en `primary` (#0396A6) y el resto en negro. Conservar proporción original: en la toolbar a 0.5em (8px) del borde de la píldora arriba, abajo e izquierda (`h-full w-auto max-w-full`, con `py-[0.5em] pl-[0.5em]`, es decir 60px de alto) en todos los breakpoints, `max-w-[250px] w-full h-auto` en el menú abierto y `h-16 w-auto` en el footer. En el footer (fondo `primary-dark`) se usa en blanco con `brightness-0 invert`.
 - Favicon: usar el símbolo `E | E` en formato cuadrado.
 - Añadir `loading="lazy"` a imágenes fuera del primer viewport y `decoding="async"` cuando sea apropiado.
 - Usar `alt` descriptivo para imágenes informativas y `alt=""` para imágenes puramente decorativas.
