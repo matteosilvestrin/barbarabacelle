@@ -92,6 +92,7 @@ function ServiceRow({ s, i, cta }: { s: Servicio; i: number; cta?: string }) {
         </div>
         <div className={flip ? "lg:order-1" : ""}>
           <h3 className="text-3xl font-semibold">{text.title}</h3>
+          {text.subtitle && <p className="eyebrow mt-2">{text.subtitle}</p>}
           <p className="mt-4 max-w-2xl text-teal-dark/80 leading-8">{text.text}</p>
           <dl className="mt-6 max-w-2xl space-y-2 border-t border-teal-dark/10 pt-5 text-[0.95rem] leading-6">
             {details.map((d) => (

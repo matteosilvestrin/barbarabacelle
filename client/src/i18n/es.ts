@@ -19,7 +19,7 @@ export type ServiceId =
   | "bridal-experience";
 
 type CardText = { title: string; alt: string; text: string };
-export type ServiceText = CardText & { modalidad: string; duracion?: string; incluye?: string };
+export type ServiceText = CardText & { subtitle?: string; modalidad: string; duracion?: string; incluye?: string };
 
 export const es = {
   logoAlt: "Barbara Bacelle — Asesoría de Imagen Personal",
@@ -275,6 +275,7 @@ export const es = {
       },
       "analisis-de-la-silueta": {
         title: "Análisis de la Silueta",
+        subtitle: "Body Shape",
         alt: "Análisis de la silueta frente al espejo",
         modalidad: "Presencial y online",
         duracion: "Una sesión de una hora",

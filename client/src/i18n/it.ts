@@ -167,7 +167,7 @@ export const it: Dict = {
         "analisis-de-la-silueta": {
           title: "Analisi della Silhouette",
           alt: "Analisi della silhouette davanti allo specchio",
-          text: "Analizziamo la forma del tuo corpo e capiamo come bilanciare visivamente le tue proporzioni. Imparerai a scegliere capi e tagli che valorizzano la tua figura.",
+          text: "Analizziamo la forma del tuo corpo e capiamo come bilanciare visivamente le tue proporzioni. Imparerai a scegliere capi e modelli che valorizzano la tua figura.",
         },
         "terapia-de-armario": {
           title: "Terapia dell'Armadio",
@@ -222,8 +222,8 @@ export const it: Dict = {
     },
     labels: { modalidad: "Modalità", duracion: "Durata", incluye: "Include" },
     aLaCarta: {
-      eyebrow: "À la carte",
-      title: "I miei servizi à la carte",
+      eyebrow: "À la Carte",
+      title: "I miei Servizi à la Carte",
       text: "Servizi singoli pensati per lavorare su un aspetto specifico della tua immagine personale. Sei tu a scegliere da dove iniziare.",
     },
     packs: {
@@ -255,10 +255,11 @@ export const it: Dict = {
       },
       "analisis-de-la-silueta": {
         title: "Analisi della Silhouette",
+        subtitle: "Body Shape",
         alt: "Analisi della silhouette davanti allo specchio",
         modalidad: "In presenza e online",
         duracion: "Una sessione di un'ora",
-        text: "Analizziamo la forma del tuo corpo e capiamo come bilanciare visivamente le tue proporzioni. Imparerai a scegliere capi e tagli che valorizzano la tua figura e ti fanno sentire sicura.",
+        text: "Analizziamo la forma del tuo corpo e capiamo come bilanciare visivamente le tue proporzioni. Imparerai a scegliere capi e modelli che valorizzano la tua figura e ti fanno sentire sicura.",
       },
       "terapia-de-armario": {
         title: "Terapia dell'Armadio",
