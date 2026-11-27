@@ -98,7 +98,7 @@ Fonte unica: `PAGES` in `shared/routes.ts` (chiave pagina -> path per lingua).
 - **Nuova pagina:** aggiungila a `PAGES` (entrambe le lingue), a `PAGE_COMPONENTS` in `App.tsx` e ai testi in `es.ts`/`it.ts`; prerender, sitemap, hreflang e switcher seguono da soli.
 - **Form:** il client invia `idioma` (lingua della pagina). La conferma del contatto arriva nella lingua della persona (`server/email/templates.ts`, oggetto `MAIL_SUBJECT_CONTACTO_IT` facoltativo); la notifica della masterclass resta in spagnolo con la riga "Idioma".
 - **Pagine legali italiane:** traduzione di cortesia con avviso in testa ("in caso di discrepanza prevale la versione spagnola", `t.legalPage.courtesyNote`), stessa data di aggiornamento della versione spagnola (`LEGAL.actualizado`).
-- **Testi italiani:** bozza tradotta dallo spagnolo il 27 novembre 2026, **da far rivedere alla titolare** (in particolare nomi dei pack, testimonianze, pagine legali e banner cookie). Il logo resta quello spagnolo ("Asesoría de imagen consciente") anche sulle pagine italiane.
+- **Testi italiani:** tradotti dallo spagnolo il 27 novembre 2026 e **revisionati** il 27 novembre 2026 (nomi dei pack, testimonianze, pagine legali e banner cookie inclusi). Una modifica ai testi spagnoli va riportata anche in `it.ts` (o nella pagina legale italiana). Il logo resta quello spagnolo ("Asesoría de imagen consciente") anche sulle pagine italiane.
 
 ## Documenti di riferimento: dove stanno le informazioni
 

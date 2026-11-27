@@ -1,5 +1,5 @@
-// Testi del sito in italiano. Bozza tradotta dallo spagnolo (es.ts), da far rivedere
-// alla titolare. Deve avere la stessa forma di es.ts (lo controlla TypeScript).
+// Testi del sito in italiano, tradotti da es.ts e revisionati (27 novembre 2026).
+// Deve avere la stessa forma di es.ts (lo controlla TypeScript).
 import type { Dict } from "./index";
 
 export const it: Dict = {
