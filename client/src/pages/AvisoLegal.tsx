@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { pathFor } from "@shared/routes";
 import { LegalPage } from "@/components/LegalPage";
 import { LEGAL } from "@/lib/legal";
 
@@ -8,7 +9,7 @@ export default function AvisoLegal() {
       title="Aviso legal"
       seoTitle="Aviso legal | Barbara Bacelle"
       description="Aviso legal de barbarabacelle.es: datos del titular, condiciones de uso del sitio web, propiedad intelectual y legislación aplicable."
-      path="/aviso-legal"
+      page="avisoLegal"
     >
       <h2>1. Datos identificativos del titular</h2>
       <p>
@@ -20,7 +21,7 @@ export default function AvisoLegal() {
         <li><strong>Titular:</strong> {LEGAL.titular}</li>
         <li><strong>Nombre comercial:</strong> {LEGAL.nombreComercial}</li>
         <li><strong>NIF/NIE:</strong> {LEGAL.nif}</li>
-        <li><strong>Domicilio:</strong> {LEGAL.domicilio}</li>
+        <li><strong>Domicilio:</strong> {LEGAL.domicilio.es}</li>
         <li><strong>Email:</strong> <a href={`mailto:${LEGAL.email}`}>{LEGAL.email}</a></li>
         <li><strong>Teléfono:</strong> <a href={LEGAL.telefonoHref}>{LEGAL.telefono}</a></li>
         <li><strong>Actividad:</strong> {LEGAL.actividad}</li>
@@ -81,8 +82,8 @@ export default function AvisoLegal() {
       <h2>7. Protección de datos y cookies</h2>
       <p>
         El tratamiento de los datos personales se explica en la{" "}
-        <Link href="/politica-de-privacidad">Política de privacidad</Link> y el uso de cookies y
-        tecnologías similares en la <Link href="/politica-de-cookies">Política de cookies</Link>.
+        <Link href={pathFor("privacidad", "es")}>Política de privacidad</Link> y el uso de cookies y
+        tecnologías similares en la <Link href={pathFor("cookies", "es")}>Política de cookies</Link>.
       </p>
 
       <h2>8. Legislación aplicable y jurisdicción</h2>

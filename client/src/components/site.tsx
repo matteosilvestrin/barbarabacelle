@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { X, MessageCircle, Instagram, Youtube } from "lucide-react";
-import { LEGAL, LEGAL_LINKS } from "@/lib/legal";
+import { LEGAL, LEGAL_PAGES } from "@/lib/legal";
 import { enviarFormulario } from "@/lib/contact";
+import { useI18n } from "@/i18n";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
 
 /* ---------- Reveal ---------- */
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -26,12 +28,6 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 /* ---------- Header ---------- */
-const NAV = [
-  { href: "/", label: "Inicio" },
-  { href: "/servicios-asesoria-imagen-personal-alicante", label: "Servicios" },
-  { href: "/barbara-bacelle-asesoria-imagen-alicante", label: "Sobre mí" },
-  { href: "/#contacto", label: "Contacto" },
-];
 
 // Apre il popup della masterclass da qualsiasi punto del sito (es. voce del menu).
 const OPEN_MASTERCLASS_EVENT = "masterclass:open";
@@ -42,7 +38,6 @@ function openMasterclass() {
 // Variante del logo para el header: "Bacelle" en color primary (#0396A6).
 // Logo original bicolor; logo-barbara-bacelle-asesoria-de-imgen-consciente.svg es la misma versión toda en negro.
 const LOGO_SRC = "/logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg";
-const LOGO_ALT = "Barbara Bacelle — Asesoría de Imagen Personal";
 const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2";
 
 /**
@@ -53,6 +48,13 @@ const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visibl
  * - el menú abierto es un overlay a pantalla completa.
  */
 export function Header() {
+  const { t, href } = useI18n();
+  const nav = [
+    { href: href("home"), label: t.nav.home },
+    { href: href("servicios"), label: t.nav.servicios },
+    { href: href("sobreMi"), label: t.nav.sobreMi },
+    { href: href("home", "contacto"), label: t.nav.contacto },
+  ];
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -119,17 +121,17 @@ export function Header() {
               surface ? "" : "sm:bg-transparent sm:shadow-none sm:backdrop-filter-none"
             }`}
           >
-            <nav className="mx-auto flex h-[76px] w-full items-center justify-between" aria-label="Navegación principal">
+            <nav className="mx-auto flex h-[76px] w-full items-center justify-between" aria-label={t.nav.label}>
               {/* Logo a 0.5em (8px) del borde de la píldora (arriba, abajo e izquierda): ocupa la altura restante. */}
-              <Link href="/" className={`inline-flex h-full min-w-0 items-center py-[0.5em] pl-[0.5em] pr-3 ${FOCUS_RING}`} aria-label="Ir a Inicio">
-                <img src={LOGO_SRC} alt={LOGO_ALT} className="h-full w-auto max-w-full object-contain object-left" />
+              <Link href={href("home")} className={`inline-flex h-full min-w-0 items-center py-[0.5em] pl-[0.5em] pr-3 ${FOCUS_RING}`} aria-label={t.nav.goHome}>
+                <img src={LOGO_SRC} alt={t.logoAlt} className="h-full w-auto max-w-full object-contain object-left" />
               </Link>
               <button
                 ref={toggleRef}
                 type="button"
                 onClick={() => setOpen(!open)}
                 className={`flex h-full w-[60px] touch-manipulation items-center justify-center rounded-md ${FOCUS_RING}`}
-                aria-label={open ? "Cerrar menú" : "Abrir menú"}
+                aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
                 aria-controls="mobile-menu"
                 aria-expanded={open}
               >
@@ -164,15 +166,15 @@ export function Header() {
             type="button"
             onClick={() => { close(); toggleRef.current?.focus(); }}
             className={`absolute right-6 top-6 inline-flex h-12 w-12 items-center justify-center rounded-full text-teal-dark transition-colors hover:text-teal ${FOCUS_RING}`}
-            aria-label="Cerrar menú"
+            aria-label={t.nav.closeMenu}
           >
             <X size={24} aria-hidden="true" />
           </button>
           <div className="flex w-full max-w-xl flex-col items-center justify-center text-center">
-            <Link href="/" onClick={close} className="mb-8 block bg-transparent" aria-label="Ir a Inicio">
-              <img src={LOGO_SRC} alt={LOGO_ALT} className="mx-auto h-auto w-full max-w-[250px]" />
+            <Link href={href("home")} onClick={close} className="mb-8 block bg-transparent" aria-label={t.nav.goHome}>
+              <img src={LOGO_SRC} alt={t.logoAlt} className="mx-auto h-auto w-full max-w-[250px]" />
             </Link>
-            {NAV.map((n, i) => (
+            {nav.map((n, i) => (
               <a
                 key={n.href}
                 href={n.href}
@@ -187,15 +189,16 @@ export function Header() {
               onClick={() => { close(); openMasterclass(); }}
               className={`mt-2 block rounded-xl px-6 py-3 text-2xl font-semibold text-teal-dark transition-colors hover:text-teal sm:text-3xl ${FOCUS_RING}`}
             >
-              Masterclass
+              {t.nav.masterclass}
             </button>
             <a
-              href="/#contacto"
+              href={href("home", "contacto")}
               onClick={close}
               className={`mt-10 inline-flex min-w-[260px] justify-center rounded-full bg-teal px-10 py-4 text-lg font-semibold text-white shadow-[0_8px_24px_rgba(3,150,166,0.08)] transition-colors hover:bg-teal-dark ${FOCUS_RING}`}
             >
-              Reserva tu asesoría
+              {t.nav.reserva}
             </a>
+            <LanguageSwitch className="mt-8" onNavigate={close} />
           </div>
         </div>
       </div>
@@ -220,23 +223,24 @@ export const SOCIAL = [
 ];
 
 export function Footer() {
+  const { t, href } = useI18n();
   return (
     <footer className="bg-teal-dark text-white">
       <div className="container-brand py-16 grid gap-12 md:grid-cols-3">
         <div>
-          <img src="/logo-barbara-bacelle-asesoria-de-imgen-consciente.svg" alt="Barbara Bacelle — Asesoría de Imagen Personal" className="h-16 w-auto brightness-0 invert" />
+          <img src="/logo-barbara-bacelle-asesoria-de-imgen-consciente.svg" alt={t.logoAlt} className="h-16 w-auto brightness-0 invert" />
           <p className="mt-4 text-white/80 text-sm leading-relaxed max-w-xs">
-            Asesoría de imagen personal en Alicante. Online y presencial.
+            {t.footer.tagline}
           </p>
         </div>
         <div className="text-sm space-y-3">
-          <p className="eyebrow !text-white/60 mb-2">Contacto</p>
+          <p className="eyebrow !text-white/60 mb-2">{t.footer.contacto}</p>
           <p><a href="mailto:hola@barbarabacelle.es" className="hover:text-teal-lighter transition-colors">hola@barbarabacelle.es</a></p>
           <p><a href="tel:+34640907062" className="hover:text-teal-lighter transition-colors">+34 640 90 70 62</a></p>
-          <p className="text-white/80">Alicante · Online</p>
+          <p className="text-white/80">{t.footer.place}</p>
         </div>
         <div className="text-sm">
-          <p className="eyebrow !text-white/60 mb-2">Sígueme</p>
+          <p className="eyebrow !text-white/60 mb-2">{t.footer.follow}</p>
           <ul className="mt-3 space-y-3">
             {SOCIAL.map(({ name, href, handle, Icon }) => (
               <li key={name}>
@@ -254,12 +258,12 @@ export function Footer() {
       <div className="border-t border-white/15">
         <div className="container-brand py-6 text-xs text-white/60 flex flex-col md:flex-row justify-between gap-2">
           <p>© {new Date().getFullYear()} Barbara Bacelle · Espacio de Estilo</p>
-          <nav aria-label="Información legal">
+          <nav aria-label={t.footer.legalNav}>
             <ul className="flex flex-wrap gap-x-2">
-              {LEGAL_LINKS.map((l, i) => (
-                <li key={l.href} className="flex gap-x-2">
+              {LEGAL_PAGES.map((page, i) => (
+                <li key={page} className="flex gap-x-2">
                   {i > 0 && <span aria-hidden="true">·</span>}
-                  <Link href={l.href} className="hover:text-white transition-colors">{l.label}</Link>
+                  <Link href={href(page)} className="hover:text-white transition-colors">{t.legalLinks[page]}</Link>
                 </li>
               ))}
             </ul>
@@ -272,10 +276,11 @@ export function Footer() {
 
 /* ---------- WhatsApp ---------- */
 export function WhatsAppButton() {
+  const { t } = useI18n();
   return (
     <a
       href="https://wa.me/34640907062" target="_blank" rel="noreferrer"
-      aria-label="Escribir por WhatsApp"
+      aria-label={t.whatsapp}
       className="fixed bottom-[136px] right-5 z-40 inline-flex sm:bottom-5 min-h-14 min-w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105"
     >
       <MessageCircle size={24} />
@@ -284,21 +289,20 @@ export function WhatsAppButton() {
 }
 
 /* ---------- CTA sección ---------- */
-export function CTASection({
-  text = "Reserva una primera consulta y definimos juntas el mejor punto de partida para ti.",
-}: { text?: string }) {
+export function CTASection({ text }: { text?: string }) {
+  const { t, href } = useI18n();
   return (
     <section className="bg-teal-lightest">
       <div className="container-brand py-20 md:py-24 text-center max-w-3xl mx-auto">
         <Reveal>
           <h2 className="text-4xl md:text-5xl font-semibold leading-[1.08]">
-            ¿Empezamos a construir una imagen que te represente?
+            {t.cta.title}
           </h2>
           <p className="mt-6 text-teal-dark/80 md:text-lg leading-8">
-            {text}
+            {text ?? t.cta.text}
           </p>
           <div className="mt-10">
-            <a href="/#contacto" className="btn-primary">Quiero reservar mi consulta</a>
+            <a href={href("home", "contacto")} className="btn-primary">{t.cta.button}</a>
           </div>
         </Reveal>
       </div>
@@ -309,10 +313,11 @@ export function CTASection({
 /* ---------- Honeypot anti-spam (form) ---------- */
 // Campo invisibile per le persone: i bot lo riempiono e il server scarta la richiesta. Non rimuoverlo.
 export function HoneypotField() {
+  const { t } = useI18n();
   return (
     <div aria-hidden="true" className="absolute -left-[9999px] h-0 overflow-hidden">
       <label>
-        No rellenar
+        {t.form.honeypot}
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
       </label>
     </div>
@@ -323,6 +328,7 @@ export function HoneypotField() {
 // Casella obbligatoria + informazione di base RGPD (primo livello) sotto ai form.
 // Il link apre la privacy in una nuova scheda per non perdere i dati già scritti.
 export function PrivacyConsent({ id, finalidad }: { id: string; finalidad: string }) {
+  const { t, href } = useI18n();
   return (
     <div className="space-y-2">
       <div className="flex items-start gap-3">
@@ -334,21 +340,20 @@ export function PrivacyConsent({ id, finalidad }: { id: string; finalidad: strin
           className="mt-1 size-4 shrink-0 cursor-pointer accent-teal"
         />
         <label htmlFor={id} className="text-sm text-teal-dark leading-6">
-          He leído y acepto la{" "}
+          {t.form.privacyAccept}
           <a
-            href="/politica-de-privacidad"
+            href={href("privacidad")}
             target="_blank"
             rel="noreferrer"
             className="font-medium text-teal underline underline-offset-2 hover:text-teal-dark"
           >
-            política de privacidad
+            {t.form.privacyLink}
           </a>
           .
         </label>
       </div>
       <p className="text-xs text-teal-dark/70 leading-5">
-        Responsable: {LEGAL.titular}. Finalidad: {finalidad}. Legitimación: tu consentimiento.
-        Derechos: acceso, rectificación, supresión y otros, como se explica en la política de privacidad.
+        {t.form.privacyInfo(LEGAL.titular, finalidad)}
       </p>
     </div>
   );
@@ -356,6 +361,9 @@ export function PrivacyConsent({ id, finalidad }: { id: string; finalidad: strin
 
 /* ---------- Popup ---------- */
 export function MasterclassPopup() {
+  const { lang, t } = useI18n();
+  const p = t.popup;
+  const f = t.form;
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [sending, setSending] = useState(false);
@@ -365,7 +373,7 @@ export function MasterclassPopup() {
     e.preventDefault();
     setSending(true);
     setError(false);
-    const ok = await enviarFormulario(e.currentTarget, "masterclass");
+    const ok = await enviarFormulario(e.currentTarget, "masterclass", lang);
     setSending(false);
     if (ok) setDone(true);
     else setError(true);
@@ -387,52 +395,52 @@ export function MasterclassPopup() {
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Masterclass gratuita">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={p.ariaLabel}>
       {/* Scrim tintado con el mismo blur del menú; sin soporte de backdrop-filter queda solo el tinte. */}
       <div
         className="absolute inset-0 bg-teal-dark/50 backdrop-blur-lg backdrop-saturate-[1.3] [@media(prefers-reduced-transparency:reduce)]:bg-teal-dark/85 [@media(prefers-reduced-transparency:reduce)]:backdrop-filter-none"
         onClick={() => setOpen(false)}
       />
       <div className="relative bg-white rounded-2xl overflow-hidden max-w-lg w-full p-8 md:p-10 shadow-xl">
-        <button onClick={() => setOpen(false)} aria-label="Cerrar" className="absolute top-4 right-4 min-h-10 min-w-10 inline-flex items-center justify-center text-teal-dark hover:text-teal">
+        <button onClick={() => setOpen(false)} aria-label={p.close} className="absolute top-4 right-4 min-h-10 min-w-10 inline-flex items-center justify-center text-teal-dark hover:text-teal">
           <X />
         </button>
         {done ? (
           <div className="py-10 text-center">
-            <p className="font-serif text-3xl font-semibold">¡Gracias!</p>
-            <p className="mt-3 text-teal-dark/80">Te responderé personalmente muy pronto.</p>
+            <p className="font-serif text-3xl font-semibold">{p.thanksTitle}</p>
+            <p className="mt-3 text-teal-dark/80">{p.thanksText}</p>
           </div>
         ) : (
           <>
-            <p className="eyebrow mb-3">Novedades</p>
+            <p className="eyebrow mb-3">{p.eyebrow}</p>
             <h3 className="text-3xl font-semibold leading-tight">
-              Recibe consejos de <span className="font-script text-teal text-4xl">estilo consciente</span> en tu email
+              {p.titleBefore}<span className="font-script text-teal text-4xl">{p.titleScript}</span>{p.titleAfter}
             </h3>
             <p className="mt-4 text-sm text-teal-dark/80 leading-relaxed">
-              Suscríbete y descubre cada semana claves de armocromía, estilo y silueta para sentirte segura con tu imagen.
+              {p.text}
             </p>
             <form className="relative mt-6 space-y-4" onSubmit={onSubmit}>
               <HoneypotField />
               <div>
-                <label htmlFor="popup-nombre" className="block text-sm font-medium text-teal-dark mb-1">Nombre</label>
-                <input id="popup-nombre" name="nombre" required placeholder="Tu nombre" className="input-brand" />
+                <label htmlFor="popup-nombre" className="block text-sm font-medium text-teal-dark mb-1">{f.nombre}</label>
+                <input id="popup-nombre" name="nombre" required placeholder={f.nombrePh} className="input-brand" />
               </div>
               <div>
-                <label htmlFor="popup-email" className="block text-sm font-medium text-teal-dark mb-1">Email</label>
-                <input id="popup-email" name="email" type="email" required placeholder="tu@email.com" className="input-brand" />
+                <label htmlFor="popup-email" className="block text-sm font-medium text-teal-dark mb-1">{f.email}</label>
+                <input id="popup-email" name="email" type="email" required placeholder={f.emailPh} className="input-brand" />
               </div>
               <div>
-                <label htmlFor="popup-ciudad" className="block text-sm font-medium text-teal-dark mb-1">Ciudad <span className="font-normal text-teal-dark/60">(opcional)</span></label>
-                <input id="popup-ciudad" name="ciudad" placeholder="Tu ciudad" className="input-brand" />
+                <label htmlFor="popup-ciudad" className="block text-sm font-medium text-teal-dark mb-1">{f.ciudad} <span className="font-normal text-teal-dark/60">{f.opcional}</span></label>
+                <input id="popup-ciudad" name="ciudad" placeholder={f.ciudadPh} className="input-brand" />
               </div>
-              <PrivacyConsent id="popup-privacidad" finalidad="enviarte la masterclass y comunicaciones sobre imagen y estilo" />
+              <PrivacyConsent id="popup-privacidad" finalidad={p.finalidad} />
               {error && (
                 <p role="alert" className="text-sm text-red-700">
-                  No se ha podido enviar. Inténtalo de nuevo en unos minutos.
+                  {p.error}
                 </p>
               )}
               <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-60">
-                {sending ? "Enviando…" : "Quiero suscribirme"}
+                {sending ? f.sending : p.submit}
               </button>
             </form>
           </>

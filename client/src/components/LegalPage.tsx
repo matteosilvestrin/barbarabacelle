@@ -1,12 +1,14 @@
+import type { PageKey } from "@shared/routes";
 import { Eyebrow } from "@/components/site";
 import { Seo } from "@/components/Seo";
 import { LEGAL } from "@/lib/legal";
+import { useI18n } from "@/i18n";
 
 type LegalPageProps = {
   title: string;
   seoTitle: string;
   description: string;
-  path: string;
+  page: PageKey;
   children: React.ReactNode;
 };
 
@@ -17,27 +19,33 @@ export function LegalPage({
   title,
   seoTitle,
   description,
-  path,
+  page,
   children,
 }: LegalPageProps) {
+  const { lang, t } = useI18n();
   return (
     <main>
       <Seo
         title={seoTitle}
         description={description}
-        path={path}
+        page={page}
         image="/barbara-bacelle-asesora-de-imagen-alicante.jpg"
       />
       <section className="bg-stone-lightest">
         <div className="container-brand py-16 md:py-20">
           <div className="max-w-3xl mx-auto">
-            <Eyebrow>Información legal</Eyebrow>
+            <Eyebrow>{t.legalPage.eyebrow}</Eyebrow>
             <h1 className="text-4xl md:text-5xl font-semibold leading-[1.08]">
               {title}
             </h1>
             <p className="mt-4 text-sm text-teal-dark/70">
-              Última actualización: {LEGAL.actualizado}
+              {t.legalPage.updated} {LEGAL.actualizado[lang]}
             </p>
+            {t.legalPage.courtesyNote && (
+              <p className="mt-6 rounded-xl border border-teal-dark/15 bg-white px-5 py-4 text-sm leading-6 text-teal-dark/80">
+                {t.legalPage.courtesyNote}
+              </p>
+            )}
           </div>
         </div>
       </section>

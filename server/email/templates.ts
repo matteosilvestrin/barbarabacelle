@@ -3,7 +3,10 @@
  * I segnaposto {{chiave}} vengono sostituiti con valori escapati: i dati del form
  * non devono mai finire nell'HTML come codice.
  * Logo e footer arrivano dal .env (MAIL_LOGO_URL, MAIL_FOOTER).
+ * La conferma del contatto esiste in spagnolo e in italiano; la notifica della
+ * masterclass è per la titolare, quindi resta in spagnolo e riporta la lingua.
  */
+import type { Lang } from "../../shared/routes";
 
 export type MailVars = {
   nombre: string;
@@ -14,6 +17,13 @@ export type MailVars = {
   url: string;
   fecha: string;
   hora: string;
+  idioma: Lang;
+};
+
+const IDIOMA: Record<Lang, string> = { es: "Español", it: "Italiano" };
+const AUTOMATIC: Record<Lang, string> = {
+  es: "Correo automático enviado desde barbarabacelle.es.",
+  it: "Email automatica inviata da barbarabacelle.es.",
 };
 
 function escapeHtml(value: string): string {
@@ -30,9 +40,9 @@ function fill(template: string, vars: Record<string, string>): string {
 }
 
 // Struttura comune: logo in alto, contenuto, footer in basso.
-function layout(body: string): string {
+function layout(body: string, lang: Lang): string {
   return `<!doctype html>
-<html lang="es">
+<html lang="${lang}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,7 +59,7 @@ function layout(body: string): string {
       <tr>
         <td style="padding:0 24px 24px; font-size:15px; line-height:1.5;">
           ${body}
-          <p style="margin:24px 0 0; font-size:12px; color:#777777;">Correo automático enviado desde barbarabacelle.es.</p>
+          <p style="margin:24px 0 0; font-size:12px; color:#777777;">${AUTOMATIC[lang]}</p>
         </td>
       </tr>
       <tr>
@@ -69,10 +79,11 @@ const MASTERCLASS_BODY = `
             <li><strong>E-mail:</strong> {{email}}</li>
             <li><strong>Ciudad:</strong> {{ciudad}}</li>
             <li><strong>Página:</strong> {{url}}</li>
+            <li><strong>Idioma:</strong> {{idioma}}</li>
             <li><strong>Consentimiento de privacidad:</strong> {{fecha}} {{hora}}</li>
           </ul>`;
 
-const CONTACTO_BODY = `
+const CONTACTO_BODY_ES = `
           <p style="margin:0 0 16px;">Estimada <strong>{{nombre}}</strong>, gracias por ponerte en contacto conmigo. Te responderé <strong>lo antes posible</strong>.</p>
           <p style="margin:0 0 8px;"><strong>Esta es la solicitud que me has enviado:</strong></p>
           <ul style="padding-left:20px; margin:0;">
@@ -85,8 +96,24 @@ const CONTACTO_BODY = `
             <li><strong>Consentimiento de privacidad:</strong> {{fecha}} {{hora}}</li>
           </ul>`;
 
-const MASTERCLASS_HTML = layout(MASTERCLASS_BODY);
-const CONTACTO_HTML = layout(CONTACTO_BODY);
+const CONTACTO_BODY_IT = `
+          <p style="margin:0 0 16px;">Gentile <strong>{{nombre}}</strong>, grazie per avermi contattata. Ti risponderò <strong>il prima possibile</strong>.</p>
+          <p style="margin:0 0 8px;"><strong>Questa è la richiesta che mi hai inviato:</strong></p>
+          <ul style="padding-left:20px; margin:0;">
+            <li><strong>Nome:</strong> {{nombre}}</li>
+            <li><strong>E-mail:</strong> {{email}}</li>
+            <li><strong>Città:</strong> {{ciudad}}</li>
+            <li><strong>Telefono:</strong> {{telefono}}</li>
+            <li><strong>Richiesta:</strong> <span style="white-space:pre-wrap;">{{mensaje}}</span></li>
+            <li><strong>Pagina:</strong> {{url}}</li>
+            <li><strong>Consenso privacy:</strong> {{fecha}} {{hora}}</li>
+          </ul>`;
+
+const MASTERCLASS_HTML = layout(MASTERCLASS_BODY, "es");
+const CONTACTO_HTML: Record<Lang, string> = {
+  es: layout(CONTACTO_BODY_ES, "es"),
+  it: layout(CONTACTO_BODY_IT, "it"),
+};
 
 function common(vars: MailVars): Record<string, string> {
   return {
@@ -98,6 +125,7 @@ function common(vars: MailVars): Record<string, string> {
     url: vars.url || "-",
     fecha: vars.fecha,
     hora: vars.hora,
+    idioma: IDIOMA[vars.idioma],
     logo_url: process.env.MAIL_LOGO_URL ?? "",
     footer: process.env.MAIL_FOOTER ?? "",
   };
@@ -108,5 +136,5 @@ export function renderMasterclass(vars: MailVars): string {
 }
 
 export function renderContacto(vars: MailVars): string {
-  return fill(CONTACTO_HTML, common(vars));
+  return fill(CONTACTO_HTML[vars.idioma], common(vars));
 }

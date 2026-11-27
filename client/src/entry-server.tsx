@@ -1,5 +1,6 @@
 import { renderToString } from "react-dom/server";
 import { Router } from "wouter";
+import { LANGS, PAGE_KEYS, langOf, pathFor } from "@shared/routes";
 import App from "./App";
 
 /**
@@ -15,9 +16,14 @@ export function render(url: string) {
   );
 }
 
+/** Valore di <html lang> per una URL: il prerender lo scrive nell'HTML statico. */
+export function htmlLang(url: string) {
+  return langOf(url);
+}
+
 /**
- * Extra pages to prerender that nothing links to and that aren't a static
- * <Route path> in App.tsx (e.g. "/blog/my-unlinked-post"). Linked pages and
- * static routes are found automatically.
+ * Pages to prerender. The routes in App.tsx are generated from shared/routes.ts,
+ * so the prerender can't find them in the source: every page in every language
+ * is listed here. Linked pages are still found automatically.
  */
-export const prerenderRoutes: string[] = [];
+export const prerenderRoutes: string[] = LANGS.flatMap((lang) => PAGE_KEYS.map((page) => pathFor(page, lang)));

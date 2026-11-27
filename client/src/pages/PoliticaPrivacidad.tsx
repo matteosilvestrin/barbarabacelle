@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { pathFor } from "@shared/routes";
 import { LegalPage } from "@/components/LegalPage";
 import { LEGAL } from "@/lib/legal";
 import { GA4_ID } from "@/lib/analytics";
@@ -9,7 +10,7 @@ export default function PoliticaPrivacidad() {
       title="Política de privacidad"
       seoTitle="Política de privacidad | Barbara Bacelle"
       description="Cómo trata Barbara Bacelle tus datos personales: responsable, finalidades, base legal, conservación, destinatarios y cómo ejercer tus derechos."
-      path="/politica-de-privacidad"
+      page="privacidad"
     >
       <p>
         En esta política te explicamos cómo tratamos tus datos personales cuando visitas{" "}
@@ -22,7 +23,7 @@ export default function PoliticaPrivacidad() {
       <ul>
         <li><strong>Responsable:</strong> {LEGAL.titular} ({LEGAL.nombreComercial})</li>
         <li><strong>NIF/NIE:</strong> {LEGAL.nif}</li>
-        <li><strong>Domicilio:</strong> {LEGAL.domicilio}</li>
+        <li><strong>Domicilio:</strong> {LEGAL.domicilio.es}</li>
         <li><strong>Email:</strong> <a href={`mailto:${LEGAL.email}`}>{LEGAL.email}</a></li>
         <li><strong>Teléfono:</strong> <a href={LEGAL.telefonoHref}>{LEGAL.telefono}</a></li>
       </ul>
@@ -143,7 +144,7 @@ export default function PoliticaPrivacidad() {
       </ul>
       <p>
         Para ejercerlos, escríbenos a <a href={`mailto:${LEGAL.email}`}>{LEGAL.email}</a> o por
-        correo postal a {LEGAL.domicilio}, indicando el derecho que quieres ejercer. Si es necesario
+        correo postal a {LEGAL.domicilio.es}, indicando el derecho que quieres ejercer. Si es necesario
         para verificar tu identidad, te pediremos un documento que la acredite.
       </p>
       <p>
@@ -169,8 +170,8 @@ export default function PoliticaPrivacidad() {
       <p>
         Podemos actualizar esta política para adaptarla a cambios legales o del sitio web. Publicaremos
         siempre la versión vigente en esta página, con su fecha de actualización. Consulta también el{" "}
-        <Link href="/aviso-legal">Aviso legal</Link> y la{" "}
-        <Link href="/politica-de-cookies">Política de cookies</Link>.
+        <Link href={pathFor("avisoLegal", "es")}>Aviso legal</Link> y la{" "}
+        <Link href={pathFor("cookies", "es")}>Política de cookies</Link>.
       </p>
     </LegalPage>
   );

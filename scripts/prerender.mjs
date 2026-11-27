@@ -157,10 +157,13 @@ async function main() {
       (tag) => !/^<title\b[^>]*>\s*<\/title>$/i.test(tag),
     );
     if (tags.length < pageTags.length) emptyTitles.push(url);
-    const page = withPageHead(template, tags).replace(
+    let page = withPageHead(template, tags).replace(
       '<div id="root"></div>',
       `<div id="root">${body}</div>`,
     );
+    // <html lang> della pagina (React non lo gestisce): entry-server.tsx lo ricava dall'URL.
+    const lang = typeof entry.htmlLang === "function" ? entry.htmlLang(url) : null;
+    if (lang) page = page.replace(/<html\b([^>]*)\slang="[^"]*"/i, `<html$1 lang="${lang}"`);
     const file = url === "/" ? indexFile : path.join(outDir, url, "index.html");
     const relative = path.relative(outDir, file);
     if (relative.startsWith("..") || path.isAbsolute(relative)) continue;

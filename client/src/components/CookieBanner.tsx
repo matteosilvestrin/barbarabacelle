@@ -8,11 +8,14 @@ import {
   loadAnalytics,
   setConsent,
 } from "@/lib/analytics";
+import { useI18n } from "@/i18n";
 
 // Banner di consenso per le cookie di analisi (Google Analytics).
 // Compare solo se GA4_ID è configurato e l'utente non ha ancora scelto.
 // Lo stato iniziale è "nascosto": il prerender non include il banner.
 export function CookieBanner() {
+  const { t, href } = useI18n();
+  const c = t.cookieBanner;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -32,21 +35,18 @@ export function CookieBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Aviso de cookies"
+      aria-label={c.ariaLabel}
       className="fixed inset-x-3 bottom-[132px] z-50 rounded-xl border border-stone bg-white p-5 text-teal-dark shadow-lg sm:inset-x-auto sm:bottom-5 sm:right-5 sm:max-w-md"
     >
       <p className="text-sm leading-relaxed">
-        Barbara Bacelle, titular de este sitio, quiere usar cookies de análisis
-        de terceros (Google Analytics, de Google) para saber cuántas personas lo
-        visitan y qué páginas ven, y así mejorarlo. Solo se instalan si las
-        aceptas. Puedes cambiar tu elección en cualquier momento en la{" "}
+        {c.textBefore}
         <Link
-          href="/politica-de-cookies"
+          href={href("cookies")}
           className="underline underline-offset-2"
         >
-          Política de cookies
+          {c.link}
         </Link>
-        .
+        {c.textAfter}
       </p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <Button
@@ -57,7 +57,7 @@ export function CookieBanner() {
             setVisible(false);
           }}
         >
-          ACEPTAR
+          {c.accept}
         </Button>
         {/* Stesso stile di ACEPTAR: l'AEPD chiede pari evidenza tra accettare e rifiutare. */}
         <Button
@@ -68,7 +68,7 @@ export function CookieBanner() {
             setVisible(false);
           }}
         >
-          RECHAZAR
+          {c.reject}
         </Button>
       </div>
     </div>

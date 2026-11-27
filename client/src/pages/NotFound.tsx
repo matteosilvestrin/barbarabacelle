@@ -2,18 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, Home } from "lucide-react";
 import { useLocation } from "wouter";
+import { useI18n } from "@/i18n";
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
+  const { t, href } = useI18n();
+  const n = t.notFound;
 
   const handleGoHome = () => {
-    setLocation("/");
+    setLocation(href("home"));
   };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <title>Página no encontrada | Barbara Bacelle</title>
-      <meta name="description" content="La página que buscas no existe o ha cambiado de dirección. Vuelve al inicio para descubrir la asesoría de imagen de Barbara Bacelle en Alicante." />
+      <title>{n.title}</title>
+      <meta name="description" content={n.description} />
       {/* Il server risponde 404 con questa pagina per ogni URL sconosciuto; noindex per sicurezza */}
       <meta name="robots" content="noindex" />
       <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
@@ -28,13 +31,13 @@ export default function NotFound() {
           <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
 
           <h2 className="text-xl font-semibold text-slate-700 mb-4">
-            Página no encontrada
+            {n.heading}
           </h2>
 
           <p className="text-slate-600 mb-8 leading-relaxed">
-            Lo sentimos, la página que buscas no existe.
+            {n.line1}
             <br />
-            Puede que se haya movido o eliminado.
+            {n.line2}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -43,7 +46,7 @@ export default function NotFound() {
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
             >
               <Home className="w-4 h-4 mr-2" />
-              Volver al inicio
+              {n.back}
             </Button>
           </div>
         </CardContent>

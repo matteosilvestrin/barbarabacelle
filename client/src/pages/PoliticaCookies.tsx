@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { pathFor } from "@shared/routes";
 import { LegalPage } from "@/components/LegalPage";
 import { LEGAL } from "@/lib/legal";
 import { GA4_ID, openCookieSettings } from "@/lib/analytics";
@@ -9,7 +10,7 @@ export default function PoliticaCookies() {
       title="Política de cookies"
       seoTitle="Política de cookies | Barbara Bacelle"
       description="Qué cookies y tecnologías similares utiliza barbarabacelle.es, para qué sirven y cómo puedes gestionarlas desde tu navegador."
-      path="/politica-de-cookies"
+      page="cookies"
     >
       <h2>1. Qué son las cookies</h2>
       <p>
@@ -126,7 +127,7 @@ export default function PoliticaCookies() {
         Si incorporamos nuevas herramientas o cambiamos las existentes, actualizaremos esta política
         y, cuando sea necesario, te pediremos tu consentimiento antes de instalar cookies no
         necesarias. Para más información sobre el tratamiento de tus datos, consulta la{" "}
-        <Link href="/politica-de-privacidad">Política de privacidad</Link>.
+        <Link href={pathFor("privacidad", "es")}>Política de privacidad</Link>.
       </p>
     </LegalPage>
   );

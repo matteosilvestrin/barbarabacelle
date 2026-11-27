@@ -1,6 +1,7 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { LANGS } from "../shared/routes";
 import { renderContacto, renderMasterclass } from "./email/templates";
 
 /*
@@ -9,12 +10,16 @@ import { renderContacto, renderMasterclass } from "./email/templates";
  * Configurazione via variabili d'ambiente (mai nel codice), vedi .env.example:
  *   SMTP_HOST, SMTP_PORT (default 587), SMTP_USER, SMTP_PASS
  *   MAIL_FROM_NAME, MAIL_FROM, MAIL_TO, MAIL_BCC
- *   MAIL_SUBJECT_MASTERCLASS, MAIL_SUBJECT_CONTACTO
+ *   MAIL_SUBJECT_MASTERCLASS, MAIL_SUBJECT_CONTACTO, MAIL_SUBJECT_CONTACTO_IT (facoltativo)
  *   MAIL_LOGO_URL, MAIL_FOOTER
  *
  * Invio:
  *   masterclass -> MAIL_TO (notifica), copia nascosta a MAIL_BCC
  *   contacto    -> l'email della persona (conferma), copia nascosta a MAIL_BCC
+ *
+ * Lingua: `idioma` è la lingua della pagina del form. La conferma del contatto arriva
+ * alla persona nella sua lingua; la notifica della masterclass (per la titolare) resta
+ * in spagnolo e indica la lingua.
  *
  * Protezioni: campo honeypot "website" (i bot lo riempiono), limite di richieste per IP,
  * validazione dei campi lato server.
@@ -22,6 +27,7 @@ import { renderContacto, renderMasterclass } from "./email/templates";
 
 const schema = z.object({
   tipo: z.enum(["contacto", "masterclass"]),
+  idioma: z.enum(LANGS).optional().default("es"),
   nombre: z.string().trim().min(1).max(100),
   email: z.email().max(254),
   ciudad: z.string().trim().max(100).optional().default(""),
@@ -126,7 +132,11 @@ contactRouter.post("/api/contact", express.json({ limit: "20kb" }), async (req, 
   const bcc = required("MAIL_BCC");
   const logo = required("MAIL_LOGO_URL");
   const footer = required("MAIL_FOOTER");
-  const subject = required(data.tipo === "masterclass" ? "MAIL_SUBJECT_MASTERCLASS" : "MAIL_SUBJECT_CONTACTO");
+  // Oggetto della conferma in italiano se configurato, altrimenti quello spagnolo.
+  const subject =
+    data.tipo === "contacto" && data.idioma === "it" && process.env.MAIL_SUBJECT_CONTACTO_IT
+      ? process.env.MAIL_SUBJECT_CONTACTO_IT
+      : required(data.tipo === "masterclass" ? "MAIL_SUBJECT_MASTERCLASS" : "MAIL_SUBJECT_CONTACTO");
   const to = data.tipo === "masterclass" ? required("MAIL_TO") : data.email;
   if (!mailer || !from || !bcc || !logo || !footer || !subject || !to) {
     if (!mailer) console.error("[contact] SMTP non configurato: richiesta non inviata", data.tipo);
@@ -143,6 +153,7 @@ contactRouter.post("/api/contact", express.json({ limit: "20kb" }), async (req, 
     url: data.pagina,
     fecha,
     hora,
+    idioma: data.idioma,
   };
   const html = data.tipo === "masterclass" ? renderMasterclass(vars) : renderContacto(vars);
 

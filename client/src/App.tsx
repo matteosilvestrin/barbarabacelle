@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
+import { LANGS, PAGE_KEYS, langOf, pathFor, type Lang, type PageKey } from "@shared/routes";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import Servicios from "./pages/Servicios";
@@ -9,8 +10,12 @@ import SobreMi from "./pages/SobreMi";
 import AvisoLegal from "./pages/AvisoLegal";
 import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
 import PoliticaCookies from "./pages/PoliticaCookies";
+import NoteLegali from "./pages/it/NoteLegali";
+import InformativaPrivacy from "./pages/it/InformativaPrivacy";
+import PoliticaCookie from "./pages/it/PoliticaCookie";
 import { Header, Footer, WhatsAppButton, MasterclassPopup } from "./components/site";
 import { CookieBanner } from "./components/CookieBanner";
+import { LangProvider } from "./i18n";
 
 import { useEffect } from "react";
 
@@ -28,47 +33,59 @@ function ScrollToTop() {
   return null;
 }
 
-function Layout({ children }: { children: React.ReactNode }) {
+function Layout({ lang, page, children }: { lang: Lang; page: PageKey; children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col pb-[116px] sm:pb-0">
-      <Header />
-      <div className="flex-1">{children}</div>
-      <Footer />
-      <WhatsAppButton />
-      <MasterclassPopup />
-      <CookieBanner />
-    </div>
+    <LangProvider lang={lang} page={page}>
+      <div className="min-h-screen flex flex-col pb-[116px] sm:pb-0">
+        <Header />
+        <div className="flex-1">{children}</div>
+        <Footer />
+        <WhatsAppButton />
+        <MasterclassPopup />
+        <CookieBanner />
+      </div>
+    </LangProvider>
+  );
+}
+
+// Pagine con testi da dizionario: stesso componente per tutte le lingue.
+// Le pagine legali hanno un componente per lingua (testo lungo, si rivede meglio così).
+const PAGE_COMPONENTS: Record<PageKey, Record<Lang, React.ComponentType>> = {
+  home: { es: Home, it: Home },
+  servicios: { es: Servicios, it: Servicios },
+  sobreMi: { es: SobreMi, it: SobreMi },
+  avisoLegal: { es: AvisoLegal, it: NoteLegali },
+  privacidad: { es: PoliticaPrivacidad, it: InformativaPrivacy },
+  cookies: { es: PoliticaCookies, it: PoliticaCookie },
+  notFound: { es: NotFound, it: NotFound },
+};
+
+// Stesso albero di /404 (o /it/404): il server serve l'HTML prerenderizzato della 404
+// nella lingua dell'URL, e l'idratazione deve trovare lo stesso layout.
+function CatchAll() {
+  const [location] = useLocation();
+  return (
+    <Layout lang={langOf(location)} page="notFound">
+      <NotFound />
+    </Layout>
   );
 }
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"}>
-        <Layout><Home /></Layout>
-      </Route>
-      <Route path={"/servicios-asesoria-imagen-personal-alicante"}>
-        <Layout><Servicios /></Layout>
-      </Route>
-      <Route path={"/barbara-bacelle-asesoria-imagen-alicante"}>
-        <Layout><SobreMi /></Layout>
-      </Route>
-      <Route path={"/aviso-legal"}>
-        <Layout><AvisoLegal /></Layout>
-      </Route>
-      <Route path={"/politica-de-privacidad"}>
-        <Layout><PoliticaPrivacidad /></Layout>
-      </Route>
-      <Route path={"/politica-de-cookies"}>
-        <Layout><PoliticaCookies /></Layout>
-      </Route>
-      <Route path={"/404"}>
-        <Layout><NotFound /></Layout>
-      </Route>
-      {/* Stesso albero di /404: il server serve l'HTML prerenderizzato di /404
-          per ogni URL sconosciuto, e l'idratazione deve trovare lo stesso layout. */}
+      {LANGS.flatMap((lang) =>
+        PAGE_KEYS.map((page) => {
+          const Page = PAGE_COMPONENTS[page][lang];
+          return (
+            <Route key={`${lang}:${page}`} path={pathFor(page, lang)}>
+              <Layout lang={lang} page={page}><Page /></Layout>
+            </Route>
+          );
+        })
+      )}
       <Route>
-        <Layout><NotFound /></Layout>
+        <CatchAll />
       </Route>
     </Switch>
   );

@@ -4,9 +4,9 @@ Written for: coding agents working in this repository.
 
 ## Project
 
-Sito web di **Bárbara Bacelle**, consulente di imagen personal ad Alicante (contenuti in spagnolo). Sito pubblico, prerenderizzato come HTML statico, con un server Express di produzione che serve i file.
+Sito web di **Bárbara Bacelle**, consulente di imagen personal ad Alicante (contenuti in spagnolo e italiano). Sito pubblico, prerenderizzato come HTML statico, con un server Express di produzione che serve i file.
 
-- Lingua dei contenuti: **spagnolo (es-ES)**. Il codice, i commenti e i messaggi tecnici possono essere in italiano o inglese.
+- Lingue dei contenuti: **spagnolo (es-ES)**, lingua principale, sulle URL senza prefisso; **italiano (it-IT)** sotto `/it` (vedi "Multilingua"). Il codice, i commenti e i messaggi tecnici possono essere in italiano o inglese.
 - Dominio di riferimento nei meta tag: `barbarabacelle.es` (vedi `client/index.html`).
 
 ## Stack
@@ -45,12 +45,18 @@ client/
   public/               # asset statici serviti dalla root (/img-*.jpg, /logo-*.svg, ...)
   src/
     main.tsx            # entry: hydrateRoot se la pagina è prerenderizzata, altrimenti createRoot
-    entry-server.tsx    # render() per il prerender in Node; prerenderRoutes per le pagine non linkate
-    App.tsx             # Switch wouter con le route + Layout (Header, Footer, WhatsApp, popup masterclass)
+    entry-server.tsx    # render() per il prerender in Node; prerenderRoutes (tutte le pagine in tutte le lingue); htmlLang()
+    App.tsx             # Switch wouter con le route generate da shared/routes.ts + Layout (LangProvider, Header, Footer, WhatsApp, popup masterclass)
     index.css           # token di design e stili globali (non rompere le regole @layer base)
     pages/              # Home, Servicios, SobreMi, AvisoLegal, PoliticaPrivacidad, PoliticaCookies, NotFound
+      it/               # pagine legali in italiano: NoteLegali, InformativaPrivacy, PoliticaCookie
+    i18n/
+      index.tsx         # LangProvider + useI18n() -> { lang, page, t, href(page, hash?) }
+      es.ts, it.ts      # testi per lingua (es.ts definisce il tipo Dict, it.ts deve rispettarlo)
     components/
       site.tsx          # Header, Footer, WhatsAppButton, MasterclassPopup, Reveal, Eyebrow, CTASection
+      LanguageSwitch.tsx # ESP / ITA nel menu, sotto "Reserva tu asesoría"
+      Seo.tsx           # title, description, canonical, hreflang, og:*, twitter:*; JsonLd
       Map.tsx           # MapView per Google Maps (non usato dalle pagine attuali)
       ErrorBoundary.tsx
       CookieBanner.tsx  # banner ACEPTAR / RECHAZAR per Google Analytics (montato in Layout, App.tsx)
@@ -63,23 +69,36 @@ scripts/
   prerender.mjs         # genera dist/public/<path>/index.html per ogni pagina
 shared/
   const.ts              # costanti condivise
+  routes.ts             # PAGES: path di ogni pagina per lingua; pathFor, langOf, pageOf, HREFLANG, OG_LOCALE
 patches/
   wouter@3.7.1.patch    # patch applicata a wouter via pnpm.patchedDependencies
 ```
 
 ## Route
 
-| Path | Pagina |
-|---|---|
-| `/` | `Home` |
-| `/servicios-asesoria-imagen-personal-alicante` | `Servicios` |
-| `/barbara-bacelle-asesoria-imagen-alicante` | `SobreMi` |
-| `/aviso-legal` | `AvisoLegal` |
-| `/politica-de-privacidad` | `PoliticaPrivacidad` (stesso URL del sito precedente) |
-| `/politica-de-cookies` | `PoliticaCookies` |
-| `/404` e qualsiasi altra URL | `NotFound` (noindex, HTTP 404 dal server) |
+Fonte unica: `PAGES` in `shared/routes.ts` (chiave pagina -> path per lingua).
 
-Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`.
+| Chiave | Spagnolo | Italiano | Componente |
+|---|---|---|---|
+| `home` | `/` | `/it` | `Home` |
+| `servicios` | `/servicios-asesoria-imagen-personal-alicante` | `/it/servizi-consulenza-immagine-personale-alicante` | `Servicios` |
+| `sobreMi` | `/barbara-bacelle-asesoria-imagen-alicante` | `/it/barbara-bacelle-consulenza-immagine-alicante` | `SobreMi` |
+| `avisoLegal` | `/aviso-legal` | `/it/note-legali` | `AvisoLegal` / `it/NoteLegali` |
+| `privacidad` | `/politica-de-privacidad` (stesso URL del sito precedente) | `/it/informativa-privacy` | `PoliticaPrivacidad` / `it/InformativaPrivacy` |
+| `cookies` | `/politica-de-cookies` | `/it/politica-cookie` | `PoliticaCookies` / `it/PoliticaCookie` |
+| `notFound` | `/404` e ogni URL sconosciuta | `/it/404` e ogni URL sconosciuta sotto `/it/` | `NotFound` (noindex, HTTP 404 dal server) |
+
+## Multilingua (spagnolo + italiano)
+
+- **Niente librerie i18n.** Le route sono generate in `App.tsx` da `PAGES`; ogni route ha un `Layout lang page` che apre un `LangProvider`. Lingua e pagina vengono dalla route, mai dal browser, così prerender e idratazione coincidono. Nessun redirect in base alla lingua del browser: la lingua è solo quella dell'URL.
+- **Testi:** in `client/src/i18n/es.ts` e `it.ts`, solo stringhe (o funzioni che restituiscono stringhe); il markup resta nei componenti, che leggono `const { t } = useI18n()`. Una chiave mancante in `it.ts` è un errore di `pnpm check`. Immagini, ancore e `id` dei servizi stanno nei componenti (uguali in tutte le lingue). Le pagine legali sono invece un componente per lingua (testo lungo): una modifica va fatta in entrambe le versioni.
+- **Link interni:** sempre `href(pagina, ancora?)` di `useI18n()` (o `pathFor(pagina, lingua)` di `shared/routes.ts`), mai path scritti a mano. Le ancore (`#contacto`, `#armocromia`, ...) sono le stesse nelle due lingue.
+- **Switcher:** `components/LanguageSwitch.tsx`, nel menu sotto la CTA. Porta alla stessa pagina nell'altra lingua conservando l'ancora (dalla 404 porta alla home); la lingua corrente non è un link (`aria-current`). Bandiere in SVG inline (le emoji-bandiera non si vedono su Windows).
+- **SEO:** `<Seo page=... />` scrive canonical, `hreflang` es-ES / it-IT / x-default (= spagnolo) e `og:locale` + `og:locale:alternate`. Gli hreflang non vanno in `client/index.html` (il prerender sostituisce solo title/meta/canonical: verrebbero duplicati). `<html lang>` lo scrive il prerender (`htmlLang()` di `entry-server.tsx`) e lo aggiorna `LangProvider` lato client. La sitemap elenca ogni URL con le alternative `xhtml:link`. JSON-LD (`lib/schema.ts`): stessi `@id` in tutte le lingue, testi e URL per lingua.
+- **Nuova pagina:** aggiungila a `PAGES` (entrambe le lingue), a `PAGE_COMPONENTS` in `App.tsx` e ai testi in `es.ts`/`it.ts`; prerender, sitemap, hreflang e switcher seguono da soli.
+- **Form:** il client invia `idioma` (lingua della pagina). La conferma del contatto arriva nella lingua della persona (`server/email/templates.ts`, oggetto `MAIL_SUBJECT_CONTACTO_IT` facoltativo); la notifica della masterclass resta in spagnolo con la riga "Idioma".
+- **Pagine legali italiane:** traduzione di cortesia con avviso in testa ("in caso di discrepanza prevale la versione spagnola", `t.legalPage.courtesyNote`), stessa data di aggiornamento della versione spagnola (`LEGAL.actualizado`).
+- **Testi italiani:** bozza tradotta dallo spagnolo il 27 novembre 2026, **da far rivedere alla titolare** (in particolare nomi dei pack, testimonianze, pagine legali e banner cookie). Il logo resta quello spagnolo ("Asesoría de imagen consciente") anche sulle pagine italiane.
 
 ## Documenti di riferimento: dove stanno le informazioni
 
@@ -91,11 +110,11 @@ Il link "Sobre mí" punta alla route `/barbara-bacelle-asesoria-imagen-alicante`
 
 **Prerendering (importante):** `pnpm build` renderizza ogni pagina in Node. Nel rendering non si possono toccare `window`, `document`, `localStorage` o `navigator`: va fatto solo in `useEffect` o negli event handler. Non usare `Math.random()`, `Date.now()` o `new Date()` nel render. Per animazioni di ingresso sopra la piega usa `initial={false}` o CSS, perché `opacity: 0` iniziale nasconde il testo nell'HTML statico. Leggi i warning `[prerender]` del build e risolvili tutti.
 
-**SEO:** ogni pagina imposta il proprio `<title>` e la `description` con i tag React 19 nel componente, tramite `<Seo title description path image />` (`components/Seo.tsx`), che aggiunge anche canonical, `og:*` e `twitter:*`. Il dominio per gli URL assoluti è `SITE_URL` in `shared/const.ts`. Un `<title>` deve avere un solo figlio stringa: scrivi `` <title>{`${name} | Brand`}</title> ``, non `<title>{name} | Brand</title>`. Usa URL assoluti per `canonical` e `og:image`. Title intorno ai 60 caratteri, description sotto i 160. I dati strutturati schema.org stanno in `lib/schema.ts` (presi da `LEGAL`, `SITE_URL` e `SOCIAL`) e si inseriscono con `<JsonLd data={...} />` di `components/Seo.tsx`.
+**SEO:** ogni pagina imposta il proprio `<title>` e la `description` con i tag React 19 nel componente, tramite `<Seo title description page image />` (`components/Seo.tsx`), che aggiunge anche canonical, hreflang, `og:*` e `twitter:*`. Il dominio per gli URL assoluti è `SITE_URL` in `shared/const.ts`. Un `<title>` deve avere un solo figlio stringa: scrivi `` <title>{`${name} | Brand`}</title> ``, non `<title>{name} | Brand</title>`. Usa URL assoluti per `canonical` e `og:image`. Title intorno ai 60 caratteri, description sotto i 160. I dati strutturati schema.org stanno in `lib/schema.ts` (presi da `LEGAL`, `SITE_URL` e `SOCIAL`) e si inseriscono con `<JsonLd data={...} />` di `components/Seo.tsx`.
 
-**Route e 404:** ogni route deve essere prerenderizzata. Il server risponde HTTP 404 con l'HTML di `/404` a ogni URL senza pagina in `dist/public`, quindi una route solo client (non prerenderizzata) risulterebbe 404. La route catch-all di `App.tsx` usa lo stesso `Layout` di `/404`, così l'idratazione combacia.
+**Route e 404:** ogni route deve essere prerenderizzata. Il server risponde HTTP 404 con l'HTML di `/404` (o di `/it/404` per le URL sotto `/it/`) a ogni URL senza pagina in `dist/public`, quindi una route solo client (non prerenderizzata) risulterebbe 404. La route catch-all di `App.tsx` usa lo stesso `Layout` della 404 nella lingua dell'URL, così l'idratazione combacia.
 
-**Analytics e consenso:** Google Analytics si carica **solo dopo** "ACEPTAR" nel banner (`lib/analytics.ts`, `components/CookieBanner.tsx`). Non inserire script di tracciamento nell'HTML statico, in `client/index.html` o in `<head>` di React: passa sempre da `loadAnalytics()`/`setConsent()`. La scelta è salvata in localStorage con chiave `cookie_consent` come JSON `{"value":"accepted"|"rejected","date":<ms>}`, con try/catch; vale 12 mesi (`CONSENT_MAX_AGE_MS`), poi il banner ricompare (il vecchio formato senza data vale come nessuna scelta). RECHAZAR cancella anche i cookie `_ga`/`_ga_*`. I due pulsanti del banner hanno lo stesso stile (pari evidenza, guida AEPD). Se aggiungi un altro strumento di terze parti, va sotto lo stesso consenso e va dichiarato in `/politica-de-cookies` e `/politica-de-privacidad`.
+**Analytics e consenso:** Google Analytics si carica **solo dopo** "ACEPTAR" nel banner (`lib/analytics.ts`, `components/CookieBanner.tsx`). Non inserire script di tracciamento nell'HTML statico, in `client/index.html` o in `<head>` di React: passa sempre da `loadAnalytics()`/`setConsent()`. La scelta è salvata in localStorage con chiave `cookie_consent` come JSON `{"value":"accepted"|"rejected","date":<ms>}`, con try/catch; vale 12 mesi (`CONSENT_MAX_AGE_MS`), poi il banner ricompare (il vecchio formato senza data vale come nessuna scelta). RECHAZAR cancella anche i cookie `_ga`/`_ga_*`. I due pulsanti del banner hanno lo stesso stile (pari evidenza, guida AEPD). Se aggiungi un altro strumento di terze parti, va sotto lo stesso consenso e va dichiarato in `/politica-de-cookies` e `/politica-de-privacidad` e nelle versioni italiane (`/it/politica-cookie`, `/it/informativa-privacy`). Le etichette del banner in italiano sono ACCETTA / RIFIUTA.
 
 **Link:** non annidare `<a>` dentro un `Link` di wouter, passa i children direttamente.
 
@@ -122,8 +141,8 @@ Todo concordati con il titolare del sito (non ancora implementati, salvo dove in
 
 Fatti già completati:
 - **Consenso privacy nei form**: componente `PrivacyConsent` in `components/site.tsx`, usato nel form contatti di `pages/Home.tsx` e nel popup masterclass. Casella obbligatoria (`required`, il browser blocca l'invio senza spunta) con link a `/politica-de-privacidad` in nuova scheda, più informazione di base RGPD (responsabile, finalità, legittimazione, diritti). **Decisioni del titolare:** email legale `hola@barbarabacelle.es`; data di aggiornamento delle pagine legali 7 novembre 2026.
-- **Pagine legali**: `/aviso-legal`, `/politica-de-privacidad`, `/politica-de-cookies`, con layout comune `components/LegalPage.tsx` (stili dei contenuti via selettori arbitrari Tailwind, testo in colonna `max-w-3xl`) e dati del titolare in `lib/legal.ts` (`LEGAL`, `LEGAL_LINKS`). Testi ispirati alla privacy del sito precedente e all'estratto iubenda, aggiornati al sito attuale: niente profilazione, Privacy Shield sostituito dal Data Privacy Framework, storage tecnico `mc_popup_shown` (sessionStorage) e `cookie_consent` (localStorage), Google Fonts dichiarato, Google Analytics dichiarato come cookie di analisi con consenso (vedi punto seguente). Sono in questa sezione anche la data di aggiornamento in `lib/legal.ts` (`LEGAL.actualizado`, ora 21 novembre 2026) e il pulsante "Cambiar mi elección" in `/politica-de-cookies` (visibile solo con `GA4_ID`).
-- **Google Analytics + banner di consenso** (richiesto dal titolare, con `GA4_ID` in `.env`): banner ACEPTAR / RECHAZAR in spagnolo (il titolare ha chiesto ACCETTA/RIFIUTA, ma il sito è in spagnolo: etichette da confermare). Appare solo se `GA4_ID` è configurato e l'utente non ha ancora scelto. RECHAZAR imposta `ga-disable-<ID>`. Il testo del banner e delle pagine legali va confermato dal titolare, come gli altri testi legali. Il footer linka le tre pagine (`LEGAL_LINKS`); sono prerenderizzate e nella sitemap.
+- **Pagine legali**: `/aviso-legal`, `/politica-de-privacidad`, `/politica-de-cookies`, con layout comune `components/LegalPage.tsx` (stili dei contenuti via selettori arbitrari Tailwind, testo in colonna `max-w-3xl`) e dati del titolare in `lib/legal.ts` (`LEGAL`, `LEGAL_PAGES`; `domicilio` e `actualizado` sono per lingua). Testi ispirati alla privacy del sito precedente e all'estratto iubenda, aggiornati al sito attuale: niente profilazione, Privacy Shield sostituito dal Data Privacy Framework, storage tecnico `mc_popup_shown` (sessionStorage) e `cookie_consent` (localStorage), Google Fonts dichiarato, Google Analytics dichiarato come cookie di analisi con consenso (vedi punto seguente). Sono in questa sezione anche la data di aggiornamento in `lib/legal.ts` (`LEGAL.actualizado.es`, ora 21 novembre 2026) e il pulsante "Cambiar mi elección" in `/politica-de-cookies` (visibile solo con `GA4_ID`).
+- **Google Analytics + banner di consenso** (richiesto dal titolare, con `GA4_ID` in `.env`): banner ACEPTAR / RECHAZAR in spagnolo (il titolare ha chiesto ACCETTA/RIFIUTA, ma il sito è in spagnolo: etichette da confermare). Appare solo se `GA4_ID` è configurato e l'utente non ha ancora scelto. RECHAZAR imposta `ga-disable-<ID>`. Il testo del banner e delle pagine legali va confermato dal titolare, come gli altri testi legali. Il footer linka le tre pagine (`LEGAL_PAGES`, etichette in `t.legalLinks`); sono prerenderizzate e nella sitemap.
 - **Personal Shopper Presencial**: decisione del titolare, la frase "Asesoramiento previo necesario." **resta** nel testo (in `pages/Servicios.tsx` e nella card di `pages/Home.tsx`).
 - **Ottimizzazione immagini**: le 12 foto usate dal sito erano PNG con estensione `.jpg` (~2 MB l'una). Convertite in JPEG progressivi q80 alle stesse dimensioni (totale da 22 MB a 1,7 MB) e rinominate con nomi SEO in spagnolo; riferimenti aggiornati in pagine e `Seo`. Eliminati i file non usati da nessuna pagina (`barbara-hero.jpg`, `color-analysis.jpg`, `event-look.jpg`, `gift-card.jpg`, `hero-barbara-v2.jpg`, `hero-portrait.jpg`, `img-hero.jpg`, `wardrobe.jpg`, `logo-barbara-bacelle.png`, circa 14 MB): restano recuperabili dalla storia git.
 - **SEO per pagina**: Home, Servicios e Sobre mí usano `<Seo>` con title e description presi da `KNOWLEDGE_BASE.md` ("Barbara" senza accento), canonical e `og:url` su `https://www.barbarabacelle.es<path>`, `og:image`/`twitter:image` con la foto hero della pagina. Il prerender sostituisce i meta di default di `client/index.html`. La 404 ha il titolo "Página no encontrada | Barbara Bacelle" e resta `noindex`. Le keywords del KNOWLEDGE_BASE non sono state messe nel meta `keywords` (Google lo ignora).
