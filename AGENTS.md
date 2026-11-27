@@ -145,7 +145,7 @@ Fatti già completati:
   - si nasconde scorrendo verso il basso e riappare risalendo (Tailwind 4 usa la proprietà CSS `translate`, non `transform`);
   - menu aperto: overlay a schermo intero `.glass [--glass-blur:16px] [--glass-saturate:1.3]` con logo, voci grandi, CTA "Reserva tu asesoría" e pulsante di chiusura; si chiude con Escape, click sui link, click sullo sfondo o passando a ≥1024px; blocca lo scroll della pagina e porta il focus sul pulsante di chiusura.
   - Sostituisce la vecchia richiesta del menu mobile "agganciato al fondo pagina" (bottom sheet).
-- Logo SVG in `client/public/`: `logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg` (originale bicolore, "Bacelle" in teal) nell'header, a 0.5em (8px) dal bordo della pillola, alto 60px; `logo-barbara-bacelle-asesoria-de-imgen-consciente.svg` (tutto nero) nel footer con filtro `brightness-0 invert`, cioè bianco, e nel JSON-LD. I file si chiamavano `...-conciente...` (refuso, rinominati il 27 novembre 2026).
+- Logo SVG in `client/public/`: `logo-barbara-bacelle-asesoria-de-imgen-consciente-header.svg` (originale bicolore, "Bacelle" in teal) nell'header, a 0.5em (8px) dal bordo della pillola, alto 60px; `logo-barbara-bacelle-asesoria-de-imgen-consciente.svg` (tutto nero) nel footer con filtro `brightness-0 invert`, cioè bianco, e nel JSON-LD. I file si chiamavano `...-conciente...` (refuso, rinominati il 27 novembre 2026). Il 27 novembre 2026 la tagline "ASESORIA DE IMAGEN CONSCIENTE" è stata ingrandita a 1,3× in entrambi i file (stessi path vettoriali, glifi scalati sulla baseline e spaziature ricalcolate per mantenere invariata la larghezza totale): a 60px era alta ~5px e risultava sgranata.
 
 ## Git
 
